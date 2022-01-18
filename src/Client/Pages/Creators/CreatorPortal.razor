@@ -1,0 +1,32 @@
+﻿@page "/portal";
+@using System.Security.Claims;
+<h3>CreatorPortal</h3>
+
+@if (cIsAuthenticated)
+{
+    <h4>@cUserName is authenticated</h4>  }
+else
+{
+    <h4>The user is not authenticated</h4>
+}
+
+@code {  
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+
+    private string cUserName;
+    private bool cIsAuthenticated;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthState;
+
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            cIsAuthenticated = true;
+
+            cUserName = authState.User.FindFirst(ClaimTypes.Name).Value;
+        }
+
+    }
+}

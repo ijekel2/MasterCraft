@@ -1,0 +1,46 @@
+﻿@page "/login"
+@inject IAuthenticationService AuthService
+@inject NavigationManager NavManager 
+
+<h3>Log In</h3>
+
+<EditForm Model="request" OnValidSubmit="ExecuteLogin">
+    <div class="form-group row">
+        <div class="col-md-10">
+            <InputText id="email" class="form-control" placeholder="Email" @bind-Value="request.Email" />
+            <ValidationMessage For="@(() => request.Email)" />
+        </div>
+        <div class="col-md-10">
+            <InputText type="password" id="password" class="form-control" placeholder="Password" @bind-Value="request.Password" />
+            <ValidationMessage For="@(() => request.Password)" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-outline-success" @onclick="ExecuteLogin">Log In</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private AuthenticationRequest request = new();
+    private bool showAuthenticationError = false;
+    private string authenticationErrorText = "";
+
+    private async Task ExecuteLogin()
+    {
+        showAuthenticationError = false;
+
+        AuthenticatedUser result = await AuthService.Login(request);
+
+        if (result is not null)
+        {
+            NavManager.NavigateTo("/portal");
+        }
+        else
+        {
+            authenticationErrorText = "Error trying to log in";
+            showAuthenticationError = true;
+        }
+    }
+}

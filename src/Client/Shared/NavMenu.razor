@@ -1,0 +1,26 @@
+﻿@using MasterCraft.Client.Shared
+
+<!-- example 1 - using absolute position for center -->
+<nav class="navbar navbar-expand-md bg-transparent">
+    <div class="container-fluid">
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNavbar">
+            <span class="navbar-toggler-icon" @onclick="ToggleNavMenu"></span>
+        </button>
+        <div class="navbar-collapse @NavMenuCssClass ms-auto" @onclick="ToggleNavMenu" id="collapseNavbar">
+            <ul class="navbar-nav ms-auto">
+                <LoginDisplay />
+            </ul>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

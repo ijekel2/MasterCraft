@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using MasterCraft.Client.Pages
+
+@inject NavigationManager Navigation
+
+<AuthorizeView>
+    <Authorized>
+        <a href="/profile">Hello, @context.User.Identity.Name!</a>
+        <button class="btn btn-outline-dark" @onclick="Logout">Log out</button>
+    </Authorized>
+    <NotAuthorized>
+        <button class="btn btn-outline-dark" @onclick="GoToSignUp">Sign up</button>
+        <button class="btn btn-outline-success" @onclick="GoToLogin">Log in</button>
+
+    </NotAuthorized>
+</AuthorizeView>
+
+@code{
+    private void Logout(MouseEventArgs args)
+    {
+        Navigation.NavigateTo("/logout");
+    }
+
+    private void GoToSignUp(MouseEventArgs args)
+    {
+    }
+
+    private void GoToLogin(MouseEventArgs args)
+    {
+        Navigation.NavigateTo("/login");
+    }
+}

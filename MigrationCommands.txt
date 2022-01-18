@@ -1,0 +1,1 @@
+dotnet ef migrations add InitialDbCreate --startup-project "Server/MasterCraft.Server.csproj" --project "Infrastructure/MasterCraft.Infrastructure.csproj" -v
