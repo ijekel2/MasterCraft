@@ -17,16 +17,19 @@ namespace MasterCraft.Infrastructure
 {
     public static class DependencyInjection
     {
+        private const string cDbName = "mastercraft.db";
+        private const string cAuthScheme = "JwtBearer";
+
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             //-- EF Core.
             var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var dbPath = System.IO.Path.Join(path, "mastercraft.db");
+            var dbPath = System.IO.Path.Join(path, cDbName);
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite($"DataSource={dbPath}"));
 
             //-- ASP.NET Core Identity
-            services.AddDefaultIdentity<ApplicationUser>(options =>
+            services.AddDefaultIdentity<ExtendedIdentityUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequireNonAlphanumeric = false;
@@ -40,10 +43,10 @@ namespace MasterCraft.Infrastructure
             //-- Jwt Auth
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = "JwtBearer";
-                options.DefaultChallengeScheme = "JwtBearer";
+                options.DefaultAuthenticateScheme = cAuthScheme;
+                options.DefaultChallengeScheme = cAuthScheme;
             })
-            .AddJwtBearer("JwtBearer", jwtOptions =>
+            .AddJwtBearer(cAuthScheme, jwtOptions =>
             {
                 jwtOptions.TokenValidationParameters = new TokenValidationParameters
                 {

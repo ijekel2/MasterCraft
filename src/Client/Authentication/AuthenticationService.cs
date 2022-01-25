@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
-using MasterCraft.Client.Models;
+using MasterCraft.Core.CommandModels;
+using MasterCraft.Core.ReportModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
@@ -24,15 +25,15 @@ namespace MasterCraft.Client.Authentication
             cLocalStorage = pLocalStorage;
         }
 
-        public async Task<AuthenticatedUser> Login(AuthenticationRequest pAuthenticationRequest)
+        public async Task<AccessTokenReportModel> Login(GenerateTokenCommandModel pGenerateTokenCommand)
         {
             var lData = new FormUrlEncodedContent(new[]
             {
-                new KeyValuePair<string, string>("username", pAuthenticationRequest.Email),
-                new KeyValuePair<string, string>("password", pAuthenticationRequest.Password)
+                new KeyValuePair<string, string>("username", pGenerateTokenCommand.Username),
+                new KeyValuePair<string, string>("password", pGenerateTokenCommand.Password)
             });
 
-            var lAuthResult = await cHttpClient.PostAsync("/token", lData);
+            var lAuthResult = await cHttpClient.PostAsync("/api/token", lData);
             var lAuthContent = await lAuthResult.Content.ReadAsStringAsync();
 
             if (!lAuthResult.IsSuccessStatusCode)
@@ -40,7 +41,7 @@ namespace MasterCraft.Client.Authentication
                 return null;
             }
 
-            var lResult = JsonSerializer.Deserialize<AuthenticatedUser>(lAuthContent, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            var lResult = JsonSerializer.Deserialize<AccessTokenReportModel>(lAuthContent, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             await cLocalStorage.SetItemAsync("authToken", lResult.AccessToken);
 

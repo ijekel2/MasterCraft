@@ -1,4 +1,5 @@
-﻿using MasterCraft.Core.Dto;
+﻿using MasterCraft.Core.Entities;
+using MasterCraft.Core.ReportModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,12 @@ namespace MasterCraft.Application.Common.Interfaces
     {
         Task<bool> IsValidUserNameAndPassword(string password, string username);
 
-        Task<AuthenticatedUserDto> GenerateToken(string username);
+        Task<AccessTokenReportModel> GenerateToken(string username);
 
         Task<string> GetUserNameAsync(string userId);
+
+        Task<ApplicationUser> FindUserByEmailAsync(string email);
+
+        Task CreateUserAsync(ApplicationUser user);
     }
 }

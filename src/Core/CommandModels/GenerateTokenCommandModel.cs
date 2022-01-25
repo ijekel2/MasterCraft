@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Core.CommandModels
 {
-    public class RegisterUserModel
+    public class GenerateTokenCommandModel
     {
+        public string Username { get; set; }
+
+        public string Password { get; set; }
     }
 }

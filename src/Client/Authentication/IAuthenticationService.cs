@@ -1,11 +1,12 @@
-﻿using MasterCraft.Client.Models;
+﻿using MasterCraft.Core.CommandModels;
+using MasterCraft.Core.ReportModels;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Client.Authentication
 {
     public interface IAuthenticationService
     {
-        Task<AuthenticatedUser> Login(AuthenticationRequest pAuthenticationRequest);
+        Task<AccessTokenReportModel> Login(GenerateTokenCommandModel pGenerateTokenCommand);
         Task Logout();
     }
 }

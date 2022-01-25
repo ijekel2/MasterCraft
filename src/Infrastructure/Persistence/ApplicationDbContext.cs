@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Infrastructure.Persistence
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IDbContext
+    public class ApplicationDbContext : IdentityDbContext<ExtendedIdentityUser>, IDbContext
     {
         public ApplicationDbContext(
             DbContextOptions options) : base(options)

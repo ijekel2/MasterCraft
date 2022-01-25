@@ -1,6 +1,6 @@
 ﻿using MasterCraft.Application.Common.Interfaces;
 using MasterCraft.Core.CommandModels;
-using MasterCraft.Core.Dto;
+using MasterCraft.Core.ReportModels;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,19 +11,18 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Application.Authentication.Commands.GenerateToken
 {
-    public class GenerateTokenCommand : GenerateTokenRequest, IRequest<AuthenticatedUserDto>
+    public class GenerateTokenCommand : GenerateTokenCommandModel, IRequest<AccessTokenReportModel>
     {
-        public class GenerateTokenCommandHandler : IRequestHandler<GenerateTokenCommand, AuthenticatedUserDto>
+        public class GenerateTokenCommandHandler : IRequestHandler<GenerateTokenCommand, AccessTokenReportModel>
         {
-            private readonly IDbContext cDbContext;
             private readonly IIdentityService cIdentityService;
 
-            public GenerateTokenCommandHandler(IDbContext dbContext)
+            public GenerateTokenCommandHandler(IIdentityService identityService)
             {
-                cDbContext = dbContext;
+                cIdentityService = identityService;
             }
 
-            public async Task<AuthenticatedUserDto> Handle(GenerateTokenCommand request, CancellationToken cancellationToken)
+            public async Task<AccessTokenReportModel> Handle(GenerateTokenCommand request, CancellationToken cancellationToken)
             {
                  return await cIdentityService.GenerateToken(request.Username);
             }

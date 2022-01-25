@@ -1,0 +1,11 @@
+﻿@page "/register";
+@using MasterCraft.Core.CommandModels;
+<h3>Register</h3>
+
+<EditForm Model="commandModel">
+    <DataAnnotationsValidator/>
+</EditForm>
+
+@code {
+    RegisterUserCommandModel commandModel = new();
+}

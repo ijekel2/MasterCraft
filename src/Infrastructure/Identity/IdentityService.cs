@@ -1,5 +1,8 @@
-﻿using MasterCraft.Application.Common.Interfaces;
-using MasterCraft.Core.Dto;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using MasterCraft.Application.Common.Interfaces;
+using MasterCraft.Core.Entities;
+using MasterCraft.Core.ReportModels;
 using MasterCraft.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,16 +19,18 @@ namespace MasterCraft.Infrastructure.Identity
 {
     public class IdentityService : IIdentityService
     {
-        private readonly UserManager<ApplicationUser> cUserManager;
+        private readonly UserManager<ExtendedIdentityUser> cUserManager;
         private readonly ApplicationDbContext cDbContext;
+        private readonly IMapper cMapper;
 
-        public IdentityService(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext)
+        public IdentityService(UserManager<ExtendedIdentityUser> userManager, ApplicationDbContext dbContext, IMapper mapper)
         {
             cUserManager = userManager;
             cDbContext = dbContext;
+            cMapper = mapper;
         }
 
-        public async Task<AuthenticatedUserDto> GenerateToken(string username)
+        public async Task<AccessTokenReportModel> GenerateToken(string username)
         {
             var user = await cUserManager.FindByEmailAsync(username);
 
@@ -54,7 +59,7 @@ namespace MasterCraft.Infrastructure.Identity
                         SecurityAlgorithms.HmacSha256)),
                 new JwtPayload(claims));
 
-            AuthenticatedUserDto output = new()
+            AccessTokenReportModel output = new()
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
                 Username = username
@@ -65,7 +70,18 @@ namespace MasterCraft.Infrastructure.Identity
 
         public async Task<bool> IsValidUserNameAndPassword(string password, string username)
         {
+            if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(username))
+            {
+                return false;
+            }
+
             var user = await cUserManager.FindByEmailAsync(username);
+
+            if (user is null)
+            {
+                return false;
+            }
+
             return await cUserManager.CheckPasswordAsync(user, password);
         }
 
@@ -73,6 +89,18 @@ namespace MasterCraft.Infrastructure.Identity
         {
             var user = await cUserManager.FindByIdAsync(userId);
             return await cUserManager.GetUserNameAsync(user);
+        }
+
+        public async Task<ApplicationUser> FindUserByEmailAsync(string email)
+        {
+            ExtendedIdentityUser identityUser = await cUserManager.FindByEmailAsync(email);
+            return cMapper.Map<ExtendedIdentityUser, ApplicationUser>(identityUser);
+        }
+
+        public async Task CreateUserAsync(ApplicationUser user)
+        {
+            ExtendedIdentityUser identityUser = cMapper.Map<ApplicationUser, ExtendedIdentityUser>(user);
+            await cUserManager.CreateAsync(identityUser);
         }
     }
 }

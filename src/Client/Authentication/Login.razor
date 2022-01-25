@@ -1,14 +1,16 @@
 ﻿@page "/login"
 @inject IAuthenticationService AuthService
 @inject NavigationManager NavManager 
+@using MasterCraft.Core.CommandModels;
+@using MasterCraft.Core.ReportModels;
 
 <h3>Log In</h3>
 
 <EditForm Model="request" OnValidSubmit="ExecuteLogin">
     <div class="form-group row">
         <div class="col-md-10">
-            <InputText id="email" class="form-control" placeholder="Email" @bind-Value="request.Email" />
-            <ValidationMessage For="@(() => request.Email)" />
+            <InputText id="email" class="form-control" placeholder="Email" @bind-Value="request.Username" />
+            <ValidationMessage For="@(() => request.Username)" />
         </div>
         <div class="col-md-10">
             <InputText type="password" id="password" class="form-control" placeholder="Password" @bind-Value="request.Password" />
@@ -23,7 +25,7 @@
 </EditForm>
 
 @code {
-    private AuthenticationRequest request = new();
+    private GenerateTokenCommandModel request = new();
     private bool showAuthenticationError = false;
     private string authenticationErrorText = "";
 
@@ -31,7 +33,7 @@
     {
         showAuthenticationError = false;
 
-        AuthenticatedUser result = await AuthService.Login(request);
+        AccessTokenReportModel result = await AuthService.Login(request);
 
         if (result is not null)
         {

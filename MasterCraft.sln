@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterCraft.Core", "src\Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterCraft.Infrastructure", "src\Infrastructure\MasterCraft.Infrastructure.csproj", "{E758847A-9BD6-4E3F-9375-5EF0931CF0EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterCraft.Application", "src\Application\MasterCraft.Application.csproj", "{A1260414-6F2F-431B-9587-C02D98AFF461}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterCraft.Application", "src\Application\MasterCraft.Application.csproj", "{A1260414-6F2F-431B-9587-C02D98AFF461}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
