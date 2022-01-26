@@ -68,7 +68,7 @@ namespace MasterCraft.Infrastructure.Identity
             return output;
         }
 
-        public async Task<bool> IsValidUserNameAndPassword(string password, string username)
+        public async Task<bool> IsValidUserNameAndPassword(string username, string password)
         {
             if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(username))
             {
@@ -99,8 +99,15 @@ namespace MasterCraft.Infrastructure.Identity
 
         public async Task CreateUserAsync(ApplicationUser user)
         {
-            ExtendedIdentityUser identityUser = cMapper.Map<ApplicationUser, ExtendedIdentityUser>(user);
-            await cUserManager.CreateAsync(identityUser);
+            ExtendedIdentityUser identityUser = new ExtendedIdentityUser()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                UserName = user.Email,
+            };
+
+            await cUserManager.CreateAsync(identityUser, user.Password);
         }
     }
 }

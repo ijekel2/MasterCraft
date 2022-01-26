@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MasterCraft.Core.ReportModels;
 using MasterCraft.Application.Authentication.Commands.RegisterUser;
+using MasterCraft.Core.CommandModels;
 
 namespace MasterCraft.Server.Controllers
 {
@@ -19,7 +20,7 @@ namespace MasterCraft.Server.Controllers
     {
         [Route("/api/token")]
         [HttpPost]
-        public async Task<ActionResult<AccessTokenReportModel>> GenerateToken(GenerateTokenCommand command)
+        public async Task<ActionResult<AccessTokenReportModel>> GenerateToken([FromForm] GenerateTokenCommand command)
         {
             return await Mediator.Send(command);
         }

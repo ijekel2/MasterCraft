@@ -34,8 +34,13 @@ namespace MasterCraft.Server
 
             services
                 .AddControllers(options =>options.Filters.Add<ApiExceptionFilterAttribute>())
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.SuppressModelStateInvalidFilter = true;
+                })
                 .AddFluentValidation(x => 
-                { 
+                {
+                    x.AutomaticValidationEnabled = false;
                     x.RegisterValidatorsFromAssemblyContaining<GenerateTokenCommandValidator>();
                 });
 

@@ -58,5 +58,11 @@ namespace MasterCraft.Client.Authentication
             cAuthStateProvider.NotifyUserLogout();
             cHttpClient.DefaultRequestHeaders.Authorization = null;
         }
+
+        public async Task Register(RegisterUserCommandModel registerUserCommand)
+        {
+            var lData = new StringContent(JsonSerializer.Serialize(registerUserCommand), System.Text.Encoding.UTF8, "application/json");
+            var lResult = await cHttpClient.PostAsync("/api/register", lData);
+        }
     }
 }

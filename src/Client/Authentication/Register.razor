@@ -1,11 +1,46 @@
 ﻿@page "/register";
 @using MasterCraft.Core.CommandModels;
+@inject IAuthenticationService AuthService
+
+
 <h3>Register</h3>
 
-<EditForm Model="commandModel">
-    <DataAnnotationsValidator/>
+<EditForm Model="command">
+    <DataAnnotationsValidator />
+    <div class="form-group row">
+        <div class="col-md-10">
+            <InputText id="firstname" class="form-control" placeholder="@Properties.Resources.FirstName" @bind-Value="command.FirstName" />
+            <ValidationMessage For="@(() => command.FirstName)" />
+        </div>
+        <div class="col-md-10">
+            <InputText id="lastname" class="form-control" placeholder="@Properties.Resources.LastName" @bind-Value="command.LastName" />
+            <ValidationMessage For="@(() => command.LastName)" />
+        </div>
+        <div class="col-md-10">
+            <InputText id="email" class="form-control" placeholder="@Properties.Resources.Email" @bind-Value="command.Email" />
+            <ValidationMessage For="@(() => command.Email)" />
+        </div>
+        <div class="col-md-10">
+            <InputText type="password" id="password" class="form-control" placeholder="@Properties.Resources.Password" @bind-Value="command.Password" />
+            <ValidationMessage For="@(() => command.Password)" />
+        </div>
+        <div class="col-md-10">
+            <InputText type="password" id="confirmpassword" class="form-control" placeholder="@Properties.Resources.ConfirmPassword" @bind-Value="command.ConfirmPassword" />
+            <ValidationMessage For="@(() => command.ConfirmPassword)" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-outline-success" @onclick="OnRegisterClick">@Properties.Resources.Register</button>
+        </div>
+    </div>
 </EditForm>
 
 @code {
-    RegisterUserCommandModel commandModel = new();
+    RegisterUserCommandModel command = new();
+
+    public async Task OnRegisterClick()
+    {
+        await AuthService.Register(command);
+    }
 }

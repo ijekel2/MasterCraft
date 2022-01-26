@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace MasterCraft.Server.Controllers
 {
     [Route("/api/[controller]")]
+    [ApiController]
     public class ApiBaseController : Controller
     {
         private ISender cMediator = null!;

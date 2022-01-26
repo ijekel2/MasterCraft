@@ -8,5 +8,7 @@ namespace MasterCraft.Client.Authentication
     {
         Task<AccessTokenReportModel> Login(GenerateTokenCommandModel pGenerateTokenCommand);
         Task Logout();
+
+        Task Register(RegisterUserCommandModel registerUserCommand);
     }
 }
