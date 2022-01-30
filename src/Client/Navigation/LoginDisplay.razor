@@ -1,16 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
+@using MasterCraft.Client.Common.Components 
 
 @inject NavigationManager Navigation
 
 <AuthorizeView>
     <Authorized>
         <a href="/profile">Hello, @context.User.Identity.Name!</a>
-        <button class="btn btn-outline-dark" @onclick="Logout">Log out</button>
+        <McButton Caption="Log out" CssClass="mc-btn-black" OnClick="Logout" />
     </Authorized>
     <NotAuthorized>
-        <button class="btn btn-outline-dark" @onclick="GoToSignUp">Sign up</button>
-        <button class="btn btn-outline-success" @onclick="GoToLogin">Log in</button>
-
+        <McButton Caption="Sign up" CssClass="mc-btn-black" OnClick="GoToSignUp" />
+        <McButton Caption="Log in" CssClass="mc-btn-green" OnClick="GoToLogin" />
     </NotAuthorized>
 </AuthorizeView>
 
