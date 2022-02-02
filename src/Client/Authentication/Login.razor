@@ -1,35 +1,49 @@
 ﻿@page "/login"
 @inject IAuthenticationService AuthService
-@inject NavigationManager NavManager 
+@inject NavigationManager NavManager
 @using MasterCraft.Core.CommandModels;
 @using MasterCraft.Core.ReportModels;
 
-<h3>Log In</h3>
-
-<EditForm Model="request" OnValidSubmit="ExecuteLogin">
-    <div class="form-group row">
-        <div class="col-md-10">
-            <InputText id="email" class="form-control" placeholder="Email" @bind-Value="request.Username" />
-            <ValidationMessage For="@(() => request.Username)" />
+<EditForm Model="request" OnValidSubmit="OnLoginClick">
+    <div class="mc-edit-form">
+        <h3>Log In</h3>
+        <div class="mc-input-group">
+            <div>
+                <SfTextBox Type="InputType.Email" CssClass="mc-input" Placeholder="Email" @bind-Value="request.Username" />
+                <ValidationMessage For="@(() => request.Username)" />
+            </div>
+            <div>
+                <SfTextBox Type="InputType.Password" CssClass="mc-input" Placeholder="Password" @bind-Value="request.Password" />
+                <ValidationMessage For="@(() => request.Password)" />
+            </div>
         </div>
-        <div class="col-md-10">
-            <InputText type="password" id="password" class="form-control" placeholder="Password" @bind-Value="request.Password" />
-            <ValidationMessage For="@(() => request.Password)" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-10">
-            <McButton Caption="Log in" CssClass="mc-btn-green" OnClick="ExecuteLogin"/>
-        </div>
+        <SfButton CssClass="mc-btn-red" @onclick="OnLoginClick">Log in</SfButton>
     </div>
 </EditForm>
+
+<style>
+    .mc-edit-form {
+        width: 200px;
+    }
+
+    .mc-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .mc-edit-form > .e-btn {
+        margin: auto;
+        margin-top: 30px;
+    }
+</style>
 
 @code {
     private GenerateTokenCommandModel request = new();
     private bool showAuthenticationError = false;
     private string authenticationErrorText = "";
 
-    private async Task ExecuteLogin()
+    private async Task OnLoginClick()
     {
         showAuthenticationError = false;
 

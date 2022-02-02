@@ -1,18 +1,38 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
-@using MasterCraft.Client.Common.Components 
+@using System.Security.Claims;
 
 @inject NavigationManager Navigation
 
-<AuthorizeView>
-    <Authorized>
-        <a href="/profile">Hello, @context.User.Identity.Name!</a>
-        <McButton Caption="Log out" CssClass="mc-btn-black" OnClick="Logout" />
-    </Authorized>
-    <NotAuthorized>
-        <McButton Caption="Sign up" CssClass="mc-btn-black" OnClick="GoToSignUp" />
-        <McButton Caption="Log in" CssClass="mc-btn-green" OnClick="GoToLogin" />
-    </NotAuthorized>
-</AuthorizeView>
+<div class="login-display">
+    <AuthorizeView>
+        <Authorized>
+            <a id="salutation" @onclick="GoToProfile">Hello, @context.User.FindFirst(ClaimTypes.Name).Value!</a>
+            <SfButton CssClass="mc-btn-black" @onclick="Logout">Log out</SfButton>
+        </Authorized>
+        <NotAuthorized>
+            <SfButton CssClass="mc-btn-black" OnClick="GoToSignUp">Sign up</SfButton>
+            <SfButton CssClass="mc-btn-red" OnClick="GoToLogin">Log in</SfButton>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+<style>
+    .login-display{
+        padding: 5px;
+    }
+
+    #salutation {
+        margin: 10px;
+        font-family: "Archivo Black";
+        font-size: 16px;
+        vertical-align: middle;
+        color: #2c2c2c;
+    }
+
+    #salutation:hover{
+        color: #be0000
+    }
+</style>
 
 @code{
     private void Logout(MouseEventArgs args)
@@ -28,5 +48,10 @@
     private void GoToLogin(MouseEventArgs args)
     {
         Navigation.NavigateTo("/login");
+    }
+
+    private void GoToProfile(MouseEventArgs args)
+    {
+        Navigation.NavigateTo("/profile");
     }
 }

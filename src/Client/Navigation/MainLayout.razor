@@ -2,13 +2,75 @@
 
 <div class="page">
     <div class="main">
-        @*<div class="top-row px-4 auth">
-            <LoginDisplay />
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>*@
         <NavMenu />
         <div class="content px-4">
             @Body
         </div>
     </div>
 </div>
+
+<style>
+    :root {
+        --mc-red: #be0000;
+        --mc-dark-red: #a50000;
+        --mc-black: #2c2c2c;
+        --mc-dark-black: #1f1f1f;
+        --mc-dark-gray: #555555;
+        --mc-button-gray: #3d3d3d;
+        --mc-light-gray: #eeeeee;
+    }
+
+    /*Edit form styling*/
+    .mc-edit-form {
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+        margin: auto;
+    }
+
+    /*Input Styling*/
+    .mc-input {
+        background-color: var(--mc-light-gray) !important;
+        border-color: var(--mc-light-gray) !important;
+        border-radius: 10px  !important;
+        font-family: 'Roboto';
+    }
+
+    /*Button Styling*/
+    .e-btn {
+        border-radius: 50px;
+        height: 40px;
+        min-width: 110px;
+        font-family: 'Archivo Black';
+    }
+
+    .mc-btn-black {
+        background-color: var(--mc-black);
+        border-color: var(--mc-black);
+    }
+
+    .mc-btn-black:hover {
+        background-color: var(--mc-dark-black);
+    }
+
+    .mc-btn-red {
+        background-color: var(--mc-red);
+        border-color: var(--mc-red);
+    }
+
+    .mc-btn-red:hover {
+        background-color: var(--mc-dark-red);
+    }
+
+    /*Text styling*/
+    hr {
+        display: block;
+        width: 100%;
+        background-color: var(--mc-light-gray);
+        height: 1px;
+    }
+
+    h1, h2, h3 {
+        font-family: 'Archivo Black';
+    }
+</style>
