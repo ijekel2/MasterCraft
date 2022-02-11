@@ -6,7 +6,7 @@
 <div class="login-display">
     <AuthorizeView>
         <Authorized>
-            <a id="salutation" @onclick="GoToProfile">Hello, @context.User.FindFirst(ClaimTypes.Name).Value!</a>
+            <a id="salutation" @onclick="GoToProfile">Hello, @context.User?.FindFirst(ClaimTypes.Name)?.Value!</a>
             <SfButton CssClass="mc-btn-black" @onclick="Logout">Log out</SfButton>
         </Authorized>
         <NotAuthorized>

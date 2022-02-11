@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MasterCraft.Client;
+using MasterCraft.Client.Common.Api;
 
 namespace MasterCraft.Client
 {
@@ -21,10 +23,13 @@ namespace MasterCraft.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+            
+            builder.Services.AddHttpClient("MasterCraft");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(sp.GetRequiredService<IConfiguration>()["API"]) });
+            builder.Services
+                .AddScoped<IAuthenticationService, AuthenticationService>()
+                .AddTransient<ApiClient>();
 
-            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();

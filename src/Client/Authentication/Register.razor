@@ -1,41 +1,38 @@
 ﻿@page "/register";
-@using MasterCraft.Core.CommandModels;
-@using Syncfusion.Blazor.SplitButtons;
-@inject IAuthenticationService AuthService
-@inject NavigationManager Navigation
 
-<EditForm Model="command">
-    <DataAnnotationsValidator />
+<EditForm Model="command" OnValidSubmit="OnRegisterClick">
     <div class="mc-edit-form">
         <h3>Sign up</h3>
+        <DataAnnotationsValidator />
+        <CustomValidation @ref="customValidation" />
+        <ValidationSummary />
         <div class="mc-input-group">
             <div id="firstname">
                 <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder=@Properties.Resources.FirstName @bind-Value="command.FirstName" />
-                <ValidationMessage For="@(() => command.FirstName)" />
+                @*<ValidationMessage For="@(() => command.FirstName)" />*@
             </div>
             <div id="lastname">
                 <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder=@Properties.Resources.LastName @bind-Value="command.LastName" />
-                <ValidationMessage For="@(() => command.LastName)" />
+                @*<ValidationMessage For="@(() => command.LastName)" />*@
             </div>
             <div>
                 <SfTextBox Type="InputType.Email" CssClass="mc-input" Placeholder=@Properties.Resources.Email @bind-Value="command.Email" />
-                <ValidationMessage For="@(() => command.Email)" />
+                @*<ValidationMessage For="@(() => command.Email)" />*@
             </div>
             <div>
                 <SfTextBox Type="InputType.Password" CssClass="mc-input" Placeholder=@Properties.Resources.Password @bind-Value="command.Password" />
-                <ValidationMessage For="@(() => command.Password)" />
+                @*<ValidationMessage For="@(() => command.Password)" />*@
             </div>
             <div>
                 <SfTextBox Type="InputType.Password" CssClass="mc-input" Placeholder=@Properties.Resources.ConfirmPassword @bind-Value="command.ConfirmPassword" />
-                <ValidationMessage For="@(() => command.ConfirmPassword)" />
+                @*<ValidationMessage For="@(() => command.ConfirmPassword)" />*@
             </div>
         </div>
-        <SfProgressButton Content="Sign up" EnableProgress="true" CssClass="mc-btn-black" @onclick="OnRegisterClick">
-            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+        <SfProgressButton HtmlAttributes=@SubmitAttribute Content="Sign up" EnableProgress="true" CssClass="mc-btn-black">
             <ProgressButtonAnimationSettings Effect="Syncfusion.Blazor.SplitButtons.AnimationEffect.ZoomIn"></ProgressButtonAnimationSettings>
+            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
         </SfProgressButton>
     </div>
-
 </EditForm>
 
 <style>
@@ -64,12 +61,3 @@
     }
 </style>
 
-@code {
-    RegisterUserCommandModel command = new();
-
-    public async Task OnRegisterClick()
-    {
-        await AuthService.Register(command);
-        Navigation.NavigateTo("/");
-    }
-}

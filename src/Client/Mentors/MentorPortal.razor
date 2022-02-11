@@ -21,7 +21,7 @@ else
     {
         var authState = await AuthState;
 
-        if (authState.User.Identity.IsAuthenticated)
+        if (authState.User.Identity?.IsAuthenticated ?? false)
         {
             cIsAuthenticated = true;
 

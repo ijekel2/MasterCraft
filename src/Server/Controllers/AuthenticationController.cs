@@ -20,7 +20,7 @@ namespace MasterCraft.Server.Controllers
     {
         [Route("/api/token")]
         [HttpPost]
-        public async Task<ActionResult<AccessTokenReportModel>> GenerateToken([FromForm] GenerateTokenCommand command)
+        public async Task<ActionResult<AccessTokenReportModel>> GenerateToken(GenerateTokenCommand command)
         {
             return await Mediator.Send(command);
         }
