@@ -8,11 +8,11 @@ namespace MasterCraft.Application.Common.Behaviors
 {
     public class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
-        private readonly ILogger<TRequest> _logger;
+        private readonly ILogger<TRequest> cLogger;
 
         public UnhandledExceptionBehavior(ILogger<TRequest> logger)
         {
-            _logger = logger;
+            cLogger = logger;
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
@@ -25,7 +25,7 @@ namespace MasterCraft.Application.Common.Behaviors
             {
                 var requestName = typeof(TRequest).Name;
 
-                _logger.LogError(ex, "CleanArchitecture Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
+                cLogger.LogError(ex, "CleanArchitecture Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
 
                 throw;
             }

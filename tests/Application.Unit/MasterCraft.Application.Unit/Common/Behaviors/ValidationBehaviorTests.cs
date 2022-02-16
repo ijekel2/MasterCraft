@@ -22,37 +22,40 @@ namespace MasterCraft.Application.Common.Behaviors.Tests
     [TestFixture()]
     public class ValidationBehaviorTests
     {
+        private Mock<IIdentityService> cIdentityService = null!;
+        private GenerateTokenCommand cCommand;
+
+        [SetUp]
+        public void Setup()
+        {
+            cIdentityService = new Mock<IIdentityService>();
+            cCommand = new();
+        }
+
         [Test]
         public void FailedValidationShouldThrowValidationException()
         {
-            GenerateTokenCommand lCommand = new GenerateTokenCommand();
-            Mock<IIdentityService> identityService = new Mock<IIdentityService>();
-
             //-- Setup method to return false so validation will fail
-            identityService.Setup(lService => lService.IsValidUserNameAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(false));
-            GenerateTokenCommandValidator lValidator = new GenerateTokenCommandValidator(identityService.Object);
+            cIdentityService.Setup(lService => lService.IsValidUserNameAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(false));
+            GenerateTokenCommandValidator lValidator = new GenerateTokenCommandValidator(cIdentityService.Object);
 
             ValidationBehavior<GenerateTokenCommand, AccessTokenReportModel> lValidationBehavior = new(new[] { lValidator });
 
-            Assert.ThrowsAsync<ValidationException>(async () => await lValidationBehavior.Handle(lCommand, new CancellationToken(), null));
+            Assert.ThrowsAsync<ValidationException>(async () => await lValidationBehavior.Handle(cCommand, new CancellationToken(), null));
         }
 
         [Test]
         public async Task PassedValidationShouldCallNextDelegate()
         {
-            GenerateTokenCommand lCommand = new GenerateTokenCommand();
-            Mock<IIdentityService> identityService = new Mock<IIdentityService>();
-            Mock<IValidator<IRequest>> validator = new Mock<IValidator<IRequest>>();
-
             Mock<RequestHandlerDelegate<AccessTokenReportModel>> nextDelegate = new Mock<RequestHandlerDelegate<AccessTokenReportModel>>();
 
             //-- Setup method to return false so validation will pass
-            identityService.Setup(lService => lService.IsValidUserNameAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(true));
-            GenerateTokenCommandValidator lValidator = new GenerateTokenCommandValidator(identityService.Object);
+            cIdentityService.Setup(lService => lService.IsValidUserNameAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(true));
+            GenerateTokenCommandValidator lValidator = new GenerateTokenCommandValidator(cIdentityService.Object);
 
             ValidationBehavior<GenerateTokenCommand, AccessTokenReportModel> lValidationBehavior = new(new[] { lValidator });
 
-            await lValidationBehavior.Handle(lCommand, new CancellationToken(), nextDelegate.Object);
+            await lValidationBehavior.Handle(cCommand, new CancellationToken(), nextDelegate.Object);
 
             nextDelegate.Verify(lDelegate => lDelegate(), Times.Once);
         }
