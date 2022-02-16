@@ -13,6 +13,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterCraft.Infrastructure"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterCraft.Application", "src\Application\MasterCraft.Application.csproj", "{A1260414-6F2F-431B-9587-C02D98AFF461}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B304731E-B065-46EC-A236-C6AF88496F9A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{706DB117-EFFD-4333-99BD-013440A1CB76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterCraft.Application.Unit", "tests\Application.Unit\MasterCraft.Application.Unit\MasterCraft.Application.Unit.csproj", "{7024DF82-8A61-4F35-9CF1-916521F8E666}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterCraft.Application.Integration", "tests\Application.Integration\MasterCraft.Application.Integration\MasterCraft.Application.Integration.csproj", "{5A10345F-EEB0-4618-BC64-0B04CD87C0A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +47,26 @@ Global
 		{A1260414-6F2F-431B-9587-C02D98AFF461}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1260414-6F2F-431B-9587-C02D98AFF461}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1260414-6F2F-431B-9587-C02D98AFF461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7024DF82-8A61-4F35-9CF1-916521F8E666}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7024DF82-8A61-4F35-9CF1-916521F8E666}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7024DF82-8A61-4F35-9CF1-916521F8E666}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7024DF82-8A61-4F35-9CF1-916521F8E666}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A10345F-EEB0-4618-BC64-0B04CD87C0A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A10345F-EEB0-4618-BC64-0B04CD87C0A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A10345F-EEB0-4618-BC64-0B04CD87C0A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A10345F-EEB0-4618-BC64-0B04CD87C0A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A4CB8E81-ED17-488E-B393-6ABE4C305F07} = {B304731E-B065-46EC-A236-C6AF88496F9A}
+		{4D8F36C6-5613-47A1-B415-CBF5C357425B} = {B304731E-B065-46EC-A236-C6AF88496F9A}
+		{5B1FEF2C-4F86-458D-A252-ACC5549583B8} = {B304731E-B065-46EC-A236-C6AF88496F9A}
+		{E758847A-9BD6-4E3F-9375-5EF0931CF0EC} = {B304731E-B065-46EC-A236-C6AF88496F9A}
+		{A1260414-6F2F-431B-9587-C02D98AFF461} = {B304731E-B065-46EC-A236-C6AF88496F9A}
+		{7024DF82-8A61-4F35-9CF1-916521F8E666} = {706DB117-EFFD-4333-99BD-013440A1CB76}
+		{5A10345F-EEB0-4618-BC64-0B04CD87C0A6} = {706DB117-EFFD-4333-99BD-013440A1CB76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCC9F84E-36E8-4E57-A9AC-66BF8187F71C}
