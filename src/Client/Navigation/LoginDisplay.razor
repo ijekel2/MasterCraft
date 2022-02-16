@@ -6,12 +6,12 @@
 <div class="login-display">
     <AuthorizeView>
         <Authorized>
-            <a id="salutation" @onclick="GoToProfile">Hello, @context.User?.FindFirst(ClaimTypes.Name)?.Value!</a>
-            <SfButton CssClass="mc-btn-black" @onclick="Logout">Log out</SfButton>
+            <a id="salutation" @onclick="GoToProfile">@string.Format(Properties.Resources.Salutation, @context.User?.FindFirst(ClaimTypes.Name)?.Value!)</a>
+            <SfButton CssClass="mc-btn-black" @onclick="Logout">@Properties.Resources.LogOut</SfButton>
         </Authorized>
         <NotAuthorized>
-            <SfButton CssClass="mc-btn-black" OnClick="GoToSignUp">Sign up</SfButton>
-            <SfButton CssClass="mc-btn-red" OnClick="GoToLogin">Log in</SfButton>
+            <SfButton CssClass="mc-btn-black" OnClick="GoToSignUp">@Properties.Resources.SignUp</SfButton>
+            <SfButton CssClass="mc-btn-red" OnClick="GoToLogin">@Properties.Resources.LogIn</SfButton>
         </NotAuthorized>
     </AuthorizeView>
 </div>

@@ -2,22 +2,22 @@
  
 <EditForm Model="request" OnValidSubmit="OnLoginClick">
     <div class="mc-edit-form">
-        <h3>Log In</h3>
+        <h3>@Properties.Resources.LogIn</h3>
         <DataAnnotationsValidator />
         <CustomValidation @ref="customValidation" />
         <ValidationSummary />
 
         <div class="mc-input-group">
             <div>
-                <SfTextBox Type="InputType.Email" CssClass="mc-input" Placeholder="Email" @bind-Value="request.Username" />
+                <SfTextBox Type="InputType.Email" CssClass="mc-input" Placeholder="@Properties.Resources.Email" @bind-Value="request.Username" />
                 @*<ValidationMessage For="@(() => request.Username)" />*@
             </div>
             <div>
-                <SfTextBox Type="InputType.Password" CssClass="mc-input" Placeholder="Password" @bind-Value="request.Password" />
+                <SfTextBox Type="InputType.Password" CssClass="mc-input" Placeholder="@Properties.Resources.Password" @bind-Value="request.Password" />
                 @*<ValidationMessage For="@(() => request.Password)" />*@
             </div>
         </div>
-        <SfProgressButton HtmlAttributes=@SubmitAttribute Content="Log in" EnableProgress="@EnableProgress" CssClass="mc-btn-red">
+        <SfProgressButton HtmlAttributes=@SubmitAttribute Content="@Properties.Resources.LogIn" EnableProgress="@EnableProgress" CssClass="mc-btn-red">
             <ProgressButtonAnimationSettings Effect="Syncfusion.Blazor.SplitButtons.AnimationEffect.ZoomIn"></ProgressButtonAnimationSettings>
             <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
         </SfProgressButton>

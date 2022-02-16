@@ -1,8 +1,8 @@
-﻿@page "/register";
+﻿@page "/signup";
 
 <EditForm Model="command" OnValidSubmit="OnRegisterClick">
     <div class="mc-edit-form">
-        <h3>Sign up</h3>
+        <h3>@Properties.Resources.SignUp</h3>
         <DataAnnotationsValidator />
         <CustomValidation @ref="customValidation" />
         <ValidationSummary />
@@ -28,7 +28,7 @@
                 @*<ValidationMessage For="@(() => command.ConfirmPassword)" />*@
             </div>
         </div>
-        <SfProgressButton HtmlAttributes=@SubmitAttribute Content="Sign up" EnableProgress="true" CssClass="mc-btn-black">
+        <SfProgressButton HtmlAttributes=@SubmitAttribute Content="@Properties.Resources.SignUp" EnableProgress="true" CssClass="mc-btn-black">
             <ProgressButtonAnimationSettings Effect="Syncfusion.Blazor.SplitButtons.AnimationEffect.ZoomIn"></ProgressButtonAnimationSettings>
             <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
         </SfProgressButton>
