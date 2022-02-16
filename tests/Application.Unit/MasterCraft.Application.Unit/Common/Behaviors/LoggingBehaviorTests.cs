@@ -10,6 +10,7 @@ using System.Threading;
 using Microsoft.Extensions.Logging;
 using MasterCraft.Application.Common.Interfaces;
 using MasterCraft.Application.Authentication.Commands.GenerateToken;
+using MasterCraft.Core.ReportModels;
 
 namespace MasterCraft.Application.Common.Behaviors.Tests
 {

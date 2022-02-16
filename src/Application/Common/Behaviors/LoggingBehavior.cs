@@ -1,4 +1,5 @@
 ﻿using MasterCraft.Application.Common.Interfaces;
+using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 using System.Threading;

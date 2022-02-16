@@ -21,13 +21,11 @@ namespace MasterCraft.Infrastructure.Identity
     {
         private readonly UserManager<ExtendedIdentityUser> cUserManager;
         private readonly ApplicationDbContext cDbContext;
-        private readonly IMapper cMapper;
 
         public IdentityService(UserManager<ExtendedIdentityUser> userManager, ApplicationDbContext dbContext, IMapper mapper)
         {
             cUserManager = userManager;
             cDbContext = dbContext;
-            cMapper = mapper;
         }
 
         public async Task<AccessTokenReportModel> GenerateToken(string username)
@@ -95,7 +93,22 @@ namespace MasterCraft.Infrastructure.Identity
         public async Task<ApplicationUser> FindUserByEmailAsync(string email)
         {
             ExtendedIdentityUser identityUser = await cUserManager.FindByEmailAsync(email);
-            return cMapper.Map<ExtendedIdentityUser, ApplicationUser>(identityUser);
+            ApplicationUser user = null;
+
+            if (identityUser != null)
+            {
+                user = new ApplicationUser()
+                {
+                    Id = identityUser.Id,
+                    FirstName = identityUser.FirstName,
+                    LastName = identityUser.LastName,
+                    Email = identityUser.Email,
+                    UserName = identityUser.UserName,
+                    Password = identityUser.PasswordHash
+                };
+            }
+        
+            return user;
         }
 
         public async Task CreateUserAsync(ApplicationUser user)

@@ -34,7 +34,7 @@ namespace MasterCraft.Application.Authentication.Commands.RegisterUser
                         FirstName = request.FirstName,
                         LastName = request.LastName,
                         Email = request.Email,
-                        Username = request.Email,
+                        UserName = request.Email,
                         Password = request.Password,
 
                     };

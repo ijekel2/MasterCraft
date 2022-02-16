@@ -12,19 +12,24 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions;
 using Microsoft.EntityFrameworkCore;
 using MasterCraft.Application.Common.Interfaces;
+using System.Reflection;
+using System.IO;
 
 namespace MasterCraft.Infrastructure
 {
     public static class DependencyInjection
     {
-        private const string cDbName = "mastercraft.db";
         private const string cAuthScheme = "JwtBearer";
 
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             //-- EF Core.
             var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var dbPath = System.IO.Path.Join(path, cDbName);
+            var dbDirectory = Path.Join(path, Assembly.GetExecutingAssembly().GetName().Name);
+            var dbPath = Path.Join(dbDirectory, configuration["DatabaseName"]);
+
+            Directory.CreateDirectory(dbDirectory);
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite($"DataSource={dbPath}"));
 

@@ -17,9 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B304731E-B06
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{706DB117-EFFD-4333-99BD-013440A1CB76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterCraft.Application.Unit", "tests\Application.Unit\MasterCraft.Application.Unit\MasterCraft.Application.Unit.csproj", "{7024DF82-8A61-4F35-9CF1-916521F8E666}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterCraft.Application.Unit", "tests\Application.Unit\MasterCraft.Application.Unit\MasterCraft.Application.Unit.csproj", "{7024DF82-8A61-4F35-9CF1-916521F8E666}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterCraft.Application.Integration", "tests\Application.Integration\MasterCraft.Application.Integration\MasterCraft.Application.Integration.csproj", "{5A10345F-EEB0-4618-BC64-0B04CD87C0A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterCraft.Application.Integration", "tests\Application.Integration\MasterCraft.Application.Integration\MasterCraft.Application.Integration.csproj", "{5A10345F-EEB0-4618-BC64-0B04CD87C0A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
