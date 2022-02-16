@@ -15,7 +15,7 @@ using System.Threading;
 using MediatR;
 using FluentValidation;
 using FluentValidation.Results;
-using ValidationException = MasterCraft.Application.Common.Exceptions.ValidationException;
+using McValidationException = MasterCraft.Application.Common.Exceptions.McValidationException;
 
 namespace MasterCraft.Application.Common.Behaviors.Tests
 {
@@ -41,7 +41,7 @@ namespace MasterCraft.Application.Common.Behaviors.Tests
 
             ValidationBehavior<GenerateTokenCommand, AccessTokenReportModel> lValidationBehavior = new(new[] { lValidator });
 
-            Assert.ThrowsAsync<ValidationException>(async () => await lValidationBehavior.Handle(cCommand, new CancellationToken(), null));
+            Assert.ThrowsAsync<McValidationException>(async () => await lValidationBehavior.Handle(cCommand, new CancellationToken(), null));
         }
 
         [Test]

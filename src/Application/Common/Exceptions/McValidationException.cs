@@ -5,15 +5,15 @@ using System.Linq;
 
 namespace MasterCraft.Application.Common.Exceptions
 {
-    public class ValidationException : Exception
+    public class McValidationException : Exception
     {
-        public ValidationException()
+        public McValidationException()
             : base("One or more validation failures have occurred.")
         {
             Errors = new Dictionary<string, string[]>();
         }
 
-        public ValidationException(IEnumerable<ValidationFailure> failures)
+        public McValidationException(IEnumerable<ValidationFailure> failures)
             : this()
         {
             Errors = failures

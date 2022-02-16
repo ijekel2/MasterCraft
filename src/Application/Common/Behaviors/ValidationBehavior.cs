@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ValidationException = MasterCraft.Application.Common.Exceptions.ValidationException;
+using ValidationException = MasterCraft.Application.Common.Exceptions.McValidationException;
 
 namespace MasterCraft.Application.Common.Behaviors
 {
