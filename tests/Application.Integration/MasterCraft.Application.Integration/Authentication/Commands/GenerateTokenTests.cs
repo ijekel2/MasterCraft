@@ -1,5 +1,7 @@
 ﻿using MasterCraft.Application.Authentication.Commands.GenerateToken;
 using MasterCraft.Application.Common.Exceptions;
+using MasterCraft.Core.Entities;
+using MasterCraft.Core.ReportModels;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,23 @@ namespace MasterCraft.Application.Integration.Authentication.Commands
             };
 
             Assert.ThrowsAsync<McValidationException>(() => SendAsync(command));
+        }
+
+        [Test]
+        public async Task ShouldReturnAccessTokenForValidUsernameAndPassword()
+        {
+            ApplicationUser user = await AuthenticationTestUtility.CreateTestUser();
+
+            var command = new GenerateTokenCommand()
+            {
+                Username = user.UserName,
+                Password = "password"
+            };
+
+            AccessTokenReportModel lToken = await SendAsync(command);
+
+            Assert.IsNotEmpty(lToken.AccessToken);
+            Assert.AreEqual(user.UserName, lToken.Username);
         }
     }
 }

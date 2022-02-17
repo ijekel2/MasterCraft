@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Application.Authentication.Commands.RegisterUser
 {
-    public class RegisterUserCommand : RegisterUserCommandModel, IRequest<Unit>
+    public class RegisterUserCommand : RegisterUserCommandModel, IRequest<ApplicationUser>
     {
-        public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Unit>
+        public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ApplicationUser>
         {
             private readonly IIdentityService cIdentityService;
 
@@ -23,26 +23,21 @@ namespace MasterCraft.Application.Authentication.Commands.RegisterUser
                 cIdentityService = identityService;
             }
 
-            public async Task<Unit> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+            public async Task<ApplicationUser> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
             {
-                var existingUser = await cIdentityService.FindUserByEmailAsync(request.Email);
-
-                if (existingUser is null)
+                ApplicationUser newUser = new()
                 {
-                    ApplicationUser newUser = new()
-                    {
-                        FirstName = request.FirstName,
-                        LastName = request.LastName,
-                        Email = request.Email,
-                        UserName = request.Email,
-                        Password = request.Password,
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Email = request.Email,
+                    UserName = request.Email,
+                    Password = request.Password,
 
-                    };
+                };
 
-                    await cIdentityService.CreateUserAsync(newUser);
-                }
+                await cIdentityService.CreateUserAsync(newUser);
 
-                return Unit.Value;
+                return newUser;
             }
         }
     }
