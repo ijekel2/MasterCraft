@@ -7,12 +7,11 @@
     <AuthorizeView>
         <Authorized>
             <a id="salutation" @onclick="GoToProfile">@string.Format(Properties.Resources.Salutation, @context.User?.FindFirst(ClaimTypes.Name)?.Value!)</a>
-            <SfButton CssClass="mc-btn-black" @onclick="Logout">@Properties.Resources.LogOut</SfButton>
+            <SfButton CssClass="mc-btn mc-btn-black" @onclick="Logout">@Properties.Resources.LogOut</SfButton>
         </Authorized>
         <NotAuthorized>
-            <SfButton CssClass="mc-btn-black" OnClick="GoToSignUp">@Properties.Resources.SignUp</SfButton>
-            <SfButton CssClass="mc-btn-red" OnClick="GoToLogin">@Properties.Resources.LogIn</SfButton>
-        </NotAuthorized>
+            <SfButton CssClass="mc-btn mc-btn-black" OnClick="GoToSignUp">@Properties.Resources.SignUp</SfButton>
+ed        </NotAuthorized>
     </AuthorizeView>
 </div>
 
@@ -42,7 +41,7 @@
 
     private void GoToSignUp(MouseEventArgs args)
     {
-        Navigation.NavigateTo("/register");
+        Navigation.NavigateTo("/signup");
     }
 
     private void GoToLogin(MouseEventArgs args)

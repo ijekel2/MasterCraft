@@ -1,0 +1,87 @@
+﻿@page "/mentor/createaccount"
+
+<AuthorizeView>
+    <NotAuthorized>
+        <div class="mc-title">
+            <h3>Create your MasterCraft account</h3>
+            <hr />
+        </div>
+        <div class="mc-breadcrumb">
+            @foreach (var crumb in cBreadcrumbs)
+            {
+                string buttonClass = $"e-round {(currentForm >= crumb.Key ? "mc-btn-red" : "mc-btn-black")}";
+                <div class="mc-breadcrumb-item">
+                    <div><label>@crumb.Value</label></div>
+                    <div><SfButton CssClass=@buttonClass @onclick="() => OnCrumbClick(crumb.Key)">@crumb.Key</SfButton></div>
+                </div>
+                if (crumb.Key != cBreadcrumbs.Count)
+                {
+                    <SfIcon IconCss="e-icons e-intermediate-state-2" Size="IconSize.Large" />
+                }
+            }
+        </div>
+
+        @switch (currentForm)
+        {
+            case 1:
+                <label>Form 1</label>
+                break;
+            case 2:
+                <label>Form 2</label>
+                break;
+            case 3:
+                <label>Form 3</label>
+                break;
+            case 4:
+                <label>Form 4</label>
+                break;
+        }
+
+        @if (currentForm < cBreadcrumbs.Count)
+        {
+            <SfButton CssClass="mc-btn mc-btn-black" OnClick="GoToNextForm">Next</SfButton>
+        }
+        else
+        {
+            <SfButton CssClass="mc-btn mc-btn-black" OnClick="OnSubmitClick">Submit</SfButton>
+        }
+    </NotAuthorized>
+</AuthorizeView>
+
+<style>
+    .mc-breadcrumb {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .mc-breadcrumb-item {
+        visibility: visible !important
+    }
+</style>
+
+@code {
+    private Dictionary<int, string> cBreadcrumbs = new()
+    {
+        { 1, "Profile" },
+        { 2, "Offering" },
+        { 3, "Video" },
+        { 4, "Submit" }
+    };
+
+    private int currentForm = 1;
+
+    private void GoToNextForm()
+    {
+        currentForm++;
+    }
+
+    private void OnSubmitClick()
+    {
+
+    }
+
+    private void OnCrumbClick(int crumbNumber)
+    {
+        currentForm = crumbNumber;
+    }
+}
