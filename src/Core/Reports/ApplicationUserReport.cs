@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Core.ReportModels
+namespace MasterCraft.Core.Reports
 {
-    public class Void
+    public class ApplicationUserReport
     {
-        public static readonly Void Value = new();
     }
 }

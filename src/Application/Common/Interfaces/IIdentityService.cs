@@ -1,5 +1,5 @@
 ﻿using MasterCraft.Core.Entities;
-using MasterCraft.Core.ReportModels;
+using MasterCraft.Core.Reports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace MasterCraft.Application.Common.Interfaces
     {
         Task<bool> IsValidUserNameAndPassword(string password, string username);
 
-        Task<AccessTokenReportModel> GenerateToken(string username);
+        Task<AccessTokenReport> GenerateToken(string username);
 
         Task<string> GetUserNameAsync(string userId);
 

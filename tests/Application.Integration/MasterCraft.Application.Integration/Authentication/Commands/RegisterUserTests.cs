@@ -1,6 +1,7 @@
-﻿using MasterCraft.Application.Authentication.Commands.RegisterUser;
+﻿using MasterCraft.Application.Authentication.RegisterUser;
 using MasterCraft.Application.Common.Exceptions;
 using MasterCraft.Core.Entities;
+using MasterCraft.Core.Requests;
 using NUnit.Framework;
 using System.Threading.Tasks;
 using static MasterCraft.Application.Integration.Testing;
@@ -15,7 +16,7 @@ namespace MasterCraft.Application.Integration.Authentication.Commands
         {
             ApplicationUser user = await AuthenticationTestUtility.CreateTestUser();
 
-            var command = new RegisterUserCommand()
+            var command = new RegisterUserRequest()
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -24,7 +25,8 @@ namespace MasterCraft.Application.Integration.Authentication.Commands
                 ConfirmPassword = user.Password
             };
 
-            Assert.ThrowsAsync<McValidationException>(async () => await SendAsync(command));
+
+            Assert.ThrowsAsync<ValidationException>(async () => await SendAsync(command, GetService<RegisterUserHandler>()));
         }
 
         [Test]

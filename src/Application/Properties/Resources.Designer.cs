@@ -70,6 +70,15 @@ namespace MasterCraft.Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to One or more validation failures have occurred..
+        /// </summary>
+        internal static string OneOrMoreValidationFailuresOccurred {
+            get {
+                return ResourceManager.GetString("OneOrMoreValidationFailuresOccurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The username or password was incorrect..
         /// </summary>
         internal static string UsernameOrPasswordIncorrect {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Core.ReportModels
+namespace MasterCraft.Core.Reports
 {
-    public class AccessTokenReportModel
+    public class AccessTokenReport
     {
         public string AccessToken { get; set; }
 

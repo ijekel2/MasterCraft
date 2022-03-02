@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Components;
-using MasterCraft.Core.CommandModels;
-using MasterCraft.Core.ReportModels;
+using MasterCraft.Core.Requests;
+using MasterCraft.Core.Reports;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
@@ -18,7 +18,7 @@ namespace MasterCraft.Client.Authentication
 {
     public partial class Login : ComponentBase
     {
-        private GenerateTokenCommandModel request = new();
+        private GenerateTokenRequest request = new();
         private CustomValidation customValidation;
         private Dictionary<string, object> SubmitAttribute = new Dictionary<string, object>()
         {
@@ -45,8 +45,8 @@ namespace MasterCraft.Client.Authentication
 
             customValidation?.ClearErrors();
 
-            ApiResponse<AccessTokenReportModel> apiResponse =
-                await ApiClient.PostAsync<GenerateTokenCommandModel, AccessTokenReportModel>("token", request);
+            ApiResponse<AccessTokenReport> apiResponse =
+                await ApiClient.PostAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
 
             if (apiResponse.Response is not null)
             {

@@ -120,6 +120,9 @@
   <data name="AccountAlreadyExists" xml:space="preserve">
     <value>An account already exists for this email.</value>
   </data>
+  <data name="OneOrMoreValidationFailuresOccurred" xml:space="preserve">
+    <value>One or more validation failures have occurred.</value>
+  </data>
   <data name="UsernameOrPasswordIncorrect" xml:space="preserve">
     <value>The username or password was incorrect.</value>
   </data>

@@ -1,10 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
-using MediatR;
-using FluentValidation;
-using MasterCraft.Application.Common.Behaviors;
-using MediatR.Pipeline;
 
 namespace MasterCraft.Application
 {
@@ -13,13 +9,30 @@ namespace MasterCraft.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
-            services.AddTransient(typeof(IRequestPreProcessor<>), typeof(LoggingBehavior<>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
+			services.AddRequestHandlers();
+			services.AddTransient<Common.Utilities.Mediator>();
 
             return services;
         }
-    }
+
+		private static void AddRequestHandlers(this IServiceCollection pServices)
+		{
+			//-- Register all IPopCall implementations
+			Type interfaceType = typeof(Common.Interfaces.IRequestHandler<,>);
+
+			Assembly assembly = interfaceType.Assembly;
+
+			foreach (TypeInfo lTypeInfo in assembly.DefinedTypes)
+			{
+				foreach (Type implementedInterface in lTypeInfo.ImplementedInterfaces)
+                {
+					if (implementedInterface.IsGenericType && implementedInterface.GetGenericTypeDefinition() == interfaceType)
+					{
+						var type = lTypeInfo.AsType();
+						pServices.AddTransient(type);
+					}
+				}
+			}
+		}
+	}
 }

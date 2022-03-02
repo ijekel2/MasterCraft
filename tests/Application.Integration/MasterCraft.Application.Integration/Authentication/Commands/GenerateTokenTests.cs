@@ -1,12 +1,9 @@
-﻿using MasterCraft.Application.Authentication.Commands.GenerateToken;
+﻿using MasterCraft.Application.Authentication.GenerateToken;
 using MasterCraft.Application.Common.Exceptions;
 using MasterCraft.Core.Entities;
-using MasterCraft.Core.ReportModels;
+using MasterCraft.Core.Reports;
+using MasterCraft.Core.Requests;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using static MasterCraft.Application.Integration.Testing;
 
@@ -18,13 +15,13 @@ namespace MasterCraft.Application.Integration.Authentication.Commands
         [Test]
         public void ShouldFailIfNoUserNameOrPassword()
         {
-            var command = new GenerateTokenCommand() 
+            var command = new GenerateTokenRequest() 
             { 
                 Username = string.Empty,
                 Password = string.Empty
             };
 
-            Assert.ThrowsAsync<McValidationException>(() => SendAsync(command));
+            Assert.ThrowsAsync<ValidationException>(() => SendAsync(command, GetService<GenerateTokenHandler>()));
         }
 
         [Test]
@@ -32,13 +29,13 @@ namespace MasterCraft.Application.Integration.Authentication.Commands
         {
             ApplicationUser user = await AuthenticationTestUtility.CreateTestUser();
 
-            var command = new GenerateTokenCommand()
+            var command = new GenerateTokenRequest()
             {
                 Username = user.UserName,
                 Password = "password"
             };
 
-            AccessTokenReportModel lToken = await SendAsync(command);
+            AccessTokenReport lToken = await SendAsync(command, GetService<GenerateTokenHandler>());
 
             Assert.IsNotEmpty(lToken.AccessToken);
             Assert.AreEqual(user.UserName, lToken.Username);

@@ -1,9 +1,6 @@
-using FluentValidation.AspNetCore;
 using MasterCraft.Application;
-using MasterCraft.Application.Common.Behaviors;
 using MasterCraft.Application.Common.Interfaces;
 using MasterCraft.Infrastructure;
-using MasterCraft.Infrastructure.Persistence;
 using MasterCraft.Server.Filters;
 using MasterCraft.Server.Services;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MasterCraft.Application.Authentication.Commands.GenerateToken;
 
 namespace MasterCraft.Server
 {
@@ -33,15 +29,10 @@ namespace MasterCraft.Server
             services.AddHttpContextAccessor();
 
             services
-                .AddControllers(options =>options.Filters.Add<ApiExceptionFilterAttribute>())
+                .AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>())
                 .ConfigureApiBehaviorOptions(options =>
                 {
                     options.SuppressModelStateInvalidFilter = true;
-                })
-                .AddFluentValidation(x => 
-                {
-                    x.AutomaticValidationEnabled = false;
-                    x.RegisterValidatorsFromAssemblyContaining<GenerateTokenCommandValidator>();
                 });
 
             services.AddRazorPages();

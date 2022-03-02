@@ -2,7 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using MasterCraft.Application.Common.Interfaces;
 using MasterCraft.Core.Entities;
-using MasterCraft.Core.ReportModels;
+using MasterCraft.Core.Reports;
 using MasterCraft.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,13 +22,13 @@ namespace MasterCraft.Infrastructure.Identity
         private readonly UserManager<ExtendedIdentityUser> cUserManager;
         private readonly ApplicationDbContext cDbContext;
 
-        public IdentityService(UserManager<ExtendedIdentityUser> userManager, ApplicationDbContext dbContext, IMapper mapper)
+        public IdentityService(UserManager<ExtendedIdentityUser> userManager, ApplicationDbContext dbContext)
         {
             cUserManager = userManager;
             cDbContext = dbContext;
         }
 
-        public async Task<AccessTokenReportModel> GenerateToken(string username)
+        public async Task<AccessTokenReport> GenerateToken(string username)
         {
             var user = await cUserManager.FindByEmailAsync(username);
 
@@ -58,7 +58,7 @@ namespace MasterCraft.Infrastructure.Identity
                         SecurityAlgorithms.HmacSha256)),
                 new JwtPayload(claims));
 
-            AccessTokenReportModel output = new()
+            AccessTokenReport output = new()
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
                 Username = username

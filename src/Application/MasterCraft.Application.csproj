@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <nullable>enable</nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +29,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Offerings\" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Components;
-using MasterCraft.Core.CommandModels;
-using MasterCraft.Core.ReportModels;
+using MasterCraft.Core.Requests;
+using MasterCraft.Core.Reports;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
@@ -12,13 +12,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Void = MasterCraft.Core.ReportModels.Void;
+using Empty = MasterCraft.Core.Reports.Empty;
 
 namespace MasterCraft.Client.Authentication
 {
     public partial class Register : ComponentBase
     {
-        private RegisterUserCommandModel command = new();
+        private RegisterUserRequest command = new();
         private CustomValidation customValidation;
         private Dictionary<string, object> SubmitAttribute = new Dictionary<string, object>()
         {
@@ -35,8 +35,8 @@ namespace MasterCraft.Client.Authentication
         {
             customValidation?.ClearErrors();
 
-            ApiResponse<Void> apiResponse =
-                await ApiClient.PostAsync<RegisterUserCommandModel, Void>("register", command);
+            ApiResponse<Empty> apiResponse =
+                await ApiClient.PostAsync<RegisterUserRequest, Empty>("register", command);
 
             if (apiResponse.Response is not null)
             {

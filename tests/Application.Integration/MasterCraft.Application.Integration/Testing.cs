@@ -2,7 +2,6 @@
 using MasterCraft.Application.Common.Interfaces;
 using MasterCraft.Core.Entities;
 using MasterCraft.Infrastructure.Persistence;
-using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,9 +21,10 @@ namespace MasterCraft.Application.Integration
     [SetUpFixture]
     public class Testing
     {
-        private static IConfigurationRoot _configuration = null!;
-        private static IServiceScopeFactory _scopeFactory = null!;
-        private static string? _currentUserId;
+        private static IConfigurationRoot cConfiguration = null!;
+        private static IServiceScopeFactory cScopeFactory = null!;
+        private static IServiceProvider cServiceProvider = null!;
+        private static string cCurrentUserId;
 
         [OneTimeSetUp]
         public void RunBeforeAnyTests()
@@ -34,9 +34,9 @@ namespace MasterCraft.Application.Integration
                 .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables();
 
-            _configuration = builder.Build();
+            cConfiguration = builder.Build();
 
-            var startup = new Startup(_configuration);
+            var startup = new Startup(cConfiguration);
 
             var services = new ServiceCollection();
 
@@ -60,27 +60,31 @@ namespace MasterCraft.Application.Integration
 
             // Register testing version
             services.AddTransient(provider =>
-                Mock.Of<ICurrentUserService>(s => s.UserId == _currentUserId));
+                Mock.Of<ICurrentUserService>(s => s.UserId == cCurrentUserId));
 
-            _scopeFactory = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>();
+            cServiceProvider = services.BuildServiceProvider();
+            cScopeFactory = cServiceProvider.GetRequiredService<IServiceScopeFactory>();
         }
 
         private static async Task EnsureDatabase()
         {
-            using var scope = _scopeFactory.CreateScope();
+            using var scope = cScopeFactory.CreateScope();
 
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
             await context.Database.MigrateAsync();
         }
 
-        public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
+        public static TService GetService<TService>()
         {
-            using var scope = _scopeFactory.CreateScope();
+            return cServiceProvider.GetRequiredService<TService>();
+        }
 
-            var mediator = scope.ServiceProvider.GetRequiredService<ISender>();
+        public static async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, IRequestHandler<TRequest, TResponse> handler)
+        {
+            var mediator = cServiceProvider.GetRequiredService<Common.Utilities.Mediator>();
 
-            return await mediator.Send(request);
+            return await mediator.Send(request, handler);
         }
 
         public static async Task<string> RunAsDefaultUserAsync()
@@ -95,7 +99,7 @@ namespace MasterCraft.Application.Integration
 
         public static async Task<string> RunAsUserAsync(string userName, string password, string[] roles)
         {
-            using var scope = _scopeFactory.CreateScope();
+            using var scope = cScopeFactory.CreateScope();
 
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
@@ -117,9 +121,9 @@ namespace MasterCraft.Application.Integration
 
             if (result.Succeeded)
             {
-                _currentUserId = user.Id;
+                cCurrentUserId = user.Id;
 
-                return _currentUserId;
+                return cCurrentUserId;
             }
 
             var errors = string.Join(Environment.NewLine, result.Errors);
@@ -127,13 +131,14 @@ namespace MasterCraft.Application.Integration
             throw new Exception($"Unable to create {userName}.{Environment.NewLine}{errors}");
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<Pending>")]
         public static async Task TearDown()
         {
-            using var scope = _scopeFactory.CreateScope();
+            using var scope = cScopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             await context.Database.EnsureDeletedAsync();
             context.GetDependencies().StateManager.ResetState();
-            _currentUserId = null;
+            cCurrentUserId = null;
         }
 
         public static async Task Setup()
@@ -141,10 +146,10 @@ namespace MasterCraft.Application.Integration
             await EnsureDatabase();
         }
 
-        public static async Task<TEntity?> FindAsync<TEntity>(params object[] keyValues)
+        public static async Task<TEntity> FindAsync<TEntity>(params object[] keyValues)
             where TEntity : class
         {
-            using var scope = _scopeFactory.CreateScope();
+            using var scope = cScopeFactory.CreateScope();
 
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -154,7 +159,7 @@ namespace MasterCraft.Application.Integration
         public static async Task AddAsync<TEntity>(TEntity entity)
             where TEntity : class
         {
-            using var scope = _scopeFactory.CreateScope();
+            using var scope = cScopeFactory.CreateScope();
 
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -165,7 +170,7 @@ namespace MasterCraft.Application.Integration
 
         public static async Task<int> CountAsync<TEntity>() where TEntity : class
         {
-            using var scope = _scopeFactory.CreateScope();
+            using var scope = cScopeFactory.CreateScope();
 
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 

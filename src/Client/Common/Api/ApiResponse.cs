@@ -11,5 +11,7 @@ namespace MasterCraft.Client.Common.Api
         public TResponse Response { get; set; }
 
         public ProblemDetails ErrorDetails { get; set; }
+
+        public bool Success => Response is not null;
     }
 }

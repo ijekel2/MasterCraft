@@ -1,0 +1,18 @@
+﻿<SubmissionForm TRequest=MentorProfile TResponse=Empty Request="@Profile" OnValidSubmit="OnSubmit" FormTitle="Profile" ButtonText="Next" >
+    <ChildContent>
+        <div id="firstname">
+            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel link" @bind-Value="Profile.ChannelName" />
+        </div>
+        <div id="lastname">
+            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel name" @bind-Value="Profile.ChannelLink" />
+        </div>
+        <div>
+            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Personal title" @bind-Value="Profile.PersonalTitle" />
+        </div>
+        <div>
+            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Custom profile ID" @bind-Value="Profile.ProfileCustomUri" />
+        </div>
+    </ChildContent>
+</SubmissionForm>
+
+

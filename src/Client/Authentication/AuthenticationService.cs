@@ -1,7 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
-using MasterCraft.Core.CommandModels;
-using MasterCraft.Core.ReportModels;
+using MasterCraft.Core.Requests;
+using MasterCraft.Core.Reports;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Void = MasterCraft.Core.ReportModels.Void;
+using Empty = MasterCraft.Core.Reports.Empty;
 
 namespace MasterCraft.Client.Authentication
 {
@@ -27,10 +27,10 @@ namespace MasterCraft.Client.Authentication
             cApiClient = apiClient;
         }
 
-        public async Task<ApiResponse<AccessTokenReportModel>> Login(GenerateTokenCommandModel generateTokenCommand)
+        public async Task<ApiResponse<AccessTokenReport>> Login(GenerateTokenRequest generateTokenCommand)
         {
-            ApiResponse<AccessTokenReportModel> apiResponse = 
-                await cApiClient.PostAsync<GenerateTokenCommandModel, AccessTokenReportModel>("token", generateTokenCommand);
+            ApiResponse<AccessTokenReport> apiResponse = 
+                await cApiClient.PostAsync<GenerateTokenRequest, AccessTokenReport>("token", generateTokenCommand);
             
             if (apiResponse.Response is not null)
             {
@@ -46,9 +46,9 @@ namespace MasterCraft.Client.Authentication
             cAuthStateProvider.NotifyUserLogout();
         }
 
-        public async Task<ApiResponse<Void>> Register(RegisterUserCommandModel registerUserCommand)
+        public async Task<ApiResponse<Empty>> Register(RegisterUserRequest registerUserCommand)
         {
-            return await cApiClient.PostAsync<RegisterUserCommandModel, Void>("token", registerUserCommand);
+            return await cApiClient.PostAsync<RegisterUserRequest, Empty>("token", registerUserCommand);
         }
     }
 }

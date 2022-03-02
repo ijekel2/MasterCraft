@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Core.CommandModels
+namespace MasterCraft.Core.Requests
 {
-    public class GenerateTokenCommandModel
+    public class GenerateTokenRequest
     {
         [Required]
         public string Username { get; set; }

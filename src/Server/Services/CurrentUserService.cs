@@ -14,7 +14,7 @@ namespace MasterCraft.Server.Services
             cHttpContextAccessor = httpContextAccessor;
         }
 
-        public string UserId => cHttpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+        public string UserId => cHttpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
     }
 }
 

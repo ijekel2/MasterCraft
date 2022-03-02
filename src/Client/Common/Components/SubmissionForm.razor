@@ -1,0 +1,30 @@
+﻿@typeparam TRequest
+@typeparam TResponse
+
+<EditForm Model="@Request" OnValidSubmit="OnSubmitClick">
+    <div class="mc-edit-form">
+        <h3>@FormTitle</h3>
+        <DataAnnotationsValidator />
+        <CustomValidation @ref="customValidation" />
+        <ValidationSummary />
+        <div class="mc-input-group">
+            @ChildContent
+        </div>
+        <SfProgressButton HtmlAttributes=@SubmitAttribute Content="@ButtonText" EnableProgress="true" CssClass="mc-btn mc-btn-black">
+            <ProgressButtonAnimationSettings Effect="Syncfusion.Blazor.SplitButtons.AnimationEffect.ZoomIn"></ProgressButtonAnimationSettings>
+            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+        </SfProgressButton>
+    </div>
+</EditForm>
+
+<style>
+    .mc-edit-form {
+        width: 300px;
+    }
+
+    .mc-edit-form > .e-btn {
+        margin: auto;
+        margin-top: 30px;
+    }
+</style>
+

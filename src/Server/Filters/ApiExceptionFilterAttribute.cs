@@ -16,7 +16,7 @@ namespace MasterCraft.Server.Filters
             // Register known exception types and handlers.
             cExceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
-                { typeof(McValidationException), HandleValidationException },
+                { typeof(ValidationException), HandleValidationException },
                 { typeof(NotFoundException), HandleNotFoundException },
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
@@ -50,7 +50,7 @@ namespace MasterCraft.Server.Filters
 
         private void HandleValidationException(ExceptionContext context)
         {
-            var exception = (McValidationException)context.Exception;
+            var exception = (ValidationException)context.Exception;
 
             var details = new ValidationProblemDetails(exception.Errors)
             {

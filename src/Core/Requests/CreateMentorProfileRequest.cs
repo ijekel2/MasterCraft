@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Core.ReportModels
+namespace MasterCraft.Core.Requests
 {
-    public class ApplicationUserReportModel
+    public class CreateMentorProfileRequest
     {
+        public string PersonalTitle { get; set; }
     }
 }
