@@ -16,6 +16,106 @@ namespace MasterCraft.Infrastructure.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.13");
 
+            modelBuilder.Entity("MasterCraft.Core.Entities.MentorProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ChannelLink")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ChannelName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PayPalAccountId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PersonalTitle")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProfileCustomUri")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProfileImageUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WelcomeVideoUrl")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MentorProfiles");
+                });
+
+            modelBuilder.Entity("MasterCraft.Core.Entities.Offering", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DeliveryDays")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("FeedbackMinutes")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SampleQuestion1")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SampleQuestion2")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SampleQuestion3")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SampleQuestion4")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SampleQuestion5")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Offerings");
+                });
+
             modelBuilder.Entity("MasterCraft.Infrastructure.Identity.ExtendedIdentityUser", b =>
                 {
                     b.Property<string>("Id")

@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Components;
-using MasterCraft.Core.Requests;
-using MasterCraft.Core.Reports;
+using MasterCraft.Shared.Requests;
+using MasterCraft.Shared.Reports;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
@@ -19,11 +19,6 @@ namespace MasterCraft.Client.Authentication
     public partial class Login : ComponentBase
     {
         private GenerateTokenRequest request = new();
-        private CustomValidation customValidation;
-        private Dictionary<string, object> SubmitAttribute = new Dictionary<string, object>()
-        {
-            {"type","submit" }
-        };
 
         [Inject]
         ApiClient ApiClient { get; set; }
@@ -37,14 +32,8 @@ namespace MasterCraft.Client.Authentication
         [Inject]
         ILocalStorageService LocalStorage { get; set; }
 
-        private bool EnableProgress {get; set; }
-
-        private async Task OnLoginClick()
+        private async Task<ApiResponse<AccessTokenReport>> OnLoginClick()
         {
-            EnableProgress = true;
-
-            customValidation?.ClearErrors();
-
             ApiResponse<AccessTokenReport> apiResponse =
                 await ApiClient.PostAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
 
@@ -55,12 +44,8 @@ namespace MasterCraft.Client.Authentication
                 (AuthStateProvider as AuthStateProvider).NotifyUserAuthentication(apiResponse.Response.AccessToken);
                 Navigation.NavigateTo("/portal");
             }
-            else
-            {
-                customValidation?.DisplayErrors(apiResponse.ErrorDetails);
-            }
 
-            EnableProgress = false;
+            return apiResponse;
         }
     }
 }

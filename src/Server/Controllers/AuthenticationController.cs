@@ -1,19 +1,9 @@
-﻿using MasterCraft.Application.Authentication.GenerateToken;
-using MasterCraft.Application.Common.Interfaces;
-using Microsoft.AspNetCore.Identity;
+﻿using MasterCraft.Domain.Authentication;
+using MasterCraft.Shared.Entities;
+using MasterCraft.Shared.Reports;
+using MasterCraft.Shared.Requests;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using MasterCraft.Core.Reports;
-using MasterCraft.Application.Authentication.RegisterUser;
-using MasterCraft.Core.Requests;
-using MasterCraft.Core.Entities;
 
 namespace MasterCraft.Server.Controllers
 {
@@ -21,16 +11,16 @@ namespace MasterCraft.Server.Controllers
     {
         [Route("/api/token")]
         [HttpPost]
-        public async Task<ActionResult<AccessTokenReport>> GenerateToken(GenerateTokenRequest request, [FromServices] GenerateTokenHandler handler)
+        public async Task<ActionResult<AccessTokenReport>> GenerateToken(GenerateTokenRequest request, [FromServices] GenerateToken handler)
         {
-            return await MyMediator.Send(request, handler);
+            return await handler.HandleRequest(request);
         }
 
         [Route("/api/register")]
         [HttpPost]
-        public async Task<ActionResult<ApplicationUser>> RegisterUser(RegisterUserRequest request, [FromServices] RegisterUserHandler handler)
+        public async Task<ActionResult<ApplicationUser>> RegisterUser(RegisterUserRequest request, [FromServices] RegisterUser handler)
         {
-            return await MyMediator.Send(request, handler);
+            return await handler.HandleRequest(request);
         }
     }
 }

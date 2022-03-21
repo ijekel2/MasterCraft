@@ -1,6 +1,7 @@
-using MasterCraft.Application;
-using MasterCraft.Application.Common.Interfaces;
+using MasterCraft.Domain;
+using MasterCraft.Domain.Common.Interfaces;
 using MasterCraft.Infrastructure;
+using MasterCraft.Infrastructure.Common.Extensions;
 using MasterCraft.Server.Filters;
 using MasterCraft.Server.Services;
 using Microsoft.AspNetCore.Builder;
@@ -24,7 +25,7 @@ namespace MasterCraft.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplication();
+            services.AddDomain();
             services.AddInfrastructure(Configuration);
             services.AddHttpContextAccessor();
 
@@ -43,7 +44,7 @@ namespace MasterCraft.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsTest())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();

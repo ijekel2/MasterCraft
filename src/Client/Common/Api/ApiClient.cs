@@ -49,19 +49,26 @@ namespace MasterCraft.Client.Common.Api
                         Response = JsonSerializer.Deserialize<TResponse>(lResponseBody, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })
                     };
                 case HttpStatusCode.BadRequest:
+                default:
                     JsonDocument lJson = JsonDocument.Parse(lResponseBody);
 
-                    Dictionary<string, string[]> errors = JsonSerializer.Deserialize<Dictionary<string, string[]>>(lJson.RootElement.GetProperty("errors").ToString());
-                    return new ApiResponse<TResponse>()
+                    try
                     {
-                        ErrorDetails = new ValidationProblemDetails(errors)
+                        Dictionary<string, string[]> errors = JsonSerializer.Deserialize<Dictionary<string, string[]>>(lJson.RootElement.GetProperty("errors").ToString());
+                        
+                        return new ApiResponse<TResponse>()
                         {
-                            Title = lJson.RootElement.GetProperty("title").GetString(),
-                        }
-                    };
-                default:
-                    throw new HttpRequestException(
-                        $"Validation failed. Status Code: {response.StatusCode} ({(int)response.StatusCode})");
+                            ErrorDetails = new ValidationProblemDetails(errors)
+                            {
+                                Title = lJson.RootElement.GetProperty("title").GetString(),
+                            }
+                        };
+                    }
+                    catch
+                    {
+                        throw new HttpRequestException(
+                            $"Validation failed. Status Code: {response.StatusCode} ({(int)response.StatusCode})");
+                    }
             }
         }
 

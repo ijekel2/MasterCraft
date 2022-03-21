@@ -1,7 +1,7 @@
 ﻿using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Components;
-using MasterCraft.Core.Entities;
-using MasterCraft.Core.Reports;
+using MasterCraft.Shared.Entities;
+using MasterCraft.Shared.Reports;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;

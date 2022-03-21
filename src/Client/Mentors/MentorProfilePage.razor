@@ -1,6 +1,7 @@
-﻿@page "/mentor/profile";
+﻿@page "/{ProfileUri}";
 <h2>Mentor Profile</h2>
 
 @code {
-
+    [Parameter]
+    public string ProfileUri { get; set; }
 }

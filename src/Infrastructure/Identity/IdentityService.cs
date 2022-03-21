@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using MasterCraft.Application.Common.Interfaces;
-using MasterCraft.Core.Entities;
-using MasterCraft.Core.Reports;
+using MasterCraft.Domain.Common.Interfaces;
+using MasterCraft.Shared.Entities;
+using MasterCraft.Shared.Reports;
 using MasterCraft.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -103,7 +103,7 @@ namespace MasterCraft.Infrastructure.Identity
                     FirstName = identityUser.FirstName,
                     LastName = identityUser.LastName,
                     Email = identityUser.Email,
-                    UserName = identityUser.UserName,
+                    Username = identityUser.UserName,
                     Password = identityUser.PasswordHash
                 };
             }

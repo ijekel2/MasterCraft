@@ -1,7 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
-using MasterCraft.Core.Requests;
-using MasterCraft.Core.Reports;
+using MasterCraft.Shared.Requests;
+using MasterCraft.Shared.Reports;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Empty = MasterCraft.Core.Reports.Empty;
 
 namespace MasterCraft.Client.Authentication
 {

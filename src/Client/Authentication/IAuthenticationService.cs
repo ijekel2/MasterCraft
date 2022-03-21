@@ -1,6 +1,6 @@
 ﻿using MasterCraft.Client.Common.Api;
-using MasterCraft.Core.Requests;
-using MasterCraft.Core.Reports;
+using MasterCraft.Shared.Requests;
+using MasterCraft.Shared.Reports;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Client.Authentication

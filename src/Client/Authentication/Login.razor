@@ -1,28 +1,18 @@
 ﻿@page "/login"
  
-<EditForm Model="request" OnValidSubmit="OnLoginClick">
-    <div class="mc-edit-form">
-        <h3>@Properties.Resources.LogIn</h3>
-        <DataAnnotationsValidator />
-        <CustomValidation @ref="customValidation" />
-        <ValidationSummary />
-
-        <div class="mc-input-group">
-            <div>
-                <SfTextBox Type="InputType.Email" CssClass="mc-input" Placeholder="@Properties.Resources.Email" @bind-Value="request.Username" />
-                @*<ValidationMessage For="@(() => request.Username)" />*@
-            </div>
-            <div>
-                <SfTextBox Type="InputType.Password" CssClass="mc-input" Placeholder="@Properties.Resources.Password" @bind-Value="request.Password" />
-                @*<ValidationMessage For="@(() => request.Password)" />*@
-            </div>
+<SubmissionForm TRequest=GenerateTokenRequest TResponse=AccessTokenReport Request="@request" 
+                OnValidSubmit="OnLoginClick" FormTitle="@Properties.Resources.LogIn" ButtonText="@Properties.Resources.LogIn">
+    <ChildContent>
+        <div>
+            <SfTextBox Type="InputType.Email" CssClass="mc-input" Placeholder="@Properties.Resources.Email" @bind-Value="request.Username" />
+            <ValidationMessage For="@(() => request.Username)" />
         </div>
-        <SfProgressButton HtmlAttributes=@SubmitAttribute Content="@Properties.Resources.LogIn" EnableProgress="@EnableProgress" CssClass="mc-btn mc-btn-red">
-            <ProgressButtonAnimationSettings Effect="Syncfusion.Blazor.SplitButtons.AnimationEffect.ZoomIn"></ProgressButtonAnimationSettings>
-            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
-        </SfProgressButton>
-    </div>
-</EditForm>
+        <div>
+            <SfTextBox Type="InputType.Password" CssClass="mc-input" Placeholder="@Properties.Resources.Password" @bind-Value="request.Password" />
+            <ValidationMessage For="@(() => request.Password)" />
+        </div>
+    </ChildContent>
+</SubmissionForm>
 
 <style>
     .mc-edit-form {

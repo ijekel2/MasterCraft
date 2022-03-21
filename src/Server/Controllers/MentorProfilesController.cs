@@ -1,29 +1,54 @@
-﻿using MasterCraft.Application.Common.Interfaces;
-using MasterCraft.Application.MentorProfiles.CreateMentorProfile;
-using MasterCraft.Core.Entities;
-using MasterCraft.Core.Requests;
+﻿using MasterCraft.Domain.Common.Interfaces;
+using MasterCraft.Domain.MentorProfiles;
+using MasterCraft.Server.Extensions;
+using MasterCraft.Shared.Entities;
+using MasterCraft.Shared.Reports;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Empty = MasterCraft.Core.Reports.Empty;
 
 namespace MasterCraft.Server.Controllers
 {
     public class MentorProfilesController : ApiBaseController
     {
         [HttpPost]
-        public async Task<ActionResult<Empty>> Create(MentorProfile profile, [FromServices] CreateMentorProfileHandler handler)
+        public async Task<ActionResult<int>> Create([FromForm] MentorProfile profile, [FromServices] CreateMentorProfile handler, 
+            [FromServices] SetProfileImage setImageHandler)
         {
-            return await MyMediator.Send(profile, handler);
+            int id = await handler.HandleRequest(profile);
+
+            if (HttpContext.Request.Form.Files.Any())
+            {
+                SetProfileImageRequest setImageRequest = new()
+                {
+                    Image = await HttpContext.Request.Form.Files.First().ToByteArray(),
+                    ProfileId = id
+                };
+
+                await setImageHandler.HandleRequest(setImageRequest);
+            }
+
+            return id;
         }
 
         [HttpPost]
-        public async Task<ActionResult<Empty>> Update(MentorProfile profile, [FromServices] CreateMentorProfileHandler handler)
+        public async Task<ActionResult<Empty>> UploadVideo(int id, [FromServices] SetProfileVideo handler)
         {
-            return await MyMediator.Send(profile, handler);
+            if (HttpContext.Request.Form.Files.Any())
+            {
+                SetProfileVideoRequest setVideoRequest = new()
+                {
+                    Video = await HttpContext.Request.Form.Files.First().ToByteArray(),
+                    ProfileId = id
+                };
+
+                return await handler.HandleRequest(setVideoRequest);
+            }
+
+            return BadRequest();
         }
     }
 }

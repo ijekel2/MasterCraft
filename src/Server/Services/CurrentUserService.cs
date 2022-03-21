@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
-
-using MasterCraft.Application.Common.Interfaces;
+using MasterCraft.Domain.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace MasterCraft.Server.Services

@@ -6,10 +6,17 @@
         <h3>@FormTitle</h3>
         <DataAnnotationsValidator />
         <CustomValidation @ref="customValidation" />
-        <ValidationSummary />
+
+        @if (cShowValidationSummary)
+        {
+            <ValidationSummary />
+
+        }
+
         <div class="mc-input-group">
             @ChildContent
         </div>
+
         <SfProgressButton HtmlAttributes=@SubmitAttribute Content="@ButtonText" EnableProgress="true" CssClass="mc-btn mc-btn-black">
             <ProgressButtonAnimationSettings Effect="Syncfusion.Blazor.SplitButtons.AnimationEffect.ZoomIn"></ProgressButtonAnimationSettings>
             <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
@@ -19,7 +26,13 @@
 
 <style>
     .mc-edit-form {
-        width: 300px;
+        width: 400px;
+    }
+
+    .mc-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 
     .mc-edit-form > .e-btn {

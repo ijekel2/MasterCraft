@@ -10,6 +10,7 @@ namespace MasterCraft.Client.Common.Components
 {
     public partial class SubmissionForm<TRequest, TResponse> : ComponentBase
     {
+        private bool cShowValidationSummary = false;
         private CustomValidation customValidation = new();
         private Dictionary<string, object> SubmitAttribute = new Dictionary<string, object>()
         {
@@ -40,6 +41,7 @@ namespace MasterCraft.Client.Common.Components
             if (apiResponse is null)
             {
                 customValidation?.DisplayErrors(apiResponse.ErrorDetails);
+                cShowValidationSummary = true;
             }
         }
     }
