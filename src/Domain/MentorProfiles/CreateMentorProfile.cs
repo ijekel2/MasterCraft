@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.MentorProfiles
 {
-    public class CreateMentorProfile : RequestHandler<MentorProfile, int>
+    public class CreateMentorProfile : RequestHandler<CreateMentorProfileRequest, MentorProfile>
     {
         readonly IDbContext cDbContext;
 
@@ -20,16 +20,18 @@ namespace MasterCraft.Domain.MentorProfiles
             cDbContext = dbContext;
         }
 
-        internal override async Task Validate(MentorProfile profile, Validator validator, CancellationToken token = new())
+        internal override async Task Validate(CreateMentorProfileRequest profile, Validator validator, CancellationToken token = new())
         {
             await Task.CompletedTask;
         }
 
-        internal override async Task<int> Handle(MentorProfile profile, CancellationToken token = new())
+        internal override async Task<MentorProfile> Handle(CreateMentorProfileRequest request, CancellationToken token = new())
         {
+            MentorProfile profile = Map<CreateMentorProfileRequest, MentorProfile>(request);
+
             await cDbContext.AddAsync(profile);
             await cDbContext.SaveChangesAsync();
-            return profile.Id;
+            return profile;
         }
     }
 }

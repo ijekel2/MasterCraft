@@ -19,7 +19,7 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
                 Password = string.Empty
             };
 
-            TestResponse<AccessTokenReport> response = await TestApi.PostAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
+            TestResponse<AccessTokenReport> response = await TestApi.PostJsonAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
             Assert.IsFalse(response.Success);
         }
 
@@ -32,7 +32,7 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
                 Password = TestMentor.Password
             };
 
-            TestResponse<AccessTokenReport> response = await TestApi.PostAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
+            TestResponse<AccessTokenReport> response = await TestApi.PostJsonAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
             Assert.IsTrue(response.Success);
             Assert.IsNotEmpty(response.Response.AccessToken);
             Assert.AreEqual(TestMentor.Username, response.Response.Username);

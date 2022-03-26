@@ -25,7 +25,7 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
                 ConfirmPassword = TestMentor.Password
             };
 
-            TestResponse<ApplicationUser> response = await TestApi.PostAsync<RegisterUserRequest, ApplicationUser>("register", request);
+            TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserRequest, ApplicationUser>("register", request);
             Assert.IsFalse(response.Success);
         }
 
@@ -41,7 +41,7 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
                 ConfirmPassword = TestMentor.Password
             };
 
-            TestResponse<ApplicationUser> response = await TestApi.PostAsync<RegisterUserRequest, ApplicationUser>("register", request);
+            TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserRequest, ApplicationUser>("register", request);
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
         }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -17,10 +18,34 @@ namespace MasterCraft.Server.IntegrationTests.Api
 {
     public class TestApi
     {
-        public static async Task<TestResponse<TResponse>> PostAsync<TRequest, TResponse>(string url, TRequest requestBody)
+        public static async Task<TestResponse<TResponse>> GetAsync<TResponse>(string url)
+        {
+            HttpResponseMessage response = await TestBase.Client.GetAsync($"/api/{url.TrimStart('/')}");
+
+            return await ParseResponse<TResponse>(response);
+        }
+
+        public static async Task<TestResponse<TResponse>> PostJsonAsync<TRequest, TResponse>(string url, TRequest requestBody)
         {
             HttpContent content = new StringContent(JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json");
             
+            HttpResponseMessage response = await TestBase.Client.PostAsync($"/api/{url.TrimStart('/')}", content);
+
+            return await ParseResponse<TResponse>(response);
+        }
+
+        public static async Task<TestResponse<TResponse>> PostFormAsync<TRequest, TResponse>(string url, TRequest requestBody, List<string> files)
+        {
+            MultipartFormDataContent content = new()
+            {
+                { new StringContent(JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json") }
+            };
+
+            foreach (string file in files)
+            {
+                content.Add(new StreamContent(File.OpenRead(file)), "file", Path.GetFileName(file));
+            }
+
             HttpResponseMessage response = await TestBase.Client.PostAsync($"/api/{url.TrimStart('/')}", content);
 
             return await ParseResponse<TResponse>(response);
@@ -34,7 +59,7 @@ namespace MasterCraft.Server.IntegrationTests.Api
                 Password = TestMentor.Password
             };
 
-            var response = await PostAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
+            var response = await PostJsonAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
 
             if (response.Success)
             {
@@ -46,18 +71,20 @@ namespace MasterCraft.Server.IntegrationTests.Api
 
         private static async Task<TestResponse<TResponse>> ParseResponse<TResponse>(HttpResponseMessage response)
         {
-            string lResponseBody = await response.Content.ReadAsStringAsync();
+            string responseBody = await response.Content.ReadAsStringAsync();
 
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
-                    return new TestResponse<TResponse>()
+                    TestResponse<TResponse> testResponse = new();
+                    if (!string.IsNullOrEmpty(responseBody))
                     {
-                        Response = JsonSerializer.Deserialize<TResponse>(lResponseBody, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })
-                    };
+                        testResponse.Response = JsonSerializer.Deserialize<TResponse>(responseBody, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                    }
+                    return testResponse;
                 case HttpStatusCode.BadRequest:
                 default:
-                    JsonDocument lJson = JsonDocument.Parse(lResponseBody);
+                    JsonDocument lJson = JsonDocument.Parse(responseBody);
 
                     try
                     {

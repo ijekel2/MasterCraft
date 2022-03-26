@@ -18,5 +18,15 @@ namespace MasterCraft.Server.IntegrationTests
             Password = "mentor!123",
         };
 
+        public static readonly MentorProfile TestMentorProfile = new()
+        {
+            ChannelName = "The Testy Tester",
+            ChannelLink = "Test Link",
+            PersonalTitle = "Tester",
+            ProfileCustomUri = "test-mentor"
+        };
+
+        public static readonly string TestImage = "Content\\TestPic.png";
+
     }
 }

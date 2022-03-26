@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +9,10 @@ namespace MasterCraft.Domain.Common.Interfaces
 {
     public interface IFileStorage
     {
-        Task<Uri> SaveFileAsync(byte[] file);
+        Task<Uri> SaveFileAsync(Stream input);
 
-        Task<byte[]> LoadFileAsync(Uri uri);
+        FileStream OpenRead(Uri uri);
+
+        FileStream OpenRead(string uri);
     }
 }

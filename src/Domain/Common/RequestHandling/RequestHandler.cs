@@ -1,4 +1,5 @@
-﻿using MasterCraft.Domain.Common.Exceptions;
+﻿using AutoMapper;
+using MasterCraft.Domain.Common.Exceptions;
 using MasterCraft.Domain.Common.Interfaces;
 using MasterCraft.Domain.Common.Utilities;
 using Microsoft.Extensions.Logging;
@@ -62,6 +63,13 @@ namespace MasterCraft.Domain.Common.RequestHandling
         internal abstract Task Validate(TRequest request, Validator validator, CancellationToken pToken = new());
 
         internal abstract Task<TResponse> Handle(TRequest request, CancellationToken pToken = new());
+
+        protected TDestination Map<TSource, TDestination>(TSource source)
+        {
+            var mapperConfig = new MapperConfiguration(config => config.CreateMap<TSource, TDestination>());
+            TDestination destination = mapperConfig.CreateMapper().Map<TDestination>(source);
+            return destination;
+        }
 
         private void LogRequest(TRequest request, string userId, string userName)
         {

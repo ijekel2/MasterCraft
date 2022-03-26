@@ -20,4 +20,13 @@
     <ProjectReference Include="..\..\src\Server\MasterCraft.Server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Content\TestPic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\TestVid.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

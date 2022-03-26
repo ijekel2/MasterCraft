@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using MasterCraft.Domain.Common.Interfaces;
 using System.Reflection;
 using System.IO;
+using MasterCraft.Infrastructure.FileStorage;
 
 namespace MasterCraft.Infrastructure
 {
@@ -65,6 +66,7 @@ namespace MasterCraft.Infrastructure
             });
 
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IFileStorage, LocalFileStorage>();
             services.AddScoped<IDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
             return services;
         }
