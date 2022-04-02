@@ -1,7 +1,7 @@
-﻿using MasterCraft.Domain.Authentication;
-using MasterCraft.Shared.Entities;
-using MasterCraft.Shared.Reports;
-using MasterCraft.Shared.Requests;
+﻿using MasterCraft.Domain.Services.Authentication;
+using MasterCraft.Domain.Entities;
+using MasterCraft.Shared.ViewModels;
+using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -11,16 +11,16 @@ namespace MasterCraft.Server.Controllers
     {
         [Route("/api/token")]
         [HttpPost]
-        public async Task<ActionResult<AccessTokenReport>> GenerateToken(GenerateTokenRequest request, [FromServices] GenerateToken handler)
+        public async Task<ActionResult<AccessTokenViewModel>> GenerateToken(GenerateTokenViewModel request, [FromServices] GenerateTokenService service)
         {
-            return await handler.HandleRequest(request);
+            return await service.HandleRequest(request);
         }
 
         [Route("/api/register")]
         [HttpPost]
-        public async Task<ActionResult<ApplicationUser>> RegisterUser(RegisterUserRequest request, [FromServices] RegisterUser handler)
+        public async Task<ActionResult<ApplicationUser>> RegisterUser(RegisterUserViewModel request, [FromServices] RegisterUserService service)
         {
-            return await handler.HandleRequest(request);
+            return await service.HandleRequest(request);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
-using MasterCraft.Shared.Requests;
-using MasterCraft.Shared.Reports;
+using MasterCraft.Shared.ViewModels;
+using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
@@ -26,10 +26,10 @@ namespace MasterCraft.Client.Authentication
             cApiClient = apiClient;
         }
 
-        public async Task<ApiResponse<AccessTokenReport>> Login(GenerateTokenRequest generateTokenCommand)
+        public async Task<ApiResponse<AccessTokenViewModel>> Login(GenerateTokenViewModel generateTokenCommand)
         {
-            ApiResponse<AccessTokenReport> apiResponse = 
-                await cApiClient.PostAsync<GenerateTokenRequest, AccessTokenReport>("token", generateTokenCommand);
+            ApiResponse<AccessTokenViewModel> apiResponse = 
+                await cApiClient.PostAsync<GenerateTokenViewModel, AccessTokenViewModel>("token", generateTokenCommand);
             
             if (apiResponse.Response is not null)
             {
@@ -45,9 +45,9 @@ namespace MasterCraft.Client.Authentication
             cAuthStateProvider.NotifyUserLogout();
         }
 
-        public async Task<ApiResponse<Empty>> Register(RegisterUserRequest registerUserCommand)
+        public async Task<ApiResponse<Empty>> Register(RegisterUserViewModel registerUserCommand)
         {
-            return await cApiClient.PostAsync<RegisterUserRequest, Empty>("token", registerUserCommand);
+            return await cApiClient.PostAsync<RegisterUserViewModel, Empty>("token", registerUserCommand);
         }
     }
 }

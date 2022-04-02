@@ -1,3 +1,3 @@
-dotnet ef migrations add AddProfilesAndOfferings --startup-project "Server/MasterCraft.Server.csproj" --project "Infrastructure/MasterCraft.Infrastructure.csproj" -v
+dotnet ef migrations add AddProfilesAndOfferings --startup-project "src/Server/MasterCraft.Server.csproj" --project "src/Infrastructure/MasterCraft.Infrastructure.csproj" -v
 
-dotnet ef database update --startup-project "Server/MasterCraft.Server.csproj" --project "Infrastructure/MasterCraft.Infrastructure.csproj" -v
+dotnet ef database update --startup-project "src/Server/MasterCraft.Server.csproj" --project "src/Infrastructure/MasterCraft.Infrastructure.csproj" -v

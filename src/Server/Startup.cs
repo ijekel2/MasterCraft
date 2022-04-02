@@ -1,5 +1,5 @@
 using MasterCraft.Domain;
-using MasterCraft.Domain.Common.Interfaces;
+using MasterCraft.Domain.Interfaces;
 using MasterCraft.Infrastructure;
 using MasterCraft.Infrastructure.Common.Extensions;
 using MasterCraft.Server.Filters;
@@ -30,11 +30,7 @@ namespace MasterCraft.Server
             services.AddHttpContextAccessor();
 
             services
-                .AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>())
-                .ConfigureApiBehaviorOptions(options =>
-                {
-                    options.SuppressModelStateInvalidFilter = true;
-                });
+                .AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>());
 
             services.AddRazorPages();
 
@@ -44,7 +40,7 @@ namespace MasterCraft.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment() || env.IsTest())
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();

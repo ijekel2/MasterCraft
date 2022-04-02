@@ -1,6 +1,6 @@
 ﻿using MasterCraft.Client.Common.Api;
-using MasterCraft.Shared.Reports;
-using MasterCraft.Shared.Requests;
+using MasterCraft.Shared.ViewModels;
+using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
@@ -8,7 +8,7 @@ namespace MasterCraft.Client.Authentication
 {
     public partial class Register : ComponentBase
     {
-        private RegisterUserRequest request = new();
+        private RegisterUserViewModel request = new();
 
         [Inject]
         ApiClient ApiClient { get; set; }
@@ -19,7 +19,7 @@ namespace MasterCraft.Client.Authentication
         private async Task<ApiResponse<Empty>> OnRegisterClick()
         {
             ApiResponse<Empty> apiResponse =
-                await ApiClient.PostAsync<RegisterUserRequest, Empty>("register", request);
+                await ApiClient.PostAsync<RegisterUserViewModel, Empty>("register", request);
 
             if (apiResponse.Response is not null)
             {

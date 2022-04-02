@@ -1,6 +1,6 @@
 ﻿@page "/login"
  
-<SubmissionForm TRequest=GenerateTokenRequest TResponse=AccessTokenReport Request="@request" 
+<SubmissionForm TRequest=GenerateTokenViewModel TResponse=AccessTokenViewModel Request="@request" 
                 OnValidSubmit="OnLoginClick" FormTitle="@Properties.Resources.LogIn" ButtonText="@Properties.Resources.LogIn">
     <ChildContent>
         <div>

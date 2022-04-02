@@ -1,8 +1,8 @@
-﻿using MasterCraft.Domain.Authentication;
-using MasterCraft.Domain.Common.Interfaces;
+﻿using MasterCraft.Domain.Services.Authentication;
+using MasterCraft.Domain.Interfaces;
 using MasterCraft.Infrastructure.Persistence;
-using MasterCraft.Shared.Entities;
-using MasterCraft.Shared.Requests;
+using MasterCraft.Domain.Entities;
+using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,10 +15,11 @@ namespace MasterCraft.Server.IntegrationTests
     public class TestBase
     {
         private IServiceScope cDbContextScope = null!;
-        public static WebApplicationFactory<Startup> TestAppFactory = null!;
-        public static HttpClient Client = null!;
-        public ApplicationDbContext AppDbContext = null!;
-        public IFileStorage FileStorage = null!;
+
+        public static WebApplicationFactory<Startup> TestAppFactory { get; private set; } = null!;
+        public static HttpClient Client { get; private set; } = null!;
+        public ApplicationDbContext AppDbContext { get; private set; } = null!;
+        public IFileStorage FileStorage { get; private set; } = null!;
 
         [OneTimeSetUp]
         public async Task RunBeforeAnyTests()
@@ -52,15 +53,15 @@ namespace MasterCraft.Server.IntegrationTests
         private async Task CreateTestUsers()
         {
             using var scope = TestAppFactory.Services.CreateScope();
-            RegisterUser register = scope.ServiceProvider.GetRequiredService<RegisterUser>();
+            RegisterUserService register = scope.ServiceProvider.GetRequiredService<RegisterUserService>();
 
-            RegisterUserRequest request = new()
+            RegisterUserViewModel request = new()
             {
-                FirstName = TestConstants.TestMentor.FirstName,
-                LastName = TestConstants.TestMentor.LastName,
-                Email = TestConstants.TestMentor.Email,
-                Password = TestConstants.TestMentor.Password,
-                ConfirmPassword = TestConstants.TestMentor.Password
+                FirstName = TestConstants.TestUser.FirstName,
+                LastName = TestConstants.TestUser.LastName,
+                Email = TestConstants.TestUser.Email,
+                Password = TestConstants.TestUser.Password,
+                ConfirmPassword = TestConstants.TestUser.Password
             };
 
             await register.HandleRequest(request);
@@ -77,7 +78,6 @@ namespace MasterCraft.Server.IntegrationTests
             AppDbContext = context;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<Pending>")]
         public async Task EnsureDbDeleted()
         {
             await AppDbContext.Database.EnsureDeletedAsync();

@@ -1,5 +1,5 @@
 ﻿using MasterCraft.Server.IntegrationTests.Api;
-using MasterCraft.Shared.Entities;
+using MasterCraft.Domain.Entities;
 using NUnit.Framework;
 using System.Threading.Tasks;
 
@@ -10,12 +10,9 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
         [Test]
         public async Task ShouldReturnOfferingForId()
         {
-            await SeedDatabase(new Offering()
-            {
-                
-            });
+            await SeedDatabase(TestConstants.TestOffering);
 
-            TestResponse<MentorProfile> response = await TestApi.GetAsync<MentorProfile>("offerings/1");
+            TestResponse<Mentor> response = await TestApi.GetAsync<Mentor>("offerings/1");
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
             Assert.AreEqual(1, response.Response.Id);

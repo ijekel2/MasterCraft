@@ -1,4 +1,4 @@
-﻿using MasterCraft.Domain.Common.Interfaces;
+﻿using MasterCraft.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;

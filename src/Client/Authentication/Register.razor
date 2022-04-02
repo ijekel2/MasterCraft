@@ -1,6 +1,6 @@
 ﻿@page "/signup";
 
-<SubmissionForm TRequest=RegisterUserRequest TResponse=Empty Request="@request"
+<SubmissionForm TRequest=RegisterUserViewModel TResponse=Empty Request="@request"
                 OnValidSubmit="OnRegisterClick" FormTitle="@Properties.Resources.SignUp" ButtonText="@Properties.Resources.SignUp">
     <ChildContent>
         <div id="firstname">

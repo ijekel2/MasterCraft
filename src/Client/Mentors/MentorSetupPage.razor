@@ -37,13 +37,13 @@
             @switch (currentForm)
             {
                 case 1:
-                    <MentorProfileInputs OnValidSubmit="GoToNextForm" />
+                    <MentorInputs OnValidSubmit="GoToNextForm" />
                     break;
                 case 2:
                     <OfferingInputs OnValidSubmit="GoToNextForm" />
                     break;
                 case 3:
-                    <MentorProfileUploads />
+                    <MentorUploads />
                     <SfProgressButton Content="Next" CssClass="mc-btn mc-btn-black" @onclick="GoToNextForm">
                         <ProgressButtonAnimationSettings Effect="Syncfusion.Blazor.SplitButtons.AnimationEffect.ZoomIn"></ProgressButtonAnimationSettings>
                         <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
@@ -51,7 +51,7 @@
                     break;
                 case 4:
                     <h3>Woohoo! you&#39re almost done</h3>
-                    <MentorProfileDisplay />
+                    <MentorDisplay />
                     <SfProgressButton Content="Complete Setup" CssClass="mc-btn mc-btn-black" @onclick="OnCompleteSetupClick">
                         <ProgressButtonAnimationSettings Effect="Syncfusion.Blazor.SplitButtons.AnimationEffect.ZoomIn"></ProgressButtonAnimationSettings>
                         <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>

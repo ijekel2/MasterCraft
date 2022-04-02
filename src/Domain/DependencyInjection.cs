@@ -1,4 +1,4 @@
-﻿using MasterCraft.Domain.Common.RequestHandling;
+﻿using MasterCraft.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
@@ -11,22 +11,22 @@ namespace MasterCraft.Domain
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddRequestHandlers();
-			services.AddTransient<RequestHandlerService>();
+			services.AddTransient<ServiceDependencies>();
 
             return services;
         }
 
 		private static void AddRequestHandlers(this IServiceCollection pServices)
 		{
-			//-- Register all request handlers
-			Type baseType = typeof(RequestHandler<,>);
+			//-- Register all request services
+			Type baseType = typeof(DomainService<,>);
 
 			Assembly assembly = baseType.Assembly;
 
 			foreach (TypeInfo lTypeInfo in assembly.DefinedTypes)
 			{
-				Type handlerType = lTypeInfo.AsType();
-				if (IsRequestHandlerType(handlerType, baseType))
+				Type serviceType = lTypeInfo.AsType();
+				if (IsRequestHandlerType(serviceType, baseType))
 				{
 					var type = lTypeInfo.AsType();
 					pServices.AddTransient(type);
@@ -34,9 +34,9 @@ namespace MasterCraft.Domain
 			}
 		}
 
-		private static bool IsRequestHandlerType(Type handlerType, Type baseType)
+		private static bool IsRequestHandlerType(Type serviceType, Type baseType)
         {
-			return handlerType.BaseType is not null && handlerType.BaseType.IsGenericType && handlerType.BaseType.GetGenericTypeDefinition().Equals(baseType);
+			return serviceType.BaseType is not null && serviceType.BaseType.IsGenericType && serviceType.BaseType.GetGenericTypeDefinition().Equals(baseType);
 
 		}
 	}

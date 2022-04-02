@@ -1,5 +1,5 @@
 ﻿using MasterCraft.Infrastructure.Identity;
-using MasterCraft.Shared.Entities;
+using MasterCraft.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

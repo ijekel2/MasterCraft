@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions;
 using Microsoft.EntityFrameworkCore;
-using MasterCraft.Domain.Common.Interfaces;
+using MasterCraft.Domain.Interfaces;
 using System.Reflection;
 using System.IO;
 using MasterCraft.Infrastructure.FileStorage;

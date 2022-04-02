@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Components;
-using MasterCraft.Shared.Requests;
-using MasterCraft.Shared.Reports;
+using MasterCraft.Shared.ViewModels;
+using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
@@ -18,7 +18,7 @@ namespace MasterCraft.Client.Authentication
 {
     public partial class Login : ComponentBase
     {
-        private GenerateTokenRequest request = new();
+        private GenerateTokenViewModel request = new();
 
         [Inject]
         ApiClient ApiClient { get; set; }
@@ -32,10 +32,10 @@ namespace MasterCraft.Client.Authentication
         [Inject]
         ILocalStorageService LocalStorage { get; set; }
 
-        private async Task<ApiResponse<AccessTokenReport>> OnLoginClick()
+        private async Task<ApiResponse<AccessTokenViewModel>> OnLoginClick()
         {
-            ApiResponse<AccessTokenReport> apiResponse =
-                await ApiClient.PostAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
+            ApiResponse<AccessTokenViewModel> apiResponse =
+                await ApiClient.PostAsync<GenerateTokenViewModel, AccessTokenViewModel>("token", request);
 
             if (apiResponse.Response is not null)
             {

@@ -1,6 +1,6 @@
 ﻿using MasterCraft.Server.IntegrationTests.Api;
-using MasterCraft.Shared.Reports;
-using MasterCraft.Shared.Requests;
+using MasterCraft.Shared.ViewModels;
+using MasterCraft.Shared.ViewModels;
 using NUnit.Framework;
 using System.Threading.Tasks;
 using static MasterCraft.Server.IntegrationTests.TestConstants;
@@ -13,29 +13,29 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
         [Test]
         public async Task ShouldFailIfNoUserNameOrPassword()
         {
-            var request = new GenerateTokenRequest() 
+            var request = new GenerateTokenViewModel() 
             { 
                 Username = string.Empty,
                 Password = string.Empty
             };
 
-            TestResponse<AccessTokenReport> response = await TestApi.PostJsonAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
+            TestResponse<AccessTokenViewModel> response = await TestApi.PostJsonAsync<GenerateTokenViewModel, AccessTokenViewModel>("token", request);
             Assert.IsFalse(response.Success);
         }
 
         [Test]
         public async Task ShouldReturnAccessTokenForValidUsernameAndPassword()
         {
-            var request = new GenerateTokenRequest()
+            var request = new GenerateTokenViewModel()
             {
-                Username = TestMentor.Username,
-                Password = TestMentor.Password
+                Username = TestUser.Username,
+                Password = TestUser.Password
             };
 
-            TestResponse<AccessTokenReport> response = await TestApi.PostJsonAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
+            TestResponse<AccessTokenViewModel> response = await TestApi.PostJsonAsync<GenerateTokenViewModel, AccessTokenViewModel>("token", request);
             Assert.IsTrue(response.Success);
             Assert.IsNotEmpty(response.Response.AccessToken);
-            Assert.AreEqual(TestMentor.Username, response.Response.Username);
+            Assert.AreEqual(TestUser.Username, response.Response.Username);
         }
     }
 }

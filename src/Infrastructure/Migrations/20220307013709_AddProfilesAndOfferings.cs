@@ -8,7 +8,7 @@ namespace MasterCraft.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "MentorProfiles",
+                name: "Mentors",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -26,7 +26,7 @@ namespace MasterCraft.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MentorProfiles", x => x.Id);
+                    table.PrimaryKey("PK_Mentors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,7 +58,7 @@ namespace MasterCraft.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MentorProfiles");
+                name: "Mentors");
 
             migrationBuilder.DropTable(
                 name: "Offerings");

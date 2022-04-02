@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using MasterCraft.Domain.Common.Interfaces;
-using MasterCraft.Shared.Entities;
-using MasterCraft.Shared.Reports;
+using MasterCraft.Domain.Interfaces;
+using MasterCraft.Domain.Entities;
+using MasterCraft.Shared.ViewModels;
 using MasterCraft.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +28,7 @@ namespace MasterCraft.Infrastructure.Identity
             cDbContext = dbContext;
         }
 
-        public async Task<AccessTokenReport> GenerateToken(string username)
+        public async Task<AccessTokenViewModel> GenerateToken(string username)
         {
             var user = await cUserManager.FindByEmailAsync(username);
 
@@ -58,7 +58,7 @@ namespace MasterCraft.Infrastructure.Identity
                         SecurityAlgorithms.HmacSha256)),
                 new JwtPayload(claims));
 
-            AccessTokenReport output = new()
+            AccessTokenViewModel output = new()
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
                 Username = username

@@ -18,7 +18,7 @@ namespace MasterCraft.Infrastructure.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.13");
 
-            modelBuilder.Entity("MasterCraft.Core.Entities.MentorProfile", b =>
+            modelBuilder.Entity("MasterCraft.Core.Entities.Mentor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace MasterCraft.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MentorProfiles");
+                    b.ToTable("Mentors");
                 });
 
             modelBuilder.Entity("MasterCraft.Core.Entities.Offering", b =>

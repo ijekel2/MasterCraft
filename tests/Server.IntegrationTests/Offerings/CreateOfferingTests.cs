@@ -1,16 +1,18 @@
 ﻿using MasterCraft.Server.IntegrationTests.Api;
-using MasterCraft.Shared.Entities;
-using MasterCraft.Shared.Reports;
-using MasterCraft.Shared.Requests;
+using MasterCraft.Domain.Entities;
+using MasterCraft.Shared.ViewModels;
+using MasterCraft.Shared.ViewModels;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using Microsoft.EntityFrameworkCore;
 
 namespace MasterCraft.Server.IntegrationTests.Offerings
 {
@@ -19,25 +21,32 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
         [Test]
         public async Task ShouldSaveOffering()
         {
-            CreateOfferingRequest request = new()
+            OfferingViewModel request = new()
             {
-                //ChannelName = TestConstants.TestMentorProfile.ChannelName,
-                //ChannelLink = TestConstants.TestMentorProfile.ChannelLink,
-                //PersonalTitle = TestConstants.TestMentorProfile.PersonalTitle,
-                //ProfileCustomUri = TestConstants.TestMentorProfile.ProfileCustomUri
+                Name = TestConstants.TestOffering.Name,
+                Description = TestConstants.TestOffering.Description,
+                DeliveryDays = TestConstants.TestOffering.DeliveryDays,
+                FeedbackMinutes = TestConstants.TestOffering.FeedbackMinutes,
+                Price = TestConstants.TestOffering.Price,
+                SampleQuestion1 = TestConstants.TestOffering.SampleQuestion1,
+                SampleQuestion2 = TestConstants.TestOffering.SampleQuestion2,
+                SampleQuestion3 = TestConstants.TestOffering.SampleQuestion3
             };
 
-            //-- Send create mentor profile request and validate the response.
-            TestResponse<int> response = await TestApi.PostJsonAsync<CreateOfferingRequest, int>(
+            //-- Send create mentor request and validate the response.
+            TestResponse<Empty> response = await TestApi.PostJsonAsync<OfferingViewModel, Empty>(
                 "offerings",
                 request);
 
             Assert.IsTrue(response.Success);
-            Assert.IsFalse(response.Response == 0);
+            Assert.IsNull(response.Response);
 
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            Assert.IsNotNull(response.Headers.Location);
+            Assert.IsTrue(int.TryParse(response.Headers.Location.Last().ToString(), out int id));
 
             //-- Select record and validate.
-            Offering offering = AppDbContext.Offerings.FirstOrDefault(offering => offering.Id == response.Response);
+            Offering offering = await AppDbContext.Offerings.FirstOrDefaultAsync(offering => offering.Id == id);
             Assert.IsNotNull(offering);
         }
     }

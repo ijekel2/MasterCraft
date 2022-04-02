@@ -1,6 +1,6 @@
-﻿using MasterCraft.Domain.Common.Interfaces;
+﻿using MasterCraft.Domain.Interfaces;
 using MasterCraft.Infrastructure.Identity;
-using MasterCraft.Shared.Entities;
+using MasterCraft.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,7 +14,7 @@ namespace MasterCraft.Infrastructure.Persistence
     {
         public DbSet<Offering> Offerings => Set<Offering>();
 
-        public DbSet<MentorProfile> MentorProfiles => Set<MentorProfile>();
+        public DbSet<Mentor> Mentors => Set<Mentor>();
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {

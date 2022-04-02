@@ -1,9 +1,9 @@
 ﻿using MasterCraft.Client.Common.Api;
-using MasterCraft.Domain.Authentication;
-using MasterCraft.Domain.Common.Exceptions;
+using MasterCraft.Domain.Services.Authentication;
+using MasterCraft.Domain.Exceptions;
 using MasterCraft.Server.IntegrationTests.Api;
-using MasterCraft.Shared.Entities;
-using MasterCraft.Shared.Requests;
+using MasterCraft.Domain.Entities;
+using MasterCraft.Shared.ViewModels;
 using NUnit.Framework;
 using System.Threading.Tasks;
 using static MasterCraft.Server.IntegrationTests.TestConstants;
@@ -16,32 +16,32 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
         [Test]
         public async Task ShouldFailIfAccountAlreadyExistsForEmail()
         {
-            var request = new RegisterUserRequest()
+            var request = new RegisterUserViewModel()
             {
-                FirstName = TestMentor.FirstName,
-                LastName = TestMentor.LastName,
-                Email = TestMentor.Email,
-                Password = TestMentor.Password,
-                ConfirmPassword = TestMentor.Password
+                FirstName = TestUser.FirstName,
+                LastName = TestUser.LastName,
+                Email = TestUser.Email,
+                Password = TestUser.Password,
+                ConfirmPassword = TestUser.Password
             };
 
-            TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserRequest, ApplicationUser>("register", request);
+            TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserViewModel, ApplicationUser>("register", request);
             Assert.IsFalse(response.Success);
         }
 
         [Test]
         public async Task ShouldCreateUserForValidCommand()
         {
-            var request = new RegisterUserRequest()
+            var request = new RegisterUserViewModel()
             {
-                FirstName = TestMentor.FirstName,
-                LastName = TestMentor.LastName,
+                FirstName = TestUser.FirstName,
+                LastName = TestUser.LastName,
                 Email = "differentmentor@local",
-                Password = TestMentor.Password,
-                ConfirmPassword = TestMentor.Password
+                Password = TestUser.Password,
+                ConfirmPassword = TestUser.Password
             };
 
-            TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserRequest, ApplicationUser>("register", request);
+            TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserViewModel, ApplicationUser>("register", request);
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
         }

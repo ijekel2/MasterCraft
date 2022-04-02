@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
-using MasterCraft.Shared.Reports;
-using MasterCraft.Shared.Requests;
+using MasterCraft.Shared.ViewModels;
+using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -51,15 +51,15 @@ namespace MasterCraft.Server.IntegrationTests.Api
             return await ParseResponse<TResponse>(response);
         }
 
-        public static async Task<TestResponse<AccessTokenReport>> AuthenticateMentor()
+        public static async Task<TestResponse<AccessTokenViewModel>> AuthenticateMentor()
         {
-            GenerateTokenRequest request = new()
+            GenerateTokenViewModel request = new()
             {
-                Username = TestMentor.Username,
-                Password = TestMentor.Password
+                Username = TestUser.Username,
+                Password = TestUser.Password
             };
 
-            var response = await PostJsonAsync<GenerateTokenRequest, AccessTokenReport>("token", request);
+            var response = await PostJsonAsync<GenerateTokenViewModel, AccessTokenViewModel>("token", request);
 
             if (response.Success)
             {
@@ -72,37 +72,48 @@ namespace MasterCraft.Server.IntegrationTests.Api
         private static async Task<TestResponse<TResponse>> ParseResponse<TResponse>(HttpResponseMessage response)
         {
             string responseBody = await response.Content.ReadAsStringAsync();
+            TestResponse<TResponse> testResponse = new();
+            testResponse.StatusCode = response.StatusCode;
 
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
-                    TestResponse<TResponse> testResponse = new();
+                case HttpStatusCode.Created:
                     if (!string.IsNullOrEmpty(responseBody))
                     {
                         testResponse.Response = JsonSerializer.Deserialize<TResponse>(responseBody, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     }
+
+                    testResponse.Headers.Location = response.Headers.Location?.AbsolutePath;
+                    testResponse.Success = true;
                     return testResponse;
                 case HttpStatusCode.BadRequest:
+                case HttpStatusCode.NotFound:
                 default:
-                    JsonDocument lJson = JsonDocument.Parse(responseBody);
+                    if (!string.IsNullOrEmpty(responseBody))
+                    {
+                        JsonDocument lJson = JsonDocument.Parse(responseBody);
 
-                    try
-                    {
-                        Dictionary<string, string[]> errors = JsonSerializer.Deserialize<Dictionary<string, string[]>>(lJson.RootElement.GetProperty("errors").ToString());
-                        
-                        return new TestResponse<TResponse>()
+                        try
                         {
-                            ErrorDetails = new ValidationProblemDetails(errors)
-                            {
-                                Title = lJson.RootElement.GetProperty("title").GetString(),
-                            }
-                        };
+                            Dictionary<string, string[]> errors = JsonSerializer.Deserialize<Dictionary<string, string[]>>(lJson.RootElement.GetProperty("errors").ToString());
+
+                            testResponse.ErrorDetails = new ValidationProblemDetails(errors)
+                                {
+                                    Title = lJson.RootElement.GetProperty("title").GetString(),
+                                };
+
+                            testResponse.Success = false;
+                        }
+                        catch
+                        {
+                            throw new HttpRequestException(
+                                $"Validation failed. Status Code: {response.StatusCode} ({(int)response.StatusCode})");
+                        }
                     }
-                    catch
-                    {
-                        throw new HttpRequestException(
-                            $"Validation failed. Status Code: {response.StatusCode} ({(int)response.StatusCode})");
-                    }
+
+                    return testResponse;
+                    
             }
         }
     }

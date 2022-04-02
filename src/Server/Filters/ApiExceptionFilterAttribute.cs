@@ -1,4 +1,4 @@
-﻿using MasterCraft.Domain.Common.Exceptions;
+﻿using MasterCraft.Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -13,7 +13,7 @@ namespace MasterCraft.Server.Filters
 
         public ApiExceptionFilterAttribute()
         {
-            // Register known exception types and handlers.
+            // Register known exception types and services.
             cExceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
                 { typeof(ValidationException), HandleValidationException },
