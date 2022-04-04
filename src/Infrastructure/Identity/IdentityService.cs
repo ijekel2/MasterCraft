@@ -14,6 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace MasterCraft.Infrastructure.Identity
 {
@@ -28,7 +29,7 @@ namespace MasterCraft.Infrastructure.Identity
             cDbContext = dbContext;
         }
 
-        public async Task<AccessTokenViewModel> GenerateToken(string username)
+        public async Task<AccessTokenViewModel> GenerateToken(string username, CancellationToken token = default)
         {
             var user = await cUserManager.FindByEmailAsync(username);
 
@@ -51,7 +52,7 @@ namespace MasterCraft.Infrastructure.Identity
                 claims.Add(new Claim(ClaimTypes.Role, role.Name));
             }
 
-            var token = new JwtSecurityToken(
+            var jwtToken = new JwtSecurityToken(
                 new JwtHeader(
                     new SigningCredentials(
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySaltIsTheBestSalt")),
@@ -60,14 +61,14 @@ namespace MasterCraft.Infrastructure.Identity
 
             AccessTokenViewModel output = new()
             {
-                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken),
                 Username = username
             };
 
             return output;
         }
 
-        public async Task<bool> IsValidUserNameAndPassword(string username, string password)
+        public async Task<bool> IsValidUserNameAndPassword(string username, string password, CancellationToken token = default)
         {
             if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(username))
             {
@@ -84,13 +85,13 @@ namespace MasterCraft.Infrastructure.Identity
             return await cUserManager.CheckPasswordAsync(user, password);
         }
 
-        public async Task<string> GetUserNameAsync(string userId)
+        public async Task<string> GetUserNameAsync(string userId, CancellationToken token = default)
         {
             var user = await cUserManager.FindByIdAsync(userId);
             return await cUserManager.GetUserNameAsync(user);
         }
 
-        public async Task<ApplicationUser> FindUserByEmailAsync(string email)
+        public async Task<ApplicationUser> FindUserByEmailAsync(string email, CancellationToken token = default)
         {
             ExtendedIdentityUser identityUser = await cUserManager.FindByEmailAsync(email);
             ApplicationUser user = null;
@@ -111,7 +112,7 @@ namespace MasterCraft.Infrastructure.Identity
             return user;
         }
 
-        public async Task CreateUserAsync(ApplicationUser user)
+        public async Task CreateUserAsync(ApplicationUser user, CancellationToken token = default)
         {
             ExtendedIdentityUser identityUser = new ExtendedIdentityUser()
             {

@@ -14,9 +14,21 @@ namespace MasterCraft.Domain.Interfaces
 {
     public interface IDbContext
     {
+        DbSet<Mentor> Mentors { get; }
+
+        DbSet<Learner> Learners { get; }
+
         DbSet<Offering> Offerings { get; }
 
-        DbSet<Mentor> Mentors { get; }
+        DbSet<FeedbackRequest> FeedbackRequests { get; }
+
+        DbSet<Payment> Payments { get; }
+
+        DbSet<BankAccount> BankAccounts { get; }
+
+        DbSet<PaymentCard> PaymentCards { get; }
+
+        public DbSet<Video> Videos { get; }
 
         //
         // Summary:

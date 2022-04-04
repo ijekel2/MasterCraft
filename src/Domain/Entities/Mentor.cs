@@ -19,7 +19,5 @@ namespace MasterCraft.Domain.Entities
         public string WelcomeVideoUrl { get; set; }
 
         public string ProfileImageUrl { get; set; }
-
-        public string PayPalAccountId { get; set; }
     }
 }

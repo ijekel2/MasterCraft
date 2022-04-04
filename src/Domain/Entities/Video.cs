@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MasterCraft.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,13 @@ namespace MasterCraft.Domain.Entities
 
         public int MentorId { get; set; }
 
+        public int LearnerId { get; set; }
+
         public int FeedbackRequestId { get; set; }
+
+        public string Uri { get; set; }
+
+        public VideoType VideoType { get; set; }
 
     }
 }
