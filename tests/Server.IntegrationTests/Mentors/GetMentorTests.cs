@@ -1,11 +1,6 @@
-﻿using MasterCraft.Client.Common.Api;
+﻿using MasterCraft.Domain.Entities;
 using MasterCraft.Server.IntegrationTests.Api;
-using MasterCraft.Domain.Entities;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Server.IntegrationTests.Mentors

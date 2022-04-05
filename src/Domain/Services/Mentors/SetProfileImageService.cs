@@ -15,25 +15,25 @@ namespace MasterCraft.Domain.Services.Mentors
 {
     public class SetProfileImageService : DomainService<SetProfileImageRequest, Empty>
     {
-        readonly IDbContext cDbContext;
-        readonly IFileStorage cFileStorage;
+        readonly IDbContext _dbContext;
+        readonly IFileStorage _fileStorage;
 
         public SetProfileImageService(IDbContext dbContext, IFileStorage fileStorage, ServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
-            cDbContext = dbContext;
-            cFileStorage = fileStorage;
+            _dbContext = dbContext;
+            _fileStorage = fileStorage;
         }
 
         internal override async Task<Empty> Handle(SetProfileImageRequest request, CancellationToken token = new())
         {
-            Mentor? mentor = cDbContext.Mentors.FirstOrDefault(profile => profile.Id == request.ProfileId);
+            Mentor? mentor = _dbContext.Mentors.FirstOrDefault(profile => profile.Id == request.ProfileId);
 
             if (mentor is not null)
             {
                 using MemoryStream stream = new(request.Image);
-                Uri filePath = await cFileStorage.SaveFileAsync(stream);
+                Uri filePath = await _fileStorage.SaveFileAsync(stream);
                 mentor.ProfileImageUrl = filePath.AbsolutePath;
-                await cDbContext.SaveChangesAsync(token);
+                await _dbContext.SaveChangesAsync(token);
             }
 
             return Empty.Value;

@@ -35,7 +35,7 @@ namespace MasterCraft.Domain.Services.Tests
 
             await SendTestRequest();
 
-            cIdentityService.Verify(i => i.GetUserNameAsync(It.IsAny<string>()), Times.Once);
+            cIdentityService.Verify(i => i.GetUserNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
         }       
 
         [Test]
@@ -62,7 +62,7 @@ namespace MasterCraft.Domain.Services.Tests
             AuthenticateUser(TestConstants.TestMentor);
            
             //-- Setup this method to take longer so we trip the performance logging.
-            cIdentityService.Setup(service => service.IsValidUserNameAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(() =>
+            cIdentityService.Setup(service => service.IsValidUserNameAndPassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(() =>
             {
                 Thread.Sleep(1000);
                 return Task.FromResult(true);

@@ -9,12 +9,12 @@ namespace MasterCraft.Server.Filters
 {
     public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
-        private readonly IDictionary<Type, Action<ExceptionContext>> cExceptionHandlers;
+        private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
 
         public ApiExceptionFilterAttribute()
         {
             // Register known exception types and services.
-            cExceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
+            _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
                 { typeof(ValidationException), HandleValidationException },
                 { typeof(NotFoundException), HandleNotFoundException },
@@ -33,9 +33,9 @@ namespace MasterCraft.Server.Filters
         private void HandleException(ExceptionContext context)
         {
             Type type = context.Exception.GetType();
-            if (cExceptionHandlers.ContainsKey(type))
+            if (_exceptionHandlers.ContainsKey(type))
             {
-                cExceptionHandlers[type].Invoke(context);
+                _exceptionHandlers[type].Invoke(context);
                 return;
             }
 

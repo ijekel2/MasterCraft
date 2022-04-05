@@ -17,14 +17,14 @@ namespace MasterCraft.Domain.Services
 {
     public abstract class DomainService<TRequest, TResponse>
     {
-        private readonly Stopwatch cTimer;
+        private readonly Stopwatch _timer;
 
-        internal ServiceDependencies Services { get; }
+        protected ServiceDependencies Services { get; }
 
         public DomainService(ServiceDependencies serviceDependencies)
         {
             Services = serviceDependencies;
-            cTimer = new();
+            _timer = new();
         }
 
         public async Task<TResponse> HandleRequest(TRequest request, CancellationToken token = new())
@@ -38,7 +38,7 @@ namespace MasterCraft.Domain.Services
 
                 LogRequest(request, userId, userName);
 
-                cTimer.Start();
+                _timer.Start();
 
                 await Validate(request, validator, token);
 
@@ -49,9 +49,9 @@ namespace MasterCraft.Domain.Services
 
                 TResponse response = await Handle(request, token);
 
-                cTimer.Stop();
+                _timer.Stop();
 
-                LogPerformance(request, cTimer.ElapsedMilliseconds, userId, userName);
+                LogPerformance(request, _timer.ElapsedMilliseconds, userId, userName);
 
                 return response;
             }

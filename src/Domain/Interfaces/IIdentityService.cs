@@ -1,4 +1,4 @@
-﻿using MasterCraft.Domain.Entities;
+﻿using MasterCraft.Domain.Models;
 using MasterCraft.Shared.ViewModels;
 using System;
 using System.Collections.Generic;

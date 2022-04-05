@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using MasterCraft.Domain.Interfaces;
-using MasterCraft.Domain.Entities;
-using MasterCraft.Shared.ViewModels;
+﻿using MasterCraft.Domain.Interfaces;
 using MasterCraft.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Components.Authorization;
+using MasterCraft.Domain.Models;
+using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -13,28 +10,28 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MasterCraft.Infrastructure.Identity
 {
     public class IdentityService : IIdentityService
     {
-        private readonly UserManager<ExtendedIdentityUser> cUserManager;
-        private readonly ApplicationDbContext cDbContext;
+        private readonly UserManager<ExtendedIdentityUser> _userManager;
+        private readonly ApplicationDbContext _dbContext;
 
         public IdentityService(UserManager<ExtendedIdentityUser> userManager, ApplicationDbContext dbContext)
         {
-            cUserManager = userManager;
-            cDbContext = dbContext;
+            _userManager = userManager;
+            _dbContext = dbContext;
         }
 
         public async Task<AccessTokenViewModel> GenerateToken(string username, CancellationToken token = default)
         {
-            var user = await cUserManager.FindByEmailAsync(username);
+            var user = await _userManager.FindByEmailAsync(username);
 
-            var roles = from userRole in cDbContext.UserRoles
-                        join role in cDbContext.Roles on userRole.RoleId equals role.Id
+            var roles = from userRole in _dbContext.UserRoles
+                        join role in _dbContext.Roles on userRole.RoleId equals role.Id
                         where userRole.UserId == user.Id
                         select new { userRole.UserId, userRole.RoleId, role.Name };
 
@@ -75,25 +72,25 @@ namespace MasterCraft.Infrastructure.Identity
                 return false;
             }
 
-            var user = await cUserManager.FindByEmailAsync(username);
+            var user = await _userManager.FindByEmailAsync(username);
 
             if (user is null)
             {
                 return false;
             }
 
-            return await cUserManager.CheckPasswordAsync(user, password);
+            return await _userManager.CheckPasswordAsync(user, password);
         }
 
         public async Task<string> GetUserNameAsync(string userId, CancellationToken token = default)
         {
-            var user = await cUserManager.FindByIdAsync(userId);
-            return await cUserManager.GetUserNameAsync(user);
+            var user = await _userManager.FindByIdAsync(userId);
+            return await _userManager.GetUserNameAsync(user);
         }
 
         public async Task<ApplicationUser> FindUserByEmailAsync(string email, CancellationToken token = default)
         {
-            ExtendedIdentityUser identityUser = await cUserManager.FindByEmailAsync(email);
+            ExtendedIdentityUser identityUser = await _userManager.FindByEmailAsync(email);
             ApplicationUser user = null;
 
             if (identityUser != null)
@@ -122,7 +119,7 @@ namespace MasterCraft.Infrastructure.Identity
                 UserName = user.Email,
             };
 
-            await cUserManager.CreateAsync(identityUser, user.Password);
+            await _userManager.CreateAsync(identityUser, user.Password);
         }
     }
 }

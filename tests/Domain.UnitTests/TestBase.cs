@@ -1,10 +1,7 @@
-﻿using MasterCraft.Domain.Services.Authentication;
-using MasterCraft.Domain.Interfaces;
+﻿using MasterCraft.Domain.Interfaces;
+using MasterCraft.Domain.Models;
 using MasterCraft.Domain.Services;
-using MasterCraft.Infrastructure.Identity;
 using MasterCraft.Infrastructure.Persistence;
-using MasterCraft.Domain.Entities;
-using MasterCraft.Shared.ViewModels;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +9,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.UnitTests
@@ -64,11 +59,11 @@ namespace MasterCraft.Domain.UnitTests
 
         protected void AuthenticateUser(ApplicationUser user)
         {
-            cIdentityService.Setup(service => service.FindUserByEmailAsync(It.IsAny<string>())).Returns(() => Task.FromResult(user));
-            cIdentityService.Setup(service => service.CreateUserAsync(It.IsAny<ApplicationUser>())).Returns(() => Task.CompletedTask);
-            cIdentityService.Setup(service => service.IsValidUserNameAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(() => Task.FromResult(true));
-            cIdentityService.Setup(service => service.GenerateToken(It.IsAny<string>())).Returns(() => Task.FromResult(new AccessTokenViewModel()));
-            cIdentityService.Setup(service => service.GetUserNameAsync(It.IsAny<string>())).Returns(() => Task.FromResult(user.Username));
+            cIdentityService.Setup(service => service.FindUserByEmailAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(() => Task.FromResult(user));
+            cIdentityService.Setup(service => service.CreateUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<CancellationToken>())).Returns(() => Task.CompletedTask);
+            cIdentityService.Setup(service => service.IsValidUserNameAndPassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(() => Task.FromResult(true));
+            cIdentityService.Setup(service => service.GenerateToken(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(() => Task.FromResult(new AccessTokenViewModel()));
+            cIdentityService.Setup(service => service.GetUserNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(() => Task.FromResult(user.Username));
         }
 
         //-- https://www.thereformedprogrammer.net/using-in-memory-databases-for-unit-testing-ef-core-applications/

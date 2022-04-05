@@ -1,6 +1,5 @@
-﻿using MasterCraft.Domain.Services.Authentication;
-using MasterCraft.Domain.Entities;
-using MasterCraft.Shared.ViewModels;
+﻿using MasterCraft.Domain.Models;
+using MasterCraft.Domain.Services.Authentication;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

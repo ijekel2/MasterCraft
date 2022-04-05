@@ -7,11 +7,11 @@ namespace MasterCraft.Domain.Common.Utilities
 {
     public class DomainValidator
     {
-        Dictionary<string, List<string>> cErrors = new();
+        Dictionary<string, List<string>> _errors = new();
 
-        public Dictionary<string, string[]> Errors => cErrors.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToArray());
+        public Dictionary<string, string[]> Errors => _errors.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToArray());
 
-        public bool HasFailure => cErrors.Count() > 0;
+        public bool HasFailure => _errors.Count() > 0;
 
         public async Task MustAsync(Func<Task<bool>> condition, string message, string propertyName = "")
         {
@@ -30,12 +30,12 @@ namespace MasterCraft.Domain.Common.Utilities
         }
         private void AddFailure(string message, string propertyName = "")
         {
-            if (!cErrors.ContainsKey(propertyName))
+            if (!_errors.ContainsKey(propertyName))
             {
-                cErrors[propertyName] = new List<string>();
+                _errors[propertyName] = new List<string>();
             }
 
-            cErrors[propertyName].Add(message);
+            _errors[propertyName].Add(message);
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using MasterCraft.Client.Common.Api;
-using MasterCraft.Domain.Services.Authentication;
-using MasterCraft.Domain.Exceptions;
+﻿using MasterCraft.Domain.Models;
 using MasterCraft.Server.IntegrationTests.Api;
-using MasterCraft.Domain.Entities;
 using MasterCraft.Shared.ViewModels;
 using NUnit.Framework;
 using System.Threading.Tasks;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Domain.Entities
+namespace MasterCraft.Domain.Models
 {
     public class ApplicationUser
     {

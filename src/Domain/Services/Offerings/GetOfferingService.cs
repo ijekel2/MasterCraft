@@ -14,16 +14,16 @@ namespace MasterCraft.Domain.Services.Offerings
 {
     public class GetOfferingService : DomainService<int, Offering>
     {
-        readonly IDbContext cDbContext;
+        readonly IDbContext _dbContext;
 
         public GetOfferingService(IDbContext dbContext, ServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
-            cDbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         internal override async Task<Offering> Handle(int id, CancellationToken pToken = default)
         {
-            return await cDbContext.Offerings.FirstOrDefaultAsync(offering => offering.Id == id, pToken);
+            return await _dbContext.Offerings.FirstOrDefaultAsync(offering => offering.Id == id, pToken);
         }
 
         internal override async Task Validate(int request, DomainValidator validator, CancellationToken pToken = default)

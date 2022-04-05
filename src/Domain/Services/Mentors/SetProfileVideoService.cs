@@ -13,11 +13,11 @@ namespace MasterCraft.Domain.Services.Mentors
 {
     public class SetProfileVideoService : DomainService<SetProfileVideoRequest, Empty>
     {
-        readonly IDbContext cDbContext;
+        readonly IDbContext _dbContext;
 
         public SetProfileVideoService(IDbContext dbContext, ServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
-            cDbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         internal override Task<Empty> Handle(SetProfileVideoRequest request, CancellationToken token = new())

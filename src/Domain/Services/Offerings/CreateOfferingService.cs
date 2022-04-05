@@ -10,19 +10,19 @@ namespace MasterCraft.Domain.Services.Offerings
 {
     public class CreateOfferingService : DomainService<OfferingViewModel, Offering>
     {
-        readonly IDbContext cDbContext;
+        readonly IDbContext _dbContext;
 
         public CreateOfferingService(IDbContext dbContext, ServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
-            cDbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         internal override async Task<Offering> Handle(OfferingViewModel request, CancellationToken token = new())
         {
             Offering offering = Map<OfferingViewModel, Offering>(request);
 
-            await cDbContext.AddAsync(offering, token);
-            await cDbContext.SaveChangesAsync(token);
+            await _dbContext.AddAsync(offering, token);
+            await _dbContext.SaveChangesAsync(token);
             return offering;
         }
 

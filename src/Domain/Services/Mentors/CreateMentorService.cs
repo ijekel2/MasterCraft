@@ -10,11 +10,11 @@ namespace MasterCraft.Domain.Services.Mentors
 {
     public class CreateMentorService : DomainService<MentorViewModel, Mentor>
     {
-        readonly IDbContext cDbContext;
+        readonly IDbContext _dbContext;
 
         public CreateMentorService(IDbContext dbContext, ServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
-            cDbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         internal override async Task Validate(MentorViewModel mentor, DomainValidator validator, CancellationToken token = new())
@@ -26,8 +26,8 @@ namespace MasterCraft.Domain.Services.Mentors
         {
             Mentor mentor = Map<MentorViewModel, Mentor>(request);
 
-            await cDbContext.AddAsync(mentor, token);
-            await cDbContext.SaveChangesAsync(token);
+            await _dbContext.AddAsync(mentor, token);
+            await _dbContext.SaveChangesAsync(token);
             return mentor;
         }
     }

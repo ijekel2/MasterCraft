@@ -6,14 +6,14 @@ namespace MasterCraft.Server.Services
 {
     public class CurrentUserService : ICurrentUserService
     {
-        private readonly IHttpContextAccessor cHttpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
-            cHttpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public string UserId => cHttpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+        public string UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
     }
 }
 

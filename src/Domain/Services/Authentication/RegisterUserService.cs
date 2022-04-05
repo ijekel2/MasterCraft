@@ -1,6 +1,5 @@
-﻿using MasterCraft.Domain.Services;
-using MasterCraft.Domain.Common.Utilities;
-using MasterCraft.Domain.Entities;
+﻿using MasterCraft.Domain.Common.Utilities;
+using MasterCraft.Domain.Models;
 using MasterCraft.Shared.ViewModels;
 using System.Threading;
 using System.Threading.Tasks;

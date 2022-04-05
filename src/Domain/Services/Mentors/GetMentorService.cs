@@ -14,16 +14,16 @@ namespace MasterCraft.Domain.Services.Mentors
 {
     public class GetMentorService : DomainService<int, Mentor>
     {
-        readonly IDbContext cDbContext;
+        readonly IDbContext _dbContext;
 
         public GetMentorService(IDbContext dbContext, ServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
-            cDbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         internal override async Task<Mentor> Handle(int id, CancellationToken token = default)
         {
-            return await cDbContext.Mentors.FirstOrDefaultAsync(mentor => mentor.Id == id, token);
+            return await _dbContext.Mentors.FirstOrDefaultAsync(mentor => mentor.Id == id, token);
 
         }
 

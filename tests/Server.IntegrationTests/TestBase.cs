@@ -14,7 +14,7 @@ namespace MasterCraft.Server.IntegrationTests
 {
     public class TestBase
     {
-        private IServiceScope cDbContextScope = null!;
+        private IServiceScope _dbContextScope = null!;
 
         public static WebApplicationFactory<Startup> TestAppFactory { get; private set; } = null!;
         public static HttpClient Client { get; private set; } = null!;
@@ -40,7 +40,7 @@ namespace MasterCraft.Server.IntegrationTests
 
         protected async Task SeedDatabase<TEntity>(params TEntity[] records)
         {
-            var context = cDbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var context = _dbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
             foreach (TEntity record in records)
             {
@@ -69,8 +69,8 @@ namespace MasterCraft.Server.IntegrationTests
 
         private async Task EnsureDbCreated()
         {
-            cDbContextScope = TestAppFactory.Services.CreateScope();
-            var context = cDbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            _dbContextScope = TestAppFactory.Services.CreateScope();
+            var context = _dbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
             //-- There will be an 'unable to open database file' exception if VS is set to break on all exceptions
             await context.Database.MigrateAsync();
@@ -81,7 +81,7 @@ namespace MasterCraft.Server.IntegrationTests
         public async Task EnsureDbDeleted()
         {
             await AppDbContext.Database.EnsureDeletedAsync();
-            cDbContextScope.Dispose();
+            _dbContextScope.Dispose();
         }
 
         [OneTimeTearDown]

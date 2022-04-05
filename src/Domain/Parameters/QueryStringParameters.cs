@@ -7,7 +7,7 @@ namespace MasterCraft.Domain.Parameters
 {
     public class QueryStringParameters
     {
-        const int cMaxPageSize = 50;
+        const int _maxPageSize = 50;
 
         public int PageNumber { get; set; } = 1;
 
@@ -15,14 +15,14 @@ namespace MasterCraft.Domain.Parameters
         {
             get
             {
-                return cPageSize;
+                return _pageSize;
             }
             set
             {
-                cPageSize = (value > cMaxPageSize) ? cMaxPageSize : value;
+                _pageSize = (value > _maxPageSize) ? _maxPageSize : value;
             }
         }
-        private int cPageSize = 10;
+        private int _pageSize = 10;
 
     }
 }

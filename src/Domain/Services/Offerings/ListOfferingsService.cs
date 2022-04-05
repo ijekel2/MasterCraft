@@ -14,11 +14,11 @@ namespace MasterCraft.Domain.Services.Offerings
 {
     public class ListOfferingsService : DomainService<OfferingParameters, List<Offering>>
     {
-        readonly IDbContext cDbContext;
+        readonly IDbContext _dbContext;
 
         public ListOfferingsService(IDbContext dbContext, ServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
-            cDbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         internal override async Task<List<Offering>> Handle(OfferingParameters parameters, CancellationToken token = default)
@@ -26,11 +26,11 @@ namespace MasterCraft.Domain.Services.Offerings
             IQueryable<Offering> list;
             if (parameters.MentorId != 0)
             {
-                list = cDbContext.Offerings.Where(offering => offering.MentorId == parameters.MentorId);
+                list = _dbContext.Offerings.Where(offering => offering.MentorId == parameters.MentorId);
             }
             else
             {
-                list = cDbContext.Offerings;
+                list = _dbContext.Offerings;
             }
 
             return await PagedList(list, parameters, token);
