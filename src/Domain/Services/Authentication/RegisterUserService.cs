@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services.Authentication
 {
-    public class RegisterUserService : DomainService<RegisterUserViewModel, ApplicationUser>
+    public class RegisterUserService : DomainService<RegisterUserViewModel, ApplicationUserViewModel>
     {
         public RegisterUserService(ServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
@@ -19,7 +19,7 @@ namespace MasterCraft.Domain.Services.Authentication
                 Properties.Resources.AccountAlreadyExists);
         }
 
-        internal override async Task<ApplicationUser> Handle(RegisterUserViewModel request, CancellationToken token = new())
+        internal override async Task<ApplicationUserViewModel> Handle(RegisterUserViewModel request, CancellationToken token = new())
         {
             ApplicationUser newUser = new()
             {
@@ -33,7 +33,13 @@ namespace MasterCraft.Domain.Services.Authentication
 
             await Services.IdentityService.CreateUserAsync(newUser);
 
-            return newUser;
+            return new ApplicationUserViewModel()
+            {
+                FirstName = newUser.FirstName,
+                LastName = newUser.LastName,
+                Email = newUser.Email,
+                Username = newUser.Username
+            };
         }
     }
 }

@@ -39,6 +39,12 @@ namespace MasterCraft.Server.IntegrationTests
             SampleQuestion3 = "Why are my tests not working"
         };
 
+        public static readonly FeedbackRequest TestFeedbackRequest = new()
+        {
+            Status = Shared.Enums.FeedbackRequestStatus.Pending,
+            ContentLink = "Test Link"
+        };
+
         public static readonly string TestImage = "Content\\TestPic.png";
 
     }

@@ -17,7 +17,7 @@ namespace MasterCraft.Server.Controllers
 
         [Route("/api/register")]
         [HttpPost]
-        public async Task<ActionResult<ApplicationUser>> RegisterUser(RegisterUserViewModel request, [FromServices] RegisterUserService service)
+        public async Task<ActionResult<ApplicationUserViewModel>> RegisterUser(RegisterUserViewModel request, [FromServices] RegisterUserService service)
         {
             return await service.HandleRequest(request);
         }

@@ -10,9 +10,11 @@ namespace MasterCraft.Shared.ViewModels
     public class GenerateTokenViewModel
     {
         [Required]
+        [MaxLength(64)]
         public string Username { get; set; }
 
         [Required]
+        [MaxLength(256)]
         public string Password { get; set; }
     }
 }

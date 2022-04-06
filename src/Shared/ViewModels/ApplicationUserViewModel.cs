@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Shared.ViewModels
 {
-    public class MentorViewModel
+    public class ApplicationUserViewModel
     {
         [Required]
-        [MaxLength(1024)]
-        public string ChannelLink { get; set; }
+        [MaxLength(64)]
+        public string FirstName { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(64)]
-        public string ChannelName { get; set; }
+        public string LastName { get; set; } = string.Empty;
+
+        [Required]
+        [MaxLength(128)]
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(64)]
-        public string PersonalTitle { get; set; }
-
-        [Required]
-        [MaxLength(64)]
-        public string ProfileCustomUri { get; set; }
+        public string Username { get; set; } = string.Empty;
     }
 }

@@ -13,9 +13,11 @@ namespace MasterCraft.Shared.ViewModels
         public int MentorId { get; set; }
 
         [Required]
+        [MaxLength(64)]
         public string Name { get; set; }
 
         [Required]
+        [MaxLength(2048)]
         public string Description { get; set; }
 
         [Range(1, 60)]
@@ -28,16 +30,21 @@ namespace MasterCraft.Shared.ViewModels
         public decimal Price { get; set; }
 
         [Required]
+        [MaxLength(512)]
         public string SampleQuestion1 { get; set; }
 
         [Required]
+        [MaxLength(512)]
         public string SampleQuestion2 { get; set; }
 
         [Required]
+        [MaxLength(512)]
         public string SampleQuestion3 { get; set; }
 
+        [MaxLength(512)]
         public string SampleQuestion4 { get; set; }
 
+        [MaxLength(512)]
         public string SampleQuestion5 { get; set; }
     }
 }

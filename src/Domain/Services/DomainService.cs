@@ -19,7 +19,7 @@ namespace MasterCraft.Domain.Services
     {
         private readonly Stopwatch _timer;
 
-        protected ServiceDependencies Services { get; }
+        public ServiceDependencies Services { get; }
 
         public DomainService(ServiceDependencies serviceDependencies)
         {
@@ -62,9 +62,9 @@ namespace MasterCraft.Domain.Services
             }
         }
 
-        internal abstract Task Validate(TRequest request, DomainValidator validator, CancellationToken pToken = new());
+        internal abstract Task Validate(TRequest request, DomainValidator validator, CancellationToken token = new());
 
-        internal abstract Task<TResponse> Handle(TRequest request, CancellationToken pToken = new());
+        internal abstract Task<TResponse> Handle(TRequest request, CancellationToken token = new());
 
         protected TDestination Map<TSource, TDestination>(TSource source)
         {

@@ -13,7 +13,8 @@ namespace MasterCraft.Domain.Entities
         public int Id { get; set; }
         public string ContentLink { get; set; }
         public FeedbackRequestStatus Status { get; set; }
-        public DateTime? FinalizedDate { get; set; }
+        public DateTime SubmissionDate { get; set; }
+        public DateTime? ResponseDate { get; set; }
 
         public int MentorId { get; set; }
         public Mentor Mentor { get; set; }

@@ -44,17 +44,17 @@ namespace MasterCraft.Infrastructure.Persistence
             modelBuilder.Entity<ExtendedIdentityUser>().Property(mentor => mentor.NormalizedUserName).HasMaxLength(64);
             modelBuilder.Entity<ExtendedIdentityUser>().Property(mentor => mentor.Email).HasMaxLength(128);
             modelBuilder.Entity<ExtendedIdentityUser>().Property(mentor => mentor.NormalizedEmail).HasMaxLength(128);
-            modelBuilder.Entity<ExtendedIdentityUser>().Property(mentor => mentor.PasswordHash).HasMaxLength(64);
+            modelBuilder.Entity<ExtendedIdentityUser>().Property(mentor => mentor.PasswordHash).HasMaxLength(1024);
             modelBuilder.Entity<ExtendedIdentityUser>().Property(mentor => mentor.PhoneNumber).HasMaxLength(64);
 
             //-- Configure Mentor table
             modelBuilder.Entity<Mentor>().Property(mentor => mentor.ApplicationUserId).HasMaxLength(64);
-            modelBuilder.Entity<Mentor>().Property(mentor => mentor.ChannelLink).HasMaxLength(256);
+            modelBuilder.Entity<Mentor>().Property(mentor => mentor.ChannelLink).HasMaxLength(1024);
             modelBuilder.Entity<Mentor>().Property(mentor => mentor.ChannelName).HasMaxLength(64);
             modelBuilder.Entity<Mentor>().Property(mentor => mentor.PersonalTitle).HasMaxLength(64);
             modelBuilder.Entity<Mentor>().Property(mentor => mentor.ProfileCustomUri).HasMaxLength(64);
-            modelBuilder.Entity<Mentor>().Property(mentor => mentor.ProfileImageUrl).HasMaxLength(256);
-            modelBuilder.Entity<Mentor>().Property(mentor => mentor.ProfileImageUrl).HasMaxLength(256);
+            modelBuilder.Entity<Mentor>().Property(mentor => mentor.ProfileImageUrl).HasMaxLength(1024);
+            modelBuilder.Entity<Mentor>().Property(mentor => mentor.ProfileImageUrl).HasMaxLength(1024);
 
 
             //-- Configure Learner table
@@ -63,12 +63,12 @@ namespace MasterCraft.Infrastructure.Persistence
 
             //-- Configure Offering table
             modelBuilder.Entity<Offering>().Property(offering => offering.Name).HasMaxLength(64);
-            modelBuilder.Entity<Offering>().Property(offering => offering.Description).HasMaxLength(256);
-            modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion1).HasMaxLength(256);
-            modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion2).HasMaxLength(256);
-            modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion3).HasMaxLength(256);
-            modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion4).HasMaxLength(256);
-            modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion5).HasMaxLength(256);
+            modelBuilder.Entity<Offering>().Property(offering => offering.Description).HasMaxLength(2048);
+            modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion1).HasMaxLength(512);
+            modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion2).HasMaxLength(512);
+            modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion3).HasMaxLength(512);
+            modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion4).HasMaxLength(512);
+            modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion5).HasMaxLength(512);
 
             //-- Configure FeedbackRequest table
             modelBuilder.Entity<FeedbackRequest>().Property(request => request.ContentLink).HasMaxLength(256);
@@ -77,7 +77,7 @@ namespace MasterCraft.Infrastructure.Persistence
                 .HasMaxLength(32);
 
             //-- Configure Video table
-            modelBuilder.Entity<Video>().Property(video => video.Uri).HasMaxLength(256);
+            modelBuilder.Entity<Video>().Property(video => video.Url).HasMaxLength(1024);
             modelBuilder.Entity<Video>().Property(video => video.VideoType)
                 .HasConversion(new EnumToStringConverter<VideoType>())
                 .HasMaxLength(32);
