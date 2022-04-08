@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Server.Controllers
 {
-    public class FeedbackRequestController : ApiBaseController
+    public class FeedbackRequestsController : ApiBaseController
     {
         [HttpPost]
         public async Task<ActionResult> Create(FeedbackRequestViewModel request, [FromServices] CreateFeedbackRequestService service)
@@ -38,8 +38,8 @@ namespace MasterCraft.Server.Controllers
         }
 
         [HttpPost]
-        [Route("{id}/complete")]
-        public async Task<ActionResult> Complete(CompleteFeedbackViewModel request, [FromServices] CompleteFeedbackService service)
+        [Route("{id}/fulfill")]
+        public async Task<ActionResult> Fulfill(CompleteFeedbackViewModel request, [FromServices] CompleteFeedbackService service)
         {
             await service.HandleRequest(request);
             return Ok();

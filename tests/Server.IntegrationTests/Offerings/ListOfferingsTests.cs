@@ -14,7 +14,7 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
     public class ListOfferingsTests : TestBase
     {
         [Test]
-        public async Task ShouldReturnMentorForId()
+        public async Task ShouldReturnListOfOfferingsForMentor()
         {
             Mentor mentor = TestMentor;
             await SeedDatabase(mentor);

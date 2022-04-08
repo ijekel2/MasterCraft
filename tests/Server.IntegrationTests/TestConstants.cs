@@ -27,6 +27,11 @@ namespace MasterCraft.Server.IntegrationTests
             ProfileCustomUri = "test-mentor"
         };
 
+        public static readonly Learner TestLearner = new()
+        {
+            ProfileImageUrl = "myimageurl"
+        };
+
         public static readonly Offering TestOffering = new()
         {
             Name = "Test Feedback",
@@ -36,13 +41,21 @@ namespace MasterCraft.Server.IntegrationTests
             Price = 50,
             SampleQuestion1 = "How can I improve my tests?",
             SampleQuestion2 = "How can I test my tests?",
-            SampleQuestion3 = "Why are my tests not working"
+            SampleQuestion3 = "Why are my tests not working",
+            MentorId = TestMentor.Id
         };
 
         public static readonly FeedbackRequest TestFeedbackRequest = new()
         {
             Status = Shared.Enums.FeedbackRequestStatus.Pending,
             ContentLink = "Test Link"
+        };
+
+        public static readonly Video TestVideo = new()
+        {
+            VideoType = Shared.Enums.VideoType.FeedbackRequest,
+            Url = "MyFileUrl"
+            
         };
 
         public static readonly string TestImage = "Content\\TestPic.png";

@@ -6,18 +6,18 @@ using NUnit.Framework;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using static MasterCraft.Server.IntegrationTests.TestConstants;
 
-namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
+namespace MasterCraft.Server.IntegrationTests.Videos
 {
-    public class CreateFeedbackRequestTests : TestBase
+    public class CreateVideoTests : TestBase
     {
         [Test]
-        public async Task ShouldSaveFeedbackRequest()
+        public async Task ShouldSaveVideo()
         {
             Mentor mentor = TestConstants.TestMentor;
             Learner learner = TestConstants.TestLearner;
             Offering offering = TestConstants.TestOffering;
+            FeedbackRequest request = TestConstants.TestFeedbackRequest;
 
             await SeedDatabase(mentor);
             await SeedDatabase(learner);
@@ -25,19 +25,24 @@ namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
             offering.MentorId = mentor.Id;
             await SeedDatabase(offering);
 
-            FeedbackRequestViewModel request = new()
+            request.MentorId = mentor.Id;
+            request.LearnerId = learner.Id;
+            request.OfferingId = offering.Id;
+            await SeedDatabase(TestConstants.TestFeedbackRequest);
+            
+            VideoViewModel video = new()
             {
-                Status = TestFeedbackRequest.Status,
-                ContentLink = TestFeedbackRequest.ContentLink,
+                VideoType = TestConstants.TestVideo.VideoType,
+                Url = TestConstants.TestVideo.Url,
                 MentorId = mentor.Id,
                 LearnerId = learner.Id,
-                OfferingId = offering.Id
+                FeedbackRequestId = request.Id
             };
 
             //-- Send create mentor request and validate the response.
-            TestResponse<Empty> response = await TestApi.PostJsonAsync<FeedbackRequestViewModel, Empty>(
-                "feedbackrequests",
-                request);
+            TestResponse<Empty> response = await TestApi.PostJsonAsync<VideoViewModel, Empty>(
+                "videos",
+                video);
 
             Assert.IsTrue(response.Success);
 
@@ -46,8 +51,8 @@ namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
             Assert.IsTrue(int.TryParse(response.Headers.Location.Last().ToString(), out int id));
 
             //-- Select record and validate.
-            FeedbackRequest feedbackRequest = await AppDbContext.FeedbackRequests.FirstOrDefaultAsync(request => request.Id == id);
-            Assert.IsNotNull(feedbackRequest);
+            Video savedVideo = await AppDbContext.Videos.FirstOrDefaultAsync(video => video.Id == id);
+            Assert.IsNotNull(savedVideo);
         }
     }
 }

@@ -9,17 +9,18 @@ using System.Text;
 using System.Threading.Tasks;
 using static MasterCraft.Server.IntegrationTests.TestConstants;
 
-namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
+namespace MasterCraft.Server.IntegrationTests.Videos
 {
-    public class ListFeedbackRequestsTests : TestBase
+    public class ListVideosTests : TestBase
     {
         [Test]
-        public async Task ShouldReturnListOfFeedbackRequestsForMentor()
+        public async Task ShouldReturnListOfVideosForMentor()
         {
             Mentor mentor = TestConstants.TestMentor;
             Learner learner = TestConstants.TestLearner;
             Offering offering = TestConstants.TestOffering;
             FeedbackRequest request = TestConstants.TestFeedbackRequest;
+            Video video = TestConstants.TestVideo;
 
             await SeedDatabase(mentor);
             await SeedDatabase(learner);
@@ -32,7 +33,12 @@ namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
             request.OfferingId = offering.Id;
             await SeedDatabase(TestConstants.TestFeedbackRequest);
 
-            TestResponse<List<FeedbackRequest>> response = await TestApi.GetAsync<List<FeedbackRequest>>($"feedbackrequests?mentorid={mentor.Id}");
+            video.MentorId = mentor.Id;
+            video.LearnerId = learner.Id;
+            video.FeedbackRequestId = request.Id;
+            await SeedDatabase(video);
+
+            TestResponse<List<Video>> response = await TestApi.GetAsync<List<Video>>($"videos?mentorid={mentor.Id}");
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
             Assert.IsTrue(response.Response.Count == 1);

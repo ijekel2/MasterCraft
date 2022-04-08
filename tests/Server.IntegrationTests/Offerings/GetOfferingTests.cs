@@ -10,9 +10,15 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
         [Test]
         public async Task ShouldReturnOfferingForId()
         {
-            await SeedDatabase(TestConstants.TestOffering);
+            Mentor mentor = TestConstants.TestMentor;
+            Offering offering = TestConstants.TestOffering;
 
-            TestResponse<Mentor> response = await TestApi.GetAsync<Mentor>("offerings/1");
+            await SeedDatabase(mentor);
+
+            offering.MentorId = mentor.Id;
+            await SeedDatabase(offering);
+
+            TestResponse<Mentor> response = await TestApi.GetAsync<Mentor>($"offerings/{offering.Id}");
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
             Assert.AreEqual(1, response.Response.Id);

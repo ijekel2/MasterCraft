@@ -30,7 +30,6 @@ namespace MasterCraft.Server.IntegrationTests.Mentors
                 new() { TestConstants.TestImage });
 
             Assert.IsTrue(response.Success);
-            Assert.IsNull(response.Response);
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.IsNotNull(response.Headers.Location);

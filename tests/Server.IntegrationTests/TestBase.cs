@@ -26,6 +26,9 @@ namespace MasterCraft.Server.IntegrationTests
         {
             TestAppFactory = new WebApplicationFactory();
 
+            //-- Delete DB if its hanging around
+            await EnsureDbDeleted();
+
             //-- Set up DB
             await EnsureDbCreated();
 
@@ -80,7 +83,10 @@ namespace MasterCraft.Server.IntegrationTests
 
         public async Task EnsureDbDeleted()
         {
-            await AppDbContext.Database.EnsureDeletedAsync();
+            _dbContextScope = TestAppFactory.Services.CreateScope();
+            var context = _dbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            await context.Database.EnsureDeletedAsync();
             _dbContextScope.Dispose();
         }
 

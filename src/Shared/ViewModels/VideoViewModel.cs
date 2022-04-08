@@ -17,7 +17,7 @@ namespace MasterCraft.Shared.ViewModels
 
         public VideoType VideoType { get; set; }
 
-        public string StreamUrl { get; set; }
+        public string Url { get; set; }
 
     }
 }

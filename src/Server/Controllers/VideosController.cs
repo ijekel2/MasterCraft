@@ -20,26 +20,11 @@ namespace MasterCraft.Server.Controllers
     public class VideosController : ApiBaseController
     {
         [HttpPost]
-        public async Task<ActionResult> Create([FromServices] CreateVideoService service,
-            [FromServices] SetProfileImageService setImageHandler)
+        public async Task<ActionResult> Create(VideoViewModel video, [FromServices] CreateVideoService service)
         {
-            string jsonKey = HttpContext.Request.Form.Keys.First();
-            HttpContext.Request.Form.TryGetValue(jsonKey, out StringValues mentorJson);
-            VideoViewModel? request = JsonSerializer.Deserialize<VideoViewModel>(mentorJson.ToString());
+            Video savedVideo = await service.HandleRequest(video);
 
-            if (request is null)
-            {
-                return BadRequest();
-            }
-
-            Video video = await service.HandleRequest(request);
-
-            if (HttpContext.Request.Form.Files.Any())
-            {
-                //-- TODO: Save video file.
-            }
-
-            return Created(video.Id);
+            return Created(savedVideo.Id);
         }
 
         [HttpGet]

@@ -14,6 +14,9 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
         [Test]
         public async Task ShouldSaveOffering()
         {
+            Mentor mentor = TestConstants.TestMentor;
+            await SeedDatabase(mentor);
+
             OfferingViewModel request = new()
             {
                 Name = TestConstants.TestOffering.Name,
@@ -23,7 +26,8 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
                 Price = TestConstants.TestOffering.Price,
                 SampleQuestion1 = TestConstants.TestOffering.SampleQuestion1,
                 SampleQuestion2 = TestConstants.TestOffering.SampleQuestion2,
-                SampleQuestion3 = TestConstants.TestOffering.SampleQuestion3
+                SampleQuestion3 = TestConstants.TestOffering.SampleQuestion3,
+                MentorId = mentor.Id
             };
 
             //-- Send create mentor request and validate the response.
@@ -32,7 +36,6 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
                 request);
 
             Assert.IsTrue(response.Success);
-            Assert.IsNull(response.Response);
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.IsNotNull(response.Headers.Location);
