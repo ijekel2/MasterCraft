@@ -96,7 +96,7 @@ namespace MasterCraft.Domain.Services.Tests
         private async Task SendTestRequest()
         {
             GenerateTokenService service = new(cHandlerService);
-            await service.HandleRequest(new GenerateTokenViewModel { Username = TestConstants.TestMentor.Username, Password = "mentor!123" });
+            await service.HandleRequest(new GenerateTokenVm { Username = TestConstants.TestMentor.Username, Password = "mentor!123" });
         }
     }
 }

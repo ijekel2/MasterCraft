@@ -30,7 +30,7 @@ namespace MasterCraft.Server.IntegrationTests.Videos
             request.OfferingId = offering.Id;
             await SeedDatabase(TestConstants.TestFeedbackRequest);
             
-            VideoViewModel video = new()
+            VideoVm video = new()
             {
                 VideoType = TestConstants.TestVideo.VideoType,
                 Url = TestConstants.TestVideo.Url,
@@ -40,7 +40,7 @@ namespace MasterCraft.Server.IntegrationTests.Videos
             };
 
             //-- Send create mentor request and validate the response.
-            TestResponse<Empty> response = await TestApi.PostJsonAsync<VideoViewModel, Empty>(
+            TestResponse<EmptyVm> response = await TestApi.PostJsonAsync<VideoVm, EmptyVm>(
                 "videos",
                 video);
 

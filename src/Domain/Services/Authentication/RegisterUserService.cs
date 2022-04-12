@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services.Authentication
 {
-    public class RegisterUserService : DomainService<RegisterUserViewModel, ApplicationUserViewModel>
+    public class RegisterUserService : DomainService<RegisterUserVm, ApplicationUserVm>
     {
-        public RegisterUserService(ServiceDependencies serviceDependencies) : base(serviceDependencies)
+        public RegisterUserService(DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
         }
 
-        internal override async Task Validate(RegisterUserViewModel command, DomainValidator validator, CancellationToken token = new())
+        internal override async Task Validate(RegisterUserVm command, DomainValidator validator, CancellationToken token = new())
         {
             await validator.MustAsync(
                 async () => await Services.IdentityService.FindUserByEmailAsync(command.Email) == null,
                 Properties.Resources.AccountAlreadyExists);
         }
 
-        internal override async Task<ApplicationUserViewModel> Handle(RegisterUserViewModel request, CancellationToken token = new())
+        internal override async Task<ApplicationUserVm> Handle(RegisterUserVm request, CancellationToken token = new())
         {
             ApplicationUser newUser = new()
             {
@@ -33,7 +33,7 @@ namespace MasterCraft.Domain.Services.Authentication
 
             await Services.IdentityService.CreateUserAsync(newUser);
 
-            return new ApplicationUserViewModel()
+            return new ApplicationUserVm()
             {
                 FirstName = newUser.FirstName,
                 LastName = newUser.LastName,

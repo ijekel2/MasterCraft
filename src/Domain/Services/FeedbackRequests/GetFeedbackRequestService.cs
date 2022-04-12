@@ -16,7 +16,7 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
     {
         readonly IDbContext _dbContext;
 
-        public GetFeedbackRequestService(IDbContext dbContext, ServiceDependencies serviceDependencies) : base(serviceDependencies)
+        public GetFeedbackRequestService(IDbContext dbContext, DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
             _dbContext = dbContext;
         }

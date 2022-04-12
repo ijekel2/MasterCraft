@@ -15,14 +15,14 @@ namespace MasterCraft.Client.Mentors.Components
         public ApiClient ApiClient { get; set; }
 
         [Parameter]
-        public OfferingViewModel Offering { get; set; } = new();
+        public OfferingVm Offering { get; set; } = new();
 
         [Parameter]
         public Action OnValidSubmit { get; set; }
 
-        private async Task<ApiResponse<Empty>> OnSubmit()
+        private async Task<ApiResponse<EmptyVm>> OnSubmit()
         {
-            ApiResponse<Empty> apiResponse = await ApiClient.PostAsync<OfferingViewModel, Empty>("offerings", Offering);
+            ApiResponse<EmptyVm> apiResponse = await ApiClient.PostAsync<OfferingVm, EmptyVm>("offerings", Offering);
             apiResponse.Response = new();
 
             if (apiResponse.Success)

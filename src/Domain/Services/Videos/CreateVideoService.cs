@@ -11,23 +11,27 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services.Videos
 {
-    public class CreateVideoService : DomainService<VideoViewModel, Video>
+    public class CreateVideoService : DomainService<VideoVm, Video>
     {
         readonly IDbContext _dbContext;
 
-        public CreateVideoService(IDbContext dbContext, ServiceDependencies serviceDependencies) : base(serviceDependencies)
+        public CreateVideoService(IDbContext dbContext, DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
             _dbContext = dbContext;
         }
 
-        internal override Task<Video> Handle(VideoViewModel request, CancellationToken token = default)
+        internal override async Task<Video> Handle(VideoVm viewModel, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            Video video = Map<VideoVm, Video>(viewModel);
+
+            await _dbContext.AddAsync(video, token);
+            await _dbContext.SaveChangesAsync(token);
+            return video;
         }
 
-        internal override Task Validate(VideoViewModel request, DomainValidator validator, CancellationToken token = default)
+        internal override async Task Validate(VideoVm request, DomainValidator validator, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
         }
     }
 }

@@ -48,15 +48,15 @@ namespace MasterCraft.Server.IntegrationTests.Api
             return await ParseResponse<TResponse>(response);
         }
 
-        public static async Task<TestResponse<AccessTokenViewModel>> AuthenticateMentor()
+        public static async Task<TestResponse<AccessTokenVm>> AuthenticateMentor()
         {
-            GenerateTokenViewModel request = new()
+            GenerateTokenVm request = new()
             {
                 Username = TestUser.Username,
                 Password = TestUser.Password
             };
 
-            var response = await PostJsonAsync<GenerateTokenViewModel, AccessTokenViewModel>("token", request);
+            var response = await PostJsonAsync<GenerateTokenVm, AccessTokenVm>("token", request);
 
             if (response.Success)
             {

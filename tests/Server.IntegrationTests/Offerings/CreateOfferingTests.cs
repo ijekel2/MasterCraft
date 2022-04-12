@@ -17,7 +17,7 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
             Mentor mentor = TestConstants.TestMentor;
             await SeedDatabase(mentor);
 
-            OfferingViewModel request = new()
+            OfferingVm request = new()
             {
                 Name = TestConstants.TestOffering.Name,
                 Description = TestConstants.TestOffering.Description,
@@ -31,7 +31,7 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
             };
 
             //-- Send create mentor request and validate the response.
-            TestResponse<Empty> response = await TestApi.PostJsonAsync<OfferingViewModel, Empty>(
+            TestResponse<EmptyVm> response = await TestApi.PostJsonAsync<OfferingVm, EmptyVm>(
                 "offerings",
                 request);
 

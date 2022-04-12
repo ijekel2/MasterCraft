@@ -10,20 +10,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Domain.Services.Mentors
+namespace MasterCraft.Domain.Services.Learners
 {
-    public class GetMentorService : DomainService<int, Mentor>
+    public class GetLearnerService : DomainService<int, Learner>
     {
         readonly IDbContext _dbContext;
 
-        public GetMentorService(IDbContext dbContext, DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
+        public GetLearnerService(IDbContext dbContext, DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
             _dbContext = dbContext;
         }
 
-        internal override async Task<Mentor> Handle(int id, CancellationToken token = default)
+        internal override async Task<Learner> Handle(int id, CancellationToken token = default)
         {
-            return await _dbContext.Mentors.FirstOrDefaultAsync(mentor => mentor.Id == id, token);
+            return await _dbContext.Learners.FirstOrDefaultAsync(mentor => mentor.Id == id, token);
 
         }
 

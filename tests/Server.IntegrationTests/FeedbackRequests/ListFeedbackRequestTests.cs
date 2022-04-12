@@ -8,18 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static MasterCraft.Server.IntegrationTests.TestConstants;
-using MasterCraft.Shared.ViewModels;
 
-namespace MasterCraft.Server.IntegrationTests.Videos
+namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
 {
-    public class ListVideosTests : TestBase
+    public class ListFeedbackRequestsTests : TestBase
     {
         [Test]
-        public async Task ShouldReturnListOfVideosForMentor()
+        public async Task ShouldReturnListOfFeedbackRequestsForMentor()
         {
-            Video video = await SeedHelper.SeedTestVideo();
+            FeedbackRequest request = await SeedHelper.SeedTestFeedbackRequest();
 
-            TestResponse<List<VideoVm>> response = await TestApi.GetAsync<List<VideoVm>>($"videos?mentorid={video.MentorId}");
+            TestResponse<List<FeedbackRequest>> response = await TestApi.GetAsync<List<FeedbackRequest>>($"feedbackrequests?mentorid={request.MentorId}");
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
             Assert.IsTrue(response.Response.Count == 1);

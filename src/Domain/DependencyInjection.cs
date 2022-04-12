@@ -11,7 +11,7 @@ namespace MasterCraft.Domain
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddRequestHandlers();
-			services.AddTransient<ServiceDependencies>();
+			services.AddTransient<DomainServiceDependencies>();
 
             return services;
         }

@@ -18,7 +18,7 @@ namespace MasterCraft.Client.Authentication
 {
     public partial class Login : ComponentBase
     {
-        private GenerateTokenViewModel request = new();
+        private GenerateTokenVm request = new();
 
         [Inject]
         ApiClient ApiClient { get; set; }
@@ -32,10 +32,10 @@ namespace MasterCraft.Client.Authentication
         [Inject]
         ILocalStorageService LocalStorage { get; set; }
 
-        private async Task<ApiResponse<AccessTokenViewModel>> OnLoginClick()
+        private async Task<ApiResponse<AccessTokenVm>> OnLoginClick()
         {
-            ApiResponse<AccessTokenViewModel> apiResponse =
-                await ApiClient.PostAsync<GenerateTokenViewModel, AccessTokenViewModel>("token", request);
+            ApiResponse<AccessTokenVm> apiResponse =
+                await ApiClient.PostAsync<GenerateTokenVm, AccessTokenVm>("token", request);
 
             if (apiResponse.Response is not null)
             {

@@ -8,7 +8,7 @@ namespace MasterCraft.Client.Authentication
 {
     public partial class Register : ComponentBase
     {
-        private RegisterUserViewModel request = new();
+        private RegisterUserVm request = new();
 
         [Inject]
         ApiClient ApiClient { get; set; }
@@ -16,10 +16,10 @@ namespace MasterCraft.Client.Authentication
         [Inject]
         NavigationManager Navigation { get; set; }
 
-        private async Task<ApiResponse<Empty>> OnRegisterClick()
+        private async Task<ApiResponse<EmptyVm>> OnRegisterClick()
         {
-            ApiResponse<Empty> apiResponse =
-                await ApiClient.PostAsync<RegisterUserViewModel, Empty>("register", request);
+            ApiResponse<EmptyVm> apiResponse =
+                await ApiClient.PostAsync<RegisterUserVm, EmptyVm>("register", request);
 
             if (apiResponse.Response is not null)
             {

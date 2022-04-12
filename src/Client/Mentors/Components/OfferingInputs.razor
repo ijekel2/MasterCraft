@@ -1,4 +1,4 @@
-﻿<SubmissionForm TRequest=OfferingViewModel TResponse=Empty Request="@Offering" OnValidSubmit="OnSubmit" FormTitle="Offering" ButtonText="Next">
+﻿<SubmissionForm TRequest=OfferingVm TResponse=EmptyVm Request="@Offering" OnValidSubmit="OnSubmit" FormTitle="Offering" ButtonText="Next">
     <ChildContent>
         <div>
             <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Name this offering" @bind-Value="Offering.Name" />

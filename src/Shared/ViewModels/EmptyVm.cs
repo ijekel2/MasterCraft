@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Shared.ViewModels
 {
-    public class AccessTokenViewModel
+    public class EmptyVm
     {
-        public string AccessToken { get; set; }
-
-        public string Username { get; set; }
+        public static readonly EmptyVm Value = new();
     }
 }

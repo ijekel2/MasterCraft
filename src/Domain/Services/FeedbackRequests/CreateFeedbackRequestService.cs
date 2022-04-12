@@ -8,25 +8,25 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services.FeedbackRequests
 {
-    public class CreateFeedbackRequestService : DomainService<FeedbackRequestViewModel, FeedbackRequest>
+    public class CreateFeedbackRequestService : DomainService<FeedbackRequestVm, FeedbackRequest>
     {
         readonly IDbContext _dbContext;
 
-        public CreateFeedbackRequestService(IDbContext dbContext, ServiceDependencies serviceDependencies) : base(serviceDependencies)
+        public CreateFeedbackRequestService(IDbContext dbContext, DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
             _dbContext = dbContext;
         }
 
-        internal override async Task<FeedbackRequest> Handle(FeedbackRequestViewModel request, CancellationToken token = new())
+        internal override async Task<FeedbackRequest> Handle(FeedbackRequestVm request, CancellationToken token = new())
         {
-            FeedbackRequest feedbackRequest = Map<FeedbackRequestViewModel, FeedbackRequest>(request);
+            FeedbackRequest feedbackRequest = Map<FeedbackRequestVm, FeedbackRequest>(request);
 
             await _dbContext.AddAsync(feedbackRequest, token);
             await _dbContext.SaveChangesAsync(token);
             return feedbackRequest;
         }
 
-        internal async override Task Validate(FeedbackRequestViewModel request, DomainValidator validator, CancellationToken token = new())
+        internal async override Task Validate(FeedbackRequestVm request, DomainValidator validator, CancellationToken token = new())
         {
             await Task.CompletedTask;
         }

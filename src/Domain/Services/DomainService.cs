@@ -19,9 +19,9 @@ namespace MasterCraft.Domain.Services
     {
         private readonly Stopwatch _timer;
 
-        public ServiceDependencies Services { get; }
+        public DomainServiceDependencies Services { get; }
 
-        public DomainService(ServiceDependencies serviceDependencies)
+        public DomainService(DomainServiceDependencies serviceDependencies)
         {
             Services = serviceDependencies;
             _timer = new();

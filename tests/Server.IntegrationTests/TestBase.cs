@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System.Net.Http;
 using System.Threading.Tasks;
+using MasterCraft.Server.IntegrationTests.Helpers;
 
 namespace MasterCraft.Server.IntegrationTests
 {
@@ -20,6 +21,8 @@ namespace MasterCraft.Server.IntegrationTests
         public static HttpClient Client { get; private set; } = null!;
         public ApplicationDbContext AppDbContext { get; private set; } = null!;
         public IFileStorage FileStorage { get; private set; } = null!;
+        public SeedDatabaseHelper SeedHelper { get; private set; } = null!;
+
 
         [OneTimeSetUp]
         public async Task RunBeforeAnyTests()
@@ -39,6 +42,8 @@ namespace MasterCraft.Server.IntegrationTests
             //-- Get FileStorage service
             FileStorage = TestAppFactory.Services.GetRequiredService<IFileStorage>();
 
+            //-- Create Seeding helper.
+            SeedHelper = new SeedDatabaseHelper(AppDbContext);
         }
 
         protected async Task SeedDatabase<TEntity>(params TEntity[] records)
@@ -58,7 +63,7 @@ namespace MasterCraft.Server.IntegrationTests
             using var scope = TestAppFactory.Services.CreateScope();
             RegisterUserService register = scope.ServiceProvider.GetRequiredService<RegisterUserService>();
 
-            RegisterUserViewModel request = new()
+            RegisterUserVm request = new()
             {
                 FirstName = TestConstants.TestUser.FirstName,
                 LastName = TestConstants.TestUser.LastName,

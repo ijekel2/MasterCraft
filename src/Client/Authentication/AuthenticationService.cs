@@ -26,10 +26,10 @@ namespace MasterCraft.Client.Authentication
             cApiClient = apiClient;
         }
 
-        public async Task<ApiResponse<AccessTokenViewModel>> Login(GenerateTokenViewModel generateTokenCommand)
+        public async Task<ApiResponse<AccessTokenVm>> Login(GenerateTokenVm generateTokenCommand)
         {
-            ApiResponse<AccessTokenViewModel> apiResponse = 
-                await cApiClient.PostAsync<GenerateTokenViewModel, AccessTokenViewModel>("token", generateTokenCommand);
+            ApiResponse<AccessTokenVm> apiResponse = 
+                await cApiClient.PostAsync<GenerateTokenVm, AccessTokenVm>("token", generateTokenCommand);
             
             if (apiResponse.Response is not null)
             {
@@ -45,9 +45,9 @@ namespace MasterCraft.Client.Authentication
             cAuthStateProvider.NotifyUserLogout();
         }
 
-        public async Task<ApiResponse<Empty>> Register(RegisterUserViewModel registerUserCommand)
+        public async Task<ApiResponse<EmptyVm>> Register(RegisterUserVm registerUserCommand)
         {
-            return await cApiClient.PostAsync<RegisterUserViewModel, Empty>("token", registerUserCommand);
+            return await cApiClient.PostAsync<RegisterUserVm, EmptyVm>("token", registerUserCommand);
         }
     }
 }

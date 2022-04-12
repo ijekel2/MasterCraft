@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Shared.ViewModels
 {
-    public class RegisterUserViewModel
+    public class RegisterUserVm
     {
         [Required]
         [MaxLength(64)]

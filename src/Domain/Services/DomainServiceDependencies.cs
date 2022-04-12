@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services
 {
-    public class ServiceDependencies
+    public class DomainServiceDependencies
     {
-        internal ILogger<ServiceDependencies> Logger { get; }
+        internal ILogger<DomainServiceDependencies> Logger { get; }
         internal IIdentityService IdentityService { get; }
         internal ICurrentUserService CurrentUserService { get; }
 
-        public ServiceDependencies(ILogger<ServiceDependencies> logger, ICurrentUserService currentUserService, IIdentityService identityService)
+        public DomainServiceDependencies(ILogger<DomainServiceDependencies> logger, ICurrentUserService currentUserService, IIdentityService identityService)
         {
             Logger = logger;
             IdentityService = identityService;

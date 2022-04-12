@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Shared.ViewModels
 {
-    public class FeedbackRequestViewModel
+    public class FeedbackRequestVm
     {
         [Range(1, int.MaxValue)]
         public int MentorId { get; set; }

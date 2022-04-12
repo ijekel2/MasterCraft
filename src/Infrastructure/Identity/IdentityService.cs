@@ -26,7 +26,7 @@ namespace MasterCraft.Infrastructure.Identity
             _dbContext = dbContext;
         }
 
-        public async Task<AccessTokenViewModel> GenerateToken(string username, CancellationToken token = default)
+        public async Task<AccessTokenVm> GenerateToken(string username, CancellationToken token = default)
         {
             var user = await _userManager.FindByEmailAsync(username);
 
@@ -56,7 +56,7 @@ namespace MasterCraft.Infrastructure.Identity
                         SecurityAlgorithms.HmacSha256)),
                 new JwtPayload(claims));
 
-            AccessTokenViewModel output = new()
+            AccessTokenVm output = new()
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken),
                 Username = username

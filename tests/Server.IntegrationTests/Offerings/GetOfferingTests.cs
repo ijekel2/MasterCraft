@@ -2,6 +2,7 @@
 using MasterCraft.Domain.Entities;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using MasterCraft.Shared.ViewModels;
 
 namespace MasterCraft.Server.IntegrationTests.Offerings
 {
@@ -18,10 +19,9 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
             offering.MentorId = mentor.Id;
             await SeedDatabase(offering);
 
-            TestResponse<Mentor> response = await TestApi.GetAsync<Mentor>($"offerings/{offering.Id}");
+            TestResponse<OfferingVm> response = await TestApi.GetAsync<OfferingVm>($"offerings/{offering.Id}");
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
-            Assert.AreEqual(1, response.Response.Id);
         }
     }
 }

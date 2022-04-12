@@ -13,7 +13,7 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
         [Test]
         public async Task ShouldFailIfAccountAlreadyExistsForEmail()
         {
-            var request = new RegisterUserViewModel()
+            var request = new RegisterUserVm()
             {
                 FirstName = TestUser.FirstName,
                 LastName = TestUser.LastName,
@@ -22,14 +22,14 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
                 ConfirmPassword = TestUser.Password
             };
 
-            TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserViewModel, ApplicationUser>("register", request);
+            TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserVm, ApplicationUser>("register", request);
             Assert.IsFalse(response.Success);
         }
 
         [Test]
         public async Task ShouldCreateUserForValidCommand()
         {
-            var request = new RegisterUserViewModel()
+            var request = new RegisterUserVm()
             {
                 FirstName = TestUser.FirstName,
                 LastName = TestUser.LastName,
@@ -38,7 +38,7 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
                 ConfirmPassword = TestUser.Password
             };
 
-            TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserViewModel, ApplicationUser>("register", request);
+            TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserVm, ApplicationUser>("register", request);
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
         }

@@ -11,7 +11,7 @@ namespace MasterCraft.Server.Controllers
     public class OfferingsController : ApiBaseController
     {
         [HttpPost]
-        public async Task<ActionResult> Create(OfferingViewModel request, [FromServices] CreateOfferingService service)
+        public async Task<ActionResult> Create(OfferingVm request, [FromServices] CreateOfferingService service)
         {
             Offering offering = await service.HandleRequest(request);
             return Created(offering.Id);
@@ -19,19 +19,19 @@ namespace MasterCraft.Server.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<Offering>> Get(int id, [FromServices] GetOfferingService service)
+        public async Task<ActionResult<OfferingVm>> Get(int id, [FromServices] GetOfferingService service)
         {
             return await service.HandleRequest(id);
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Offering>>> List([FromQuery] OfferingParameters parameters, [FromServices] ListOfferingsService service)
+        public async Task<ActionResult<List<OfferingVm>>> List([FromQuery] OfferingParameters parameters, [FromServices] ListOfferingsService service)
         {
             return await service.HandleRequest(parameters);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(OfferingViewModel request, [FromServices] CreateOfferingService service)
+        public async Task<ActionResult> Update(OfferingVm request, [FromServices] CreateOfferingService service)
         {
             await service.HandleRequest(request);
             return Ok();

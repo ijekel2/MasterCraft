@@ -8,25 +8,25 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services.Offerings
 {
-    public class CreateOfferingService : DomainService<OfferingViewModel, Offering>
+    public class CreateOfferingService : DomainService<OfferingVm, Offering>
     {
         readonly IDbContext _dbContext;
 
-        public CreateOfferingService(IDbContext dbContext, ServiceDependencies serviceDependencies) : base(serviceDependencies)
+        public CreateOfferingService(IDbContext dbContext, DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
             _dbContext = dbContext;
         }
 
-        internal override async Task<Offering> Handle(OfferingViewModel request, CancellationToken token = new())
+        internal override async Task<Offering> Handle(OfferingVm request, CancellationToken token = new())
         {
-            Offering offering = Map<OfferingViewModel, Offering>(request);
+            Offering offering = Map<OfferingVm, Offering>(request);
 
             await _dbContext.AddAsync(offering, token);
             await _dbContext.SaveChangesAsync(token);
             return offering;
         }
 
-        internal async override Task Validate(OfferingViewModel request, DomainValidator validator, CancellationToken token = new())
+        internal async override Task Validate(OfferingVm request, DomainValidator validator, CancellationToken token = new())
         {
             await Task.CompletedTask;
         }

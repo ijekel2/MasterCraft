@@ -10,7 +10,7 @@ namespace MasterCraft.Domain.Services.Streams
 {
     public class GetStreamingUrlService : DomainService<string, string> 
     {
-        public GetStreamingUrlService(ServiceDependencies serviceDependencies) : base(serviceDependencies)
+        public GetStreamingUrlService(DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
         }
 

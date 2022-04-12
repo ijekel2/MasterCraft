@@ -11,7 +11,7 @@ namespace MasterCraft.Server.Controllers
     public class FeedbackRequestsController : ApiBaseController
     {
         [HttpPost]
-        public async Task<ActionResult> Create(FeedbackRequestViewModel request, [FromServices] CreateFeedbackRequestService service)
+        public async Task<ActionResult> Create(FeedbackRequestVm request, [FromServices] CreateFeedbackRequestService service)
         {
             FeedbackRequest offering = await service.HandleRequest(request);
             return Created(offering.Id);
@@ -30,8 +30,9 @@ namespace MasterCraft.Server.Controllers
             return await service.HandleRequest(parameters);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Update(FeedbackRequestViewModel request, [FromServices] CreateFeedbackRequestService service)
+        [HttpPost]
+        [Route("submit")]
+        public async Task<ActionResult> Submit(SubmitFeedbackRequestVm request, [FromServices] SubmitFeedbackRequestService service)
         {
             await service.HandleRequest(request);
             return Ok();
@@ -39,11 +40,20 @@ namespace MasterCraft.Server.Controllers
 
         [HttpPost]
         [Route("{id}/fulfill")]
-        public async Task<ActionResult> Fulfill(CompleteFeedbackViewModel request, [FromServices] CompleteFeedbackService service)
+        public async Task<ActionResult> Fulfill(int id, FulfillFeedbackRequestVm request, [FromServices] FulfillFeedbackRequestService service)
         {
+            request.FeedbackRequestId = id;
             await service.HandleRequest(request);
             return Ok();
         }
 
+        [HttpPost]
+        [Route("{id}/decline")]
+        public async Task<ActionResult> Decline(int id, DeclineFeedbackRequestVm request, [FromServices] DeclineFeedbackRequestService service)
+        {
+            request.FeedbackRequestId = id;
+            await service.HandleRequest(request);
+            return Ok();
+        }
     }
 }

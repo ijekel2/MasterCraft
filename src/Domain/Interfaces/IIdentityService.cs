@@ -13,7 +13,7 @@ namespace MasterCraft.Domain.Interfaces
     {
         Task<bool> IsValidUserNameAndPassword(string password, string username, CancellationToken token = default);
 
-        Task<AccessTokenViewModel> GenerateToken(string username, CancellationToken token = default);
+        Task<AccessTokenVm> GenerateToken(string username, CancellationToken token = default);
 
         Task<string> GetUserNameAsync(string userId, CancellationToken token = default);
 

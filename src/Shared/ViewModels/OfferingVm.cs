@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Shared.ViewModels
 {
-    public class OfferingViewModel
+    public class OfferingVm
     {
         [Range(1, int.MaxValue)]
         public int MentorId { get; set; }

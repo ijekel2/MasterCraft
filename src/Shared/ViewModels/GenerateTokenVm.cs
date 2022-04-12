@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Shared.ViewModels
 {
-    public class GenerateTokenViewModel
+    public class GenerateTokenVm
     {
         [Required]
         [MaxLength(64)]

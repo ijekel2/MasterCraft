@@ -20,7 +20,7 @@ namespace MasterCraft.Server.Controllers
     public class VideosController : ApiBaseController
     {
         [HttpPost]
-        public async Task<ActionResult> Create(VideoViewModel video, [FromServices] CreateVideoService service)
+        public async Task<ActionResult> Create(VideoVm video, [FromServices] CreateVideoService service)
         {
             Video savedVideo = await service.HandleRequest(video);
 
@@ -29,13 +29,13 @@ namespace MasterCraft.Server.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<VideoViewModel>> Get(int id, [FromServices] GetVideoService service)
+        public async Task<ActionResult<VideoVm>> Get(int id, [FromServices] GetVideoService service)
         {
             return await service.HandleRequest(id);
         }
     
         [HttpGet]
-        public async Task<ActionResult<List<VideoViewModel>>> List(VideoParameters parameters, [FromServices] ListVideosService service)
+        public async Task<ActionResult<List<VideoVm>>> List([FromQuery] VideoParameters parameters, [FromServices] ListVideosService service)
         {
             return await service.HandleRequest(parameters);
         }

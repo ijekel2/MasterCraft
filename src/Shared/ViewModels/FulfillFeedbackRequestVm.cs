@@ -1,5 +1,4 @@
-﻿using MasterCraft.Shared.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Shared.ViewModels
 {
-    public class VideoViewModel
+    public class FulfillFeedbackRequestVm
     {
         public int MentorId { get; set; }
 
@@ -15,9 +14,6 @@ namespace MasterCraft.Shared.ViewModels
 
         public int FeedbackRequestId { get; set; }
 
-        public VideoType VideoType { get; set; }
-
-        public string Url { get; set; }
-
+        public string VideoUrl { get; set; }
     }
 }

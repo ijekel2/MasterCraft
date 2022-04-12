@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static MasterCraft.Server.IntegrationTests.TestConstants;
+using MasterCraft.Shared.ViewModels;
 
 namespace MasterCraft.Server.IntegrationTests.Offerings
 {
@@ -16,14 +17,9 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
         [Test]
         public async Task ShouldReturnListOfOfferingsForMentor()
         {
-            Mentor mentor = TestMentor;
-            await SeedDatabase(mentor);
+            Offering offering = await SeedHelper.SeedTestOffering();
 
-            Offering offering = TestOffering;
-            offering.MentorId = TestMentor.Id;
-            await SeedDatabase(offering);
-
-            TestResponse<List<Offering>> response = await TestApi.GetAsync<List<Offering>>($"offerings?mentorid={mentor.Id}");
+            TestResponse<List<OfferingVm>> response = await TestApi.GetAsync<List<OfferingVm>>($"offerings?mentorid={offering.MentorId}");
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
             Assert.IsTrue(response.Response.Count == 1);

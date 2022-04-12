@@ -7,9 +7,9 @@ namespace MasterCraft.Client.Authentication
 {
     public interface IAuthenticationService
     {
-        Task<ApiResponse<Empty>> Register(RegisterUserViewModel registerUserCommand);
+        Task<ApiResponse<EmptyVm>> Register(RegisterUserVm registerUserCommand);
 
-        Task<ApiResponse<AccessTokenViewModel>> Login(GenerateTokenViewModel pGenerateTokenCommand);
+        Task<ApiResponse<AccessTokenVm>> Login(GenerateTokenVm pGenerateTokenCommand);
 
         Task Logout();
     }

@@ -8,24 +8,18 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Server.IntegrationTests.Mentors
+namespace MasterCraft.Server.IntegrationTests.Learners
 {
-    public class CreateMentorTests : TestBase
+    public class CreateLearnerTests : TestBase
     {
         [Test]
-        public async Task ShouldSaveMentorAndPicture()
+        public async Task ShouldSaveLearnerAndPicture()
         {
-            MentorVm request = new()
-            {
-                ChannelName = TestConstants.TestMentor.ChannelName,
-                ChannelLink = TestConstants.TestMentor.ChannelLink,
-                PersonalTitle = TestConstants.TestMentor.PersonalTitle,
-                ProfileCustomUri = TestConstants.TestMentor.ProfileCustomUri
-            };
+            LearnerVm request = new();
 
             //-- Send create mentor request and validate the response.
-            TestResponse<EmptyVm> response = await TestApi.PostJsonAsync<MentorVm, EmptyVm>(
-                "mentors",
+            TestResponse<EmptyVm> response = await TestApi.PostJsonAsync<LearnerVm, EmptyVm>(
+                "learners",
                 request);
 
             Assert.IsTrue(response.Success);
@@ -33,7 +27,7 @@ namespace MasterCraft.Server.IntegrationTests.Mentors
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.IsNotNull(response.Headers.Location);
             Assert.IsTrue(int.TryParse(response.Headers.Location.Last().ToString(), out int id));
-            Mentor mentor = await AppDbContext.Mentors.FirstOrDefaultAsync(mentor => mentor.Id == id);
+            Learner mentor = await AppDbContext.Learners.FirstOrDefaultAsync(mentor => mentor.Id == id);
             Assert.IsNotNull(mentor);
             //Assert.IsNotEmpty(mentor.ProfileImageUrl);
 

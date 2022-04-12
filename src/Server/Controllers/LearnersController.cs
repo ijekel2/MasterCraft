@@ -12,22 +12,22 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using MasterCraft.Domain.Services.Learners;
 
 namespace MasterCraft.Server.Controllers
 {
-    public class MentorsController : ApiBaseController
+    public class LearnersController : ApiBaseController
     {
         [HttpPost]
-        public async Task<ActionResult> Create(MentorVm request, [FromServices] CreateMentorService service)
+        public async Task<ActionResult> Create(LearnerVm request, [FromServices] CreateLearnerService service)
         {
-            Mentor mentor = await service.HandleRequest(request);
-
-            return Created(mentor.Id);
+            Learner learner = await service.HandleRequest(request);
+            return Created(learner.Id);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<Mentor>> Get(int id, [FromServices] GetMentorService service)
+        public async Task<ActionResult<Learner>> Get(int id, [FromServices] GetLearnerService service)
         {
             return await service.HandleRequest(id);
         }

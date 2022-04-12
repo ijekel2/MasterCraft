@@ -1,4 +1,5 @@
 ﻿using MasterCraft.Domain.Common.Utilities;
+using MasterCraft.Domain.Entities;
 using MasterCraft.Domain.Interfaces;
 using MasterCraft.Domain.Parameters;
 using MasterCraft.Shared.ViewModels;
@@ -11,23 +12,43 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services.Videos
 {
-    public class ListVideosService : DomainService<VideoParameters, List<VideoViewModel>>
+    public class ListVideosService : DomainService<VideoParameters, List<VideoVm>>
     {
         readonly IDbContext _dbContext;
 
-        public ListVideosService(IDbContext dbContext, ServiceDependencies serviceDependencies) : base(serviceDependencies)
+        public ListVideosService(IDbContext dbContext, DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
             _dbContext = dbContext;
         }
 
-        internal override Task<List<VideoViewModel>> Handle(VideoParameters parameters, CancellationToken token = default)
+        internal override async Task<List<VideoVm>> Handle(VideoParameters parameters, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            IQueryable<Video> list = _dbContext.Videos;
+
+            if (parameters.FeedbackRequestId != 0)
+            {
+                list = list.Where(video => video.FeedbackRequestId == parameters.FeedbackRequestId);
+            }
+            else
+            {
+                if (parameters.MentorId != 0)
+                {
+                    list = list.Where(video => video.MentorId == parameters.MentorId);
+                }
+
+                if (parameters.LearnerId != 0)
+                {
+                    list = list.Where(video => video.LearnerId == parameters.LearnerId);
+                }
+            }
+            
+            List<Video> videos = await PagedList(list, parameters, token);
+            return videos.Select(video => Map<Video, VideoVm>(video)).ToList();
         }
 
-        internal override Task Validate(VideoParameters parameters, DomainValidator validator, CancellationToken token = default)
+        internal override async Task Validate(VideoParameters parameters, DomainValidator validator, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
         }
     }
 }

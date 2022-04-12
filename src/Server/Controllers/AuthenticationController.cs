@@ -10,14 +10,14 @@ namespace MasterCraft.Server.Controllers
     {
         [Route("/api/token")]
         [HttpPost]
-        public async Task<ActionResult<AccessTokenViewModel>> GenerateToken(GenerateTokenViewModel request, [FromServices] GenerateTokenService service)
+        public async Task<ActionResult<AccessTokenVm>> GenerateToken(GenerateTokenVm request, [FromServices] GenerateTokenService service)
         {
             return await service.HandleRequest(request);
         }
 
         [Route("/api/register")]
         [HttpPost]
-        public async Task<ActionResult<ApplicationUserViewModel>> RegisterUser(RegisterUserViewModel request, [FromServices] RegisterUserService service)
+        public async Task<ActionResult<ApplicationUserVm>> RegisterUser(RegisterUserVm request, [FromServices] RegisterUserService service)
         {
             return await service.HandleRequest(request);
         }

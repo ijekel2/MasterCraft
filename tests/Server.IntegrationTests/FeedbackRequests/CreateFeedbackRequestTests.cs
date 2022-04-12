@@ -25,7 +25,7 @@ namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
             offering.MentorId = mentor.Id;
             await SeedDatabase(offering);
 
-            FeedbackRequestViewModel request = new()
+            FeedbackRequestVm request = new()
             {
                 Status = TestFeedbackRequest.Status,
                 ContentLink = TestFeedbackRequest.ContentLink,
@@ -35,7 +35,7 @@ namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
             };
 
             //-- Send create mentor request and validate the response.
-            TestResponse<Empty> response = await TestApi.PostJsonAsync<FeedbackRequestViewModel, Empty>(
+            TestResponse<EmptyVm> response = await TestApi.PostJsonAsync<FeedbackRequestVm, EmptyVm>(
                 "feedbackrequests",
                 request);
 
