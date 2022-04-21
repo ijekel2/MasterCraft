@@ -26,15 +26,16 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
             FeedbackRequest request = new()
             {
                 Id = requestVm.FeedbackRequestId,
-                Status = FeedbackRequestStatus.Fulfilled
             };
 
-            _dbContext.Update(request);
+            _dbContext.Attach(request);
+
+            request.Status = FeedbackRequestStatus.Fulfilled;
 
             Video video = new()
             {
                 MentorId = requestVm.MentorId,
-                LearnerId = request.LearnerId,
+                LearnerId = requestVm.LearnerId,
                 FeedbackRequestId = requestVm.FeedbackRequestId,
                 Url = requestVm.VideoUrl,
                 VideoType = VideoType.FeedbackResponse

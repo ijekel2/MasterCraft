@@ -27,8 +27,10 @@ namespace MasterCraft.Server.IntegrationTests.Learners
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.IsNotNull(response.Headers.Location);
             Assert.IsTrue(int.TryParse(response.Headers.Location.Last().ToString(), out int id));
-            Learner mentor = await AppDbContext.Learners.FirstOrDefaultAsync(mentor => mentor.Id == id);
-            Assert.IsNotNull(mentor);
+
+            using var context = GetDbContext();
+            Learner learner = await context.Learners.FirstOrDefaultAsync(mentor => mentor.Id == id);
+            Assert.IsNotNull(learner);
             //Assert.IsNotEmpty(mentor.ProfileImageUrl);
 
             ////-- Read image from storage and validate.

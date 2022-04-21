@@ -14,28 +14,14 @@ namespace MasterCraft.Server.IntegrationTests.Videos
         [Test]
         public async Task ShouldSaveVideo()
         {
-            Mentor mentor = TestConstants.TestMentor;
-            Learner learner = TestConstants.TestLearner;
-            Offering offering = TestConstants.TestOffering;
-            FeedbackRequest request = TestConstants.TestFeedbackRequest;
-
-            await SeedDatabase(mentor);
-            await SeedDatabase(learner);
-
-            offering.MentorId = mentor.Id;
-            await SeedDatabase(offering);
-
-            request.MentorId = mentor.Id;
-            request.LearnerId = learner.Id;
-            request.OfferingId = offering.Id;
-            await SeedDatabase(TestConstants.TestFeedbackRequest);
+            FeedbackRequest request = await SeedHelper.SeedTestFeedbackRequest();
             
             VideoVm video = new()
             {
                 VideoType = TestConstants.TestVideo.VideoType,
                 Url = TestConstants.TestVideo.Url,
-                MentorId = mentor.Id,
-                LearnerId = learner.Id,
+                MentorId = request.MentorId,
+                LearnerId = request.LearnerId,
                 FeedbackRequestId = request.Id
             };
 
@@ -51,7 +37,8 @@ namespace MasterCraft.Server.IntegrationTests.Videos
             Assert.IsTrue(int.TryParse(response.Headers.Location.Last().ToString(), out int id));
 
             //-- Select record and validate.
-            Video savedVideo = await AppDbContext.Videos.FirstOrDefaultAsync(video => video.Id == id);
+            using var context = GetDbContext();
+            Video savedVideo = await context.Videos.FirstOrDefaultAsync(video => video.Id == id);
             Assert.IsNotNull(savedVideo);
         }
     }

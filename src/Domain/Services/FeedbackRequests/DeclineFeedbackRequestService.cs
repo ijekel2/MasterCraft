@@ -1,6 +1,7 @@
 ﻿using MasterCraft.Domain.Common.Utilities;
 using MasterCraft.Domain.Entities;
 using MasterCraft.Domain.Interfaces;
+using MasterCraft.Shared.Enums;
 using MasterCraft.Shared.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
             request.Id = requestVm.FeedbackRequestId;
             _dbContext.FeedbackRequests.Attach(request);
 
-            request.Status = Shared.Enums.FeedbackRequestStatus.Declined;
+            request.Status = FeedbackRequestStatus.Declined;
 
             await _dbContext.SaveChangesAsync();
             

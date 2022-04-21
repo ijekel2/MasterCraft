@@ -33,8 +33,11 @@ namespace MasterCraft.Server.IntegrationTests.Mentors
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.IsNotNull(response.Headers.Location);
             Assert.IsTrue(int.TryParse(response.Headers.Location.Last().ToString(), out int id));
-            Mentor mentor = await AppDbContext.Mentors.FirstOrDefaultAsync(mentor => mentor.Id == id);
+
+            using var context = GetDbContext();
+            Mentor mentor = await context.Mentors.FirstOrDefaultAsync(mentor => mentor.Id == id);
             Assert.IsNotNull(mentor);
+
             //Assert.IsNotEmpty(mentor.ProfileImageUrl);
 
             ////-- Read image from storage and validate.

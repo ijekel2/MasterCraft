@@ -46,7 +46,8 @@ namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
             Assert.IsTrue(int.TryParse(response.Headers.Location.Last().ToString(), out int id));
 
             //-- Select record and validate.
-            FeedbackRequest feedbackRequest = await AppDbContext.FeedbackRequests.FirstOrDefaultAsync(request => request.Id == id);
+            using var context = GetDbContext();
+            FeedbackRequest feedbackRequest = await context.FeedbackRequests.FirstOrDefaultAsync(request => request.Id == id);
             Assert.IsNotNull(feedbackRequest);
         }
     }

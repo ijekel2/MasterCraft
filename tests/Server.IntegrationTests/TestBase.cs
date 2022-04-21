@@ -15,14 +15,10 @@ namespace MasterCraft.Server.IntegrationTests
 {
     public class TestBase
     {
-        private IServiceScope _dbContextScope = null!;
-
         public static WebApplicationFactory<Startup> TestAppFactory { get; private set; } = null!;
         public static HttpClient Client { get; private set; } = null!;
-        public ApplicationDbContext AppDbContext { get; private set; } = null!;
         public IFileStorage FileStorage { get; private set; } = null!;
-        public SeedDatabaseHelper SeedHelper { get; private set; } = null!;
-
+        public SeedDatabaseHelper SeedHelper => new SeedDatabaseHelper(TestAppFactory.Services.CreateScope());
 
         [OneTimeSetUp]
         public async Task RunBeforeAnyTests()
@@ -41,14 +37,12 @@ namespace MasterCraft.Server.IntegrationTests
 
             //-- Get FileStorage service
             FileStorage = TestAppFactory.Services.GetRequiredService<IFileStorage>();
-
-            //-- Create Seeding helper.
-            SeedHelper = new SeedDatabaseHelper(AppDbContext);
         }
 
         protected async Task SeedDatabase<TEntity>(params TEntity[] records)
         {
-            var context = _dbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var dbContextScope = TestAppFactory.Services.CreateScope();
+            var context = dbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
             foreach (TEntity record in records)
             {
@@ -56,6 +50,12 @@ namespace MasterCraft.Server.IntegrationTests
             }
 
             await context.SaveChangesAsync();
+        }
+        
+        protected ApplicationDbContext GetDbContext()
+        {
+            var dbContextScope  = TestAppFactory.Services.CreateScope();
+            return dbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         }
 
         private async Task CreateTestUsers()
@@ -77,22 +77,21 @@ namespace MasterCraft.Server.IntegrationTests
 
         private async Task EnsureDbCreated()
         {
-            _dbContextScope = TestAppFactory.Services.CreateScope();
-            var context = _dbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-            //-- There will be an 'unable to open database file' exception if VS is set to break on all exceptions
-            await context.Database.MigrateAsync();
-
-            AppDbContext = context;
+            var dbContextScope = TestAppFactory.Services.CreateScope();
+            using (var context = dbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                //-- There will be an 'unable to open database file' exception if VS is set to break on all exceptions
+                await context.Database.MigrateAsync();
+            }
         }
 
         public async Task EnsureDbDeleted()
         {
-            _dbContextScope = TestAppFactory.Services.CreateScope();
-            var context = _dbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-            await context.Database.EnsureDeletedAsync();
-            _dbContextScope.Dispose();
+            var dbContextScope = TestAppFactory.Services.CreateScope();
+            using (var context = dbContextScope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                await context.Database.EnsureDeletedAsync();
+            }
         }
 
         [OneTimeTearDown]

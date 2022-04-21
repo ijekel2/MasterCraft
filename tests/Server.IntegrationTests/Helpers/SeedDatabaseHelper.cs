@@ -1,5 +1,6 @@
 ﻿using MasterCraft.Domain.Entities;
 using MasterCraft.Infrastructure.Persistence;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,13 @@ namespace MasterCraft.Server.IntegrationTests.Helpers
     {
         ApplicationDbContext _dbContext;
 
-        public SeedDatabaseHelper(ApplicationDbContext pDbContext)
+        public SeedDatabaseHelper(IServiceScope pServiceScope)
         {
-            _dbContext = pDbContext;
+            _dbContext = pServiceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>(); ;
         }
 
         public async Task<Mentor> SeedTestMentor()
-        {
+        {            
             Mentor mentor = TestConstants.TestMentor;
             await SeedDatabase(mentor);
 

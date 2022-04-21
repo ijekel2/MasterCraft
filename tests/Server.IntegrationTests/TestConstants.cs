@@ -10,7 +10,7 @@ namespace MasterCraft.Server.IntegrationTests
 {
     public class TestConstants
     {
-        public static readonly ApplicationUser TestUser = new()
+        public static ApplicationUser TestUser => new()
         {
             FirstName = "test",
             LastName = "mentor",
@@ -19,7 +19,7 @@ namespace MasterCraft.Server.IntegrationTests
             Password = "mentor!123",
         };
 
-        public static readonly Mentor TestMentor = new()
+        public static Mentor TestMentor => new()
         {
             ChannelName = "The Testy Tester",
             ChannelLink = "Test Link",
@@ -27,12 +27,12 @@ namespace MasterCraft.Server.IntegrationTests
             ProfileCustomUri = "test-mentor"
         };
 
-        public static readonly Learner TestLearner = new()
+        public static Learner TestLearner => new()
         {
             ProfileImageUrl = "myimageurl"
         };
 
-        public static readonly Offering TestOffering = new()
+        public static Offering TestOffering => new()
         {
             Name = "Test Feedback",
             Description = "I offer you great test feedback.",
@@ -45,13 +45,13 @@ namespace MasterCraft.Server.IntegrationTests
             MentorId = TestMentor.Id
         };
 
-        public static readonly FeedbackRequest TestFeedbackRequest = new()
+        public static FeedbackRequest TestFeedbackRequest => new()
         {
             Status = Shared.Enums.FeedbackRequestStatus.Pending,
             ContentLink = "Test Link"
         };
 
-        public static readonly Video TestVideo = new()
+        public static Video TestVideo => new()
         {
             VideoType = Shared.Enums.VideoType.FeedbackRequest,
             Url = "MyFileUrl"

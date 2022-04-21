@@ -42,7 +42,8 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
             Assert.IsTrue(int.TryParse(response.Headers.Location.Last().ToString(), out int id));
 
             //-- Select record and validate.
-            Offering offering = await AppDbContext.Offerings.FirstOrDefaultAsync(offering => offering.Id == id);
+            using var context = GetDbContext();
+            Offering offering = await context.Offerings.FirstOrDefaultAsync(offering => offering.Id == id);
             Assert.IsNotNull(offering);
         }
     }

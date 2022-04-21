@@ -14,16 +14,22 @@ using MasterCraft.Shared.Enums;
 
 namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
 {
-    public class DeclineFeedbackRequestsTests : TestBase
+    public class FulfillFeedbackRequestsTests : TestBase
     {
         [Test]
-        public async Task ShouldChangeFeedbackRequestStatusToDeclined()
+        public async Task ShouldChangeFeedbackRequestStatusToFulfilled()
         {
             FeedbackRequest testRequest = await SeedHelper.SeedTestFeedbackRequest();
 
-            TestResponse<EmptyVm> response = await TestApi.PostJsonAsync<DeclineFeedbackRequestVm, EmptyVm>(
-                $"feedbackrequests/{testRequest.Id}/decline", 
-                new DeclineFeedbackRequestVm());
+            TestResponse<EmptyVm> response = await TestApi.PostJsonAsync<FulfillFeedbackRequestVm, EmptyVm>(
+                $"feedbackrequests/{testRequest.Id}/fulfill", 
+                new FulfillFeedbackRequestVm()
+                {
+                    MentorId = testRequest.MentorId,
+                    LearnerId = testRequest.LearnerId,
+                    FeedbackRequestId = testRequest.Id,
+                    VideoUrl = "test url"
+                });
 
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
@@ -32,7 +38,8 @@ namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
             using var context = GetDbContext();
             FeedbackRequest feedbackRequest = await context.FeedbackRequests.FirstOrDefaultAsync(request => request.Id == testRequest.Id);
             Assert.IsNotNull(feedbackRequest);
-            Assert.AreEqual(FeedbackRequestStatus.Declined, feedbackRequest.Status);
+            Assert.AreEqual(FeedbackRequestStatus.Fulfilled, feedbackRequest.Status);
         }
+
     }
 }
