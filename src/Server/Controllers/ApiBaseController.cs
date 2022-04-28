@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Security.Claims;
 
 namespace MasterCraft.Server.Controllers
 {
@@ -14,6 +16,11 @@ namespace MasterCraft.Server.Controllers
         public CreatedResult Created(int id)
         {
             return Created($"{GetUrl()}/{id}", null);
+        }
+
+        protected Claim? GetClaim(string claimType)
+        {
+            return HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == claimType);
         }
     }
 }

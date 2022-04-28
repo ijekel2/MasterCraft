@@ -1,0 +1,48 @@
+﻿@page "/loom"
+@using MasterCraft.Client.Common.Api;
+@using Microsoft.Extensions.Configuration
+
+@implements IDisposable
+
+@inject IJSRuntime JS
+@inject ApiClient ApiClient
+@inject IConfiguration Configuration
+@inject NavigationManager Navigation
+
+<h3>Loom</h3>
+@VideoHtml
+<br />
+<iframe src="https://antiochianprodsa.blob.core.windows.net/servicetexts/Bright%20Wednesday%20VESP.pdf" style="width: 800px; height: 1200px"></iframe>
+<br />
+<iframe src="https://player.vimeo.com/video/375472770?h=bd806d16f2&color=5AB033&title=0&byline=0&portrait=0" style="width: 800px; height: 600px"></iframe>
+<br />
+
+<br />
+<button id="btn-record">Record</button>
+
+@code {
+    MarkupString VideoHtml;
+    DotNetObjectReference<Loom> ObjectReference;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        ApiResponse<AccessTokenVm> response = await ApiClient.GetAsync<AccessTokenVm>("loomtoken");
+
+        ObjectReference = DotNetObjectReference.Create(this);
+        await JS.InvokeVoidAsync("LoomService.init", new object [] { response?.Response.AccessToken, "btn-record", ObjectReference });
+    }
+
+    [JSInvokable]
+    public void InsertVideoHtml(string html)
+    {
+        VideoHtml = (MarkupString)html;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        ObjectReference?.Dispose();
+    }
+}

@@ -37,6 +37,15 @@ namespace MasterCraft.Client.Common.Api
             return await ParseResponse<TResponse>(response);
         }
 
+        public async Task<ApiResponse<TResponse>> GetAsync<TResponse>(string url)
+        {
+            HttpClient client = await SetupHttpClient();
+
+            HttpResponseMessage response = await client.GetAsync($"/api/{url.TrimStart('/')}");
+
+            return await ParseResponse<TResponse>(response);
+        }
+
         private async Task<ApiResponse<TResponse>> ParseResponse<TResponse>(HttpResponseMessage response)
         {
             string lResponseBody = await response.Content.ReadAsStringAsync();

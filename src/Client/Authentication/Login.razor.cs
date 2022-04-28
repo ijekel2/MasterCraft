@@ -2,7 +2,6 @@
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Components;
 using MasterCraft.Shared.ViewModels;
-using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;

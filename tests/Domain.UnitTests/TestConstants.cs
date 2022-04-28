@@ -16,8 +16,8 @@ namespace MasterCraft.Domain.UnitTests
             Id = "23f01adf-26d4-4b36-9a95-f4721354b65f",
             FirstName = "test",
             LastName = "mentor",
-            Username = "mentor@local",
-            Email = "mentor@local",
+            Username = "mastercraftdev@outlook.com",
+            Email = "mastercraftdev@outlook.com",
         };
     }
 }

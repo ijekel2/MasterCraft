@@ -1,5 +1,6 @@
 ﻿using MasterCraft.Domain.Entities;
 using MasterCraft.Domain.Models;
+using MasterCraft.Shared.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +15,15 @@ namespace MasterCraft.Server.IntegrationTests
         {
             FirstName = "test",
             LastName = "mentor",
-            Username = "mentor@local",
-            Email = "mentor@local",
+            Username = "mastercraftdev@outlook.com",
+            Email = "mastercraftdev@outlook.com",
             Password = "mentor!123",
         };
 
         public static Mentor TestMentor => new()
         {
             ChannelName = "The Testy Tester",
-            ChannelLink = "Test Link",
+            ChannelLink = "https://www.mastercraft.cc/",
             PersonalTitle = "Tester",
             ProfileCustomUri = "test-mentor"
         };
@@ -55,7 +56,15 @@ namespace MasterCraft.Server.IntegrationTests
         {
             VideoType = Shared.Enums.VideoType.FeedbackRequest,
             Url = "MyFileUrl"
-            
+
+        };
+
+        public static BankAccountVm TestBankAccount => new()
+        {
+            Country = "US",
+            Currency = "USD",
+            RoutingNumber = "110000000",
+            AccountNumber = "000123456789"
         };
 
         public static readonly string TestImage = "Content\\TestPic.png";

@@ -1,0 +1,21 @@
+﻿using MasterCraft.Domain.Interfaces;
+using MasterCraft.Domain.Parameters;
+using MasterCraft.Domain.Services.Checkouts;
+using MasterCraft.Shared.Enums;
+using MasterCraft.Shared.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+namespace MasterCraft.Server.Controllers
+{
+    public class CheckoutsController : ApiBaseController
+    {
+        [HttpPost]
+        public async Task<ActionResult<CheckoutVm>> Create(CreateCheckoutVm request, [FromServices] CreateCheckoutService checkoutService)
+        {
+            return await checkoutService.HandleRequest(request);
+        }
+    }
+}

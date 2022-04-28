@@ -24,10 +24,6 @@ namespace MasterCraft.Domain.Interfaces
 
         DbSet<Payment> Payments { get; }
 
-        DbSet<BankAccount> BankAccounts { get; }
-
-        DbSet<PaymentCard> PaymentCards { get; }
-
         public DbSet<Video> Videos { get; }
 
         //

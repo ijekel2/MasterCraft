@@ -23,6 +23,7 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
 
         internal override async Task<EmptyVm> Handle(SubmitFeedbackRequestVm requestVm, CancellationToken token = default)
         {
+            //-- Create new feedbackRequest
             FeedbackRequest request = new()
             {
                 Status = FeedbackRequestStatus.Pending
@@ -30,6 +31,7 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
 
             await _dbContext.AddAsync(request);
 
+            //-- Create video for the feedback request
             Video video = new()
             {
                 MentorId = requestVm.MentorId,

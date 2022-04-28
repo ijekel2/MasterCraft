@@ -19,6 +19,7 @@ namespace MasterCraft.Server.IntegrationTests
         public static HttpClient Client { get; private set; } = null!;
         public IFileStorage FileStorage { get; private set; } = null!;
         public SeedDatabaseHelper SeedHelper => new SeedDatabaseHelper(TestAppFactory.Services.CreateScope());
+        public StripeHelper StripeHelper => new StripeHelper(TestAppFactory.Services);
 
         [OneTimeSetUp]
         public async Task RunBeforeAnyTests()

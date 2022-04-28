@@ -1,9 +1,11 @@
 ﻿using MasterCraft.Domain.Entities;
+using MasterCraft.Domain.Interfaces;
 using MasterCraft.Domain.Parameters;
 using MasterCraft.Domain.Services.FeedbackRequests;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Server.Controllers
@@ -13,8 +15,8 @@ namespace MasterCraft.Server.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(FeedbackRequestVm request, [FromServices] CreateFeedbackRequestService service)
         {
-            FeedbackRequest offering = await service.HandleRequest(request);
-            return Created(offering.Id);
+            FeedbackRequest feedbackRequest = await service.HandleRequest(request);
+            return Created(feedbackRequest.Id);
         }
 
         [HttpGet]

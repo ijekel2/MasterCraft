@@ -1,6 +1,5 @@
 ﻿using MasterCraft.Client.Common.Api;
 using MasterCraft.Shared.ViewModels;
-using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 

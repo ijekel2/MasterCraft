@@ -15,6 +15,8 @@ using MasterCraft.Domain.Interfaces;
 using System.Reflection;
 using System.IO;
 using MasterCraft.Infrastructure.FileStorage;
+using Stripe;
+using MasterCraft.Infrastructure.Payments;
 
 namespace MasterCraft.Infrastructure
 {
@@ -65,8 +67,12 @@ namespace MasterCraft.Infrastructure
                 };
             });
 
+            //-- Configure Stripe
+            StripeConfiguration.ApiKey = configuration["StripeKey"];
+
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IFileStorage, LocalFileStorage>();
+            services.AddTransient<IPaymentService, StripePaymentService>();
             services.AddScoped<IDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
             return services;
         }

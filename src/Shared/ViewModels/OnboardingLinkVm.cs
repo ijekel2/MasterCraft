@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Shared.Enums
+namespace MasterCraft.Shared.ViewModels
 {
-    public enum AccountType
+    public class OnboardingLinkVm
     {
-        Checking,
-        Savings
+        public string Url { get; set; }
     }
 }

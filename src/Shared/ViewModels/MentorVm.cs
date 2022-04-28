@@ -9,6 +9,15 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class MentorVm
     {
+        [MaxLength(64)]
+        public string FirstName { get; set; }
+
+        [MaxLength(64)]
+        public string LastName { get; set; }
+
+        [MaxLength(128)]
+        public string Email { get; set; }
+
         [Required]
         [MaxLength(1024)]
         public string ChannelLink { get; set; }

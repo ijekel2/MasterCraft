@@ -33,9 +33,9 @@ namespace MasterCraft.Client
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
-            builder.Services.AddSyncfusionBlazor(options => { options.IgnoreScriptIsolation = true; });
+            builder.Services.AddSyncfusionBlazor();
 
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTcyMzc1QDMxMzkyZTM0MmUzMG1nNi9ldkdHWWw3d3RTQ3lWbDJJN0FDTFY1eXNQOVBFaGxQRVFwa2E4Y289");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjI2MTIzQDMyMzAyZTMxMmUzMG5zTUswdFpHek5CNzZCZ00xcld5ekNKVUNzVlVNT1R0SVVrbEhhYnpEa0E9");
 
             await builder.Build().RunAsync();
         }

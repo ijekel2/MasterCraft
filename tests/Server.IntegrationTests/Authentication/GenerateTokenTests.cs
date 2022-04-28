@@ -1,6 +1,5 @@
 ﻿using MasterCraft.Server.IntegrationTests.Api;
 using MasterCraft.Shared.ViewModels;
-using MasterCraft.Shared.ViewModels;
 using NUnit.Framework;
 using System.Threading.Tasks;
 using static MasterCraft.Server.IntegrationTests.TestConstants;

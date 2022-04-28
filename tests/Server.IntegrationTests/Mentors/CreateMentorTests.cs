@@ -3,6 +3,7 @@ using MasterCraft.Server.IntegrationTests.Api;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using Stripe;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -38,6 +39,7 @@ namespace MasterCraft.Server.IntegrationTests.Mentors
             Mentor mentor = await context.Mentors.FirstOrDefaultAsync(mentor => mentor.Id == id);
             Assert.IsNotNull(mentor);
 
+            //-- Validate that the image was saved 
             //Assert.IsNotEmpty(mentor.ProfileImageUrl);
 
             ////-- Read image from storage and validate.
@@ -48,6 +50,11 @@ namespace MasterCraft.Server.IntegrationTests.Mentors
             //Assert.IsNotNull(fileBytes);
             //Assert.IsTrue(fileBytes.Length > 1);
 
+            //-- Validate Stripe account was created
+            Assert.IsNotEmpty(mentor.StripeAccountId);
+            var service = new AccountService();
+            Account account = await service.GetAsync(mentor.StripeAccountId);
+            Assert.IsNotNull(account);
         }
     }
 }

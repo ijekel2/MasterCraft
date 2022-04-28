@@ -9,6 +9,15 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class LearnerVm
     {
+        [MaxLength(64)]
+        public string FirstName { get; set; }
+
+        [MaxLength(64)]
+        public string LastName { get; set; }
+
+        [MaxLength(128)]
+        public string Email { get; set; }
+
         [MaxLength(256)]
         public string ProfileImageUrl { get; set; }
     }

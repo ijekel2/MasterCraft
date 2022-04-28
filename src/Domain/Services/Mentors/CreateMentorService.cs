@@ -12,11 +12,14 @@ namespace MasterCraft.Domain.Services.Mentors
     {
         readonly IDbContext _dbContext;
         readonly ICurrentUserService _userService;
+        readonly IPaymentService _paymentService;
 
-        public CreateMentorService(IDbContext dbContext, ICurrentUserService currentUserService, DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
+        public CreateMentorService(IDbContext dbContext, ICurrentUserService currentUserService, 
+            IPaymentService paymentService, DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
             _dbContext = dbContext;
             _userService = currentUserService;
+            _paymentService = paymentService;
         }
 
         internal override async Task Validate(MentorVm mentor, DomainValidator validator, CancellationToken token = new())
@@ -28,6 +31,7 @@ namespace MasterCraft.Domain.Services.Mentors
         {
             Mentor mentor = Map<MentorVm, Mentor>(request);
             mentor.ApplicationUserId = _userService.UserId;
+            mentor.StripeAccountId = await _paymentService.CreateConnectedAccount(request, token);
 
             await _dbContext.AddAsync(mentor, token);
             await _dbContext.SaveChangesAsync(token);

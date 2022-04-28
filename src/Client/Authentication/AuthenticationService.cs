@@ -1,7 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Shared.ViewModels;
-using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;

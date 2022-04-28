@@ -24,10 +24,6 @@ namespace MasterCraft.Infrastructure.Persistence
 
         public DbSet<Payment> Payments => Set<Payment>();
 
-        public DbSet<BankAccount> BankAccounts => Set<BankAccount>();
-
-        public DbSet<PaymentCard> PaymentCards => Set<PaymentCard>();
-
         public DbSet<Video> Videos => Set<Video>();
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
@@ -55,7 +51,7 @@ namespace MasterCraft.Infrastructure.Persistence
             modelBuilder.Entity<Mentor>().Property(mentor => mentor.ProfileCustomUri).HasMaxLength(64);
             modelBuilder.Entity<Mentor>().Property(mentor => mentor.ProfileImageUrl).HasMaxLength(1024);
             modelBuilder.Entity<Mentor>().Property(mentor => mentor.ProfileImageUrl).HasMaxLength(1024);
-
+            modelBuilder.Entity<Mentor>().Property(mentor => mentor.StripeAccountId).HasMaxLength(64);
 
             //-- Configure Learner table
             modelBuilder.Entity<Learner>().Property(learner => learner.ProfileImageUrl).HasMaxLength(256);
@@ -83,37 +79,7 @@ namespace MasterCraft.Infrastructure.Persistence
                 .HasMaxLength(32);
 
             //-- Configure Payment table
-            modelBuilder.Entity<Payment>().Property(payment => payment.AuthorizationCode).HasMaxLength(64);
-            modelBuilder.Entity<Payment>().Property(payment => payment.TransactionId).HasMaxLength(64);
-
-            //-- Configure BankAccount table
-            modelBuilder.Entity<BankAccount>().Property(account => account.Institution).HasMaxLength(64);
-            modelBuilder.Entity<BankAccount>().Property(account => account.AccountNumber).HasMaxLength(64);
-            modelBuilder.Entity<BankAccount>().Property(account => account.RoutingNumber).HasMaxLength(64);
-            modelBuilder.Entity<BankAccount>().Property(account => account.AccountType)
-                .HasConversion(new EnumToStringConverter<AccountType>())
-                .HasMaxLength(32);
-
-            //-- Configure PaymentCard table
-            modelBuilder.Entity<PaymentCard>().Property(card => card.CardNumber).HasMaxLength(64);
-            modelBuilder.Entity<PaymentCard>().Property(card => card.BillingFirstName).HasMaxLength(64);
-            modelBuilder.Entity<PaymentCard>().Property(card => card.BillingLastName).HasMaxLength(64);
-            modelBuilder.Entity<PaymentCard>().Property(card => card.BillingCompany).HasMaxLength(64);
-            modelBuilder.Entity<PaymentCard>().Property(card => card.BillingStreet).HasMaxLength(128); 
-            modelBuilder.Entity<PaymentCard>().Property(card => card.BillingPremise).HasMaxLength(64);
-            modelBuilder.Entity<PaymentCard>().Property(card => card.BillingCity).HasMaxLength(64);
-            modelBuilder.Entity<PaymentCard>().Property(card => card.BillingState).HasMaxLength(64);
-            modelBuilder.Entity<PaymentCard>().Property(card => card.BillingPostalCode).HasMaxLength(64);
-            modelBuilder.Entity<PaymentCard>().Property(card => card.BillingCountry).HasMaxLength(64);
-
-            //-- Billing Address: TODO
-
-            modelBuilder.Entity<PaymentCard>().Property(account => account.CardType)
-               .HasConversion(new EnumToStringConverter<PaymentCardType>())
-               .HasMaxLength(32);
-            modelBuilder.Entity<PaymentCard>().Property(account => account.CardNetwork)
-               .HasConversion(new EnumToStringConverter<PaymentCardNetwork>())
-               .HasMaxLength(32);
+            modelBuilder.Entity<Payment>().Property(payment => payment.StripePaymentId).HasMaxLength(64);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -11,5 +11,6 @@ namespace MasterCraft.Domain.Entities
         public string PersonalTitle { get; set; }
         public string ProfileCustomUri { get; set; }
         public string ProfileImageUrl { get; set; }
+        public string StripeAccountId { get; set; }
     }
 }

@@ -2,6 +2,12 @@
 using MasterCraft.Domain.Services.Authentication;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Server.Controllers
@@ -20,6 +26,45 @@ namespace MasterCraft.Server.Controllers
         public async Task<ActionResult<ApplicationUserVm>> RegisterUser(RegisterUserVm request, [FromServices] RegisterUserService service)
         {
             return await service.HandleRequest(request);
+        }
+
+        [Route("/api/loomtoken")]
+        [HttpGet]
+        public async Task<ActionResult<AccessTokenVm>> GetLoomToken([FromServices] IConfiguration configuration)
+        {
+            string privateKeyPem = System.IO.File.ReadAllText(configuration["LoomKeyFile"]);
+
+            privateKeyPem = privateKeyPem.Replace("-----BEGIN PRIVATE KEY-----", "");
+            privateKeyPem = privateKeyPem.Replace("-----END PRIVATE KEY-----", "");
+
+            byte[] privateKeyRaw = Convert.FromBase64String(privateKeyPem);
+
+            RSACryptoServiceProvider provider = new RSACryptoServiceProvider();
+            provider.ImportPkcs8PrivateKey(new ReadOnlySpan<byte>(privateKeyRaw), out _);
+            RsaSecurityKey rsaSecurityKey = new RsaSecurityKey(provider);
+
+            var signingCredentials = new SigningCredentials(rsaSecurityKey, SecurityAlgorithms.RsaSha256); ;
+
+            var now = DateTime.Now;
+            var nowUnixSeconds = new DateTimeOffset(now).ToUnixTimeSeconds();
+            var exp = now.AddMinutes(2);
+            var expUnixSeconds = new DateTimeOffset(exp).ToUnixTimeSeconds();
+
+            var jwt = new JwtSecurityToken(
+                claims: new Claim[] {
+                    new Claim(JwtRegisteredClaimNames.Iat, nowUnixSeconds.ToString(), ClaimValueTypes.Integer64),
+                    new Claim(JwtRegisteredClaimNames.Iss, configuration["LoomPublicKey"]),
+                    new Claim(JwtRegisteredClaimNames.Exp, expUnixSeconds.ToString(), ClaimValueTypes.Integer64)
+                },
+                signingCredentials: signingCredentials
+            );
+
+            string token = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            return await Task.FromResult(new AccessTokenVm
+            {
+                AccessToken = token,
+            });
         }
     }
 }
