@@ -1,19 +1,12 @@
 using Blazored.LocalStorage;
 using MasterCraft.Client.Authentication;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Syncfusion.Blazor;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using MasterCraft.Client;
 using MasterCraft.Client.Common.Api;
+using MasterCraft.Client.Common.Services;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Syncfusion.Blazor;
+using System.Threading.Tasks;
 
 namespace MasterCraft.Client
 {
@@ -27,7 +20,8 @@ namespace MasterCraft.Client
             builder.Services.AddHttpClient("MasterCraft");
 
             builder.Services
-                .AddScoped<IAuthenticationService, AuthenticationService>()
+                .AddScoped<AuthenticationService>()
+                .AddScoped<StripeService>()
                 .AddTransient<ApiClient>();
 
             builder.Services.AddBlazoredLocalStorage();

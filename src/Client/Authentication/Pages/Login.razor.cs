@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
-using MasterCraft.Client.Common.Components;
+using MasterCraft.Client.Shared.Components;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Client.Authentication
+namespace MasterCraft.Client.Authentication.Pages
 {
     public partial class Login : ComponentBase
     {

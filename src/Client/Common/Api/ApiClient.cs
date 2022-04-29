@@ -27,7 +27,7 @@ namespace MasterCraft.Client.Common.Api
             cConfiguration = configuration;
         }
 
-        public async Task<ApiResponse<TResponse>> PostAsync<TRequest, TResponse>(string url, TRequest requestBody)
+        public async Task<ApiResponse<TResponse>> PostAsync<TRequest, TResponse>(string url, TRequest requestBody) where TResponse : new()
         {
             HttpClient client = await SetupHttpClient();
             HttpContent content = new StringContent(JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json");
@@ -37,7 +37,7 @@ namespace MasterCraft.Client.Common.Api
             return await ParseResponse<TResponse>(response);
         }
 
-        public async Task<ApiResponse<TResponse>> GetAsync<TResponse>(string url)
+        public async Task<ApiResponse<TResponse>> GetAsync<TResponse>(string url) where TResponse : new()
         {
             HttpClient client = await SetupHttpClient();
 
@@ -46,38 +46,41 @@ namespace MasterCraft.Client.Common.Api
             return await ParseResponse<TResponse>(response);
         }
 
-        private async Task<ApiResponse<TResponse>> ParseResponse<TResponse>(HttpResponseMessage response)
+        private async Task<ApiResponse<TResponse>> ParseResponse<TResponse>(HttpResponseMessage response) where TResponse : new()
         {
-            string lResponseBody = await response.Content.ReadAsStringAsync();
+            string responseBody = await response.Content.ReadAsStringAsync();
+            ApiResponse<TResponse> apiResponse = new();
 
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
+                case HttpStatusCode.Created:
+                    if (!string.IsNullOrEmpty(responseBody))
+                    {
+                        apiResponse.Response = JsonSerializer.Deserialize<TResponse>(responseBody, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                    }
+                    else
+                    {
+                        apiResponse.Response = new TResponse();
+                    }
+                    return apiResponse;
+                case HttpStatusCode.BadRequest:
+                case HttpStatusCode.NotFound:
+                    JsonDocument lJson = JsonDocument.Parse(responseBody);
+                    Dictionary<string, string[]> errors = JsonSerializer.Deserialize<Dictionary<string, string[]>>(lJson.RootElement.GetProperty("errors").ToString());
+
                     return new ApiResponse<TResponse>()
                     {
-                        Response = JsonSerializer.Deserialize<TResponse>(lResponseBody, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })
-                    };
-                case HttpStatusCode.BadRequest:
-                default:
-                    JsonDocument lJson = JsonDocument.Parse(lResponseBody);
-
-                    try
-                    {
-                        Dictionary<string, string[]> errors = JsonSerializer.Deserialize<Dictionary<string, string[]>>(lJson.RootElement.GetProperty("errors").ToString());
-                        
-                        return new ApiResponse<TResponse>()
+                        ErrorDetails = new ValidationProblemDetails(errors)
                         {
-                            ErrorDetails = new ValidationProblemDetails(errors)
-                            {
-                                Title = lJson.RootElement.GetProperty("title").GetString(),
-                            }
-                        };
-                    }
-                    catch
+                            Title = lJson.RootElement.GetProperty("title").GetString(),
+                        }
+                    };
+                default:
+                    return new ApiResponse<TResponse>()
                     {
-                        throw new HttpRequestException(
-                            $"Validation failed. Status Code: {response.StatusCode} ({(int)response.StatusCode})");
-                    }
+                        ErrorDetails = JsonSerializer.Deserialize<ProblemDetails>(responseBody, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })
+                    };
             }
         }
 

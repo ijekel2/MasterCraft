@@ -1,22 +1,22 @@
-﻿<SubmissionForm TRequest=MentorVm TResponse=EmptyVm Request="@Profile" OnValidSubmit="OnSubmit" FormTitle="Profile" ButtonText="Next" >
-    <ChildContent>
-        <div id="firstname">
-            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel link" @bind-Value="Profile.ChannelName" />
-            <ValidationMessage For="@(() => Profile.ChannelName)" />
-        </div>
-        <div id="lastname">
-            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel name" @bind-Value="Profile.ChannelLink" />
-            <ValidationMessage For="@(() => Profile.ChannelLink)" />
-        </div>
-        <div>
-            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Personal title" @bind-Value="Profile.PersonalTitle" />
-            <ValidationMessage For="@(() => Profile.PersonalTitle)" />
-        </div>
-        <div>
-            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Custom profile ID" @bind-Value="Profile.ProfileCustomUri" />
-            <ValidationMessage For="@(() => Profile.ProfileCustomUri)" />
-        </div>
-    </ChildContent>
-</SubmissionForm>
+﻿<div>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel link" @bind-Value="Profile.ChannelName" />
+    <ValidationMessage For="@(() => Profile.ChannelName)" />
+</div>
+<div>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel name" @bind-Value="Profile.ChannelLink" />
+    <ValidationMessage For="@(() => Profile.ChannelLink)" />
+</div>
+<div>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Personal title" @bind-Value="Profile.PersonalTitle" />
+    <ValidationMessage For="@(() => Profile.PersonalTitle)" />
+</div>
+<div>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Custom profile ID" @bind-Value="Profile.ProfileCustomUri" />
+    <ValidationMessage For="@(() => Profile.ProfileCustomUri)" />
+</div>
+<SfUploader></SfUploader>
 
-
+@code {
+    [Parameter]
+    public MentorVm Profile { get; set; }
+}

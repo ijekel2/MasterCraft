@@ -25,18 +25,18 @@ namespace MasterCraft.Server.IntegrationTests.Mentors
             };
 
             //-- Send create mentor request and validate the response.
-            TestResponse<EmptyVm> response = await TestApi.PostJsonAsync<MentorVm, EmptyVm>(
+            TestResponse<MentorCreatedVm> response = await TestApi.PostJsonAsync<MentorVm, MentorCreatedVm> (
                 "mentors",
                 request);
 
             Assert.IsTrue(response.Success);
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.IsNotNull(response.Headers.Location);
-            Assert.IsTrue(int.TryParse(response.Headers.Location.Last().ToString(), out int id));
+            Assert.IsNotEmpty(response.Response.Id);
+            Assert.IsNotEmpty(response.Response.StripeAccountId);
 
             using var context = GetDbContext();
-            Mentor mentor = await context.Mentors.FirstOrDefaultAsync(mentor => mentor.Id == id);
+            Mentor mentor = await context.Mentors.FirstOrDefaultAsync(mentor => mentor.Id.ToString() == response.Response.Id);
             Assert.IsNotNull(mentor);
 
             //-- Validate that the image was saved 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services.Mentors
 {
-    public class CreateMentorService : DomainService<MentorVm, Mentor>
+    public class CreateMentorService : DomainService<MentorVm, MentorCreatedVm>
     {
         readonly IDbContext _dbContext;
         readonly ICurrentUserService _userService;
@@ -27,7 +27,7 @@ namespace MasterCraft.Domain.Services.Mentors
             await Task.CompletedTask;
         }
 
-        internal override async Task<Mentor> Handle(MentorVm request, CancellationToken token = new())
+        internal override async Task<MentorCreatedVm> Handle(MentorVm request, CancellationToken token = new())
         {
             Mentor mentor = Map<MentorVm, Mentor>(request);
             mentor.ApplicationUserId = _userService.UserId;
@@ -35,7 +35,11 @@ namespace MasterCraft.Domain.Services.Mentors
 
             await _dbContext.AddAsync(mentor, token);
             await _dbContext.SaveChangesAsync(token);
-            return mentor;
+            return new MentorCreatedVm()
+            {
+                Id = mentor.Id.ToString(),
+                StripeAccountId = mentor.StripeAccountId
+            };
         }
     }
 }

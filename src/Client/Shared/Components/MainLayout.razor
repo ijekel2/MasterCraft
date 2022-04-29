@@ -4,7 +4,7 @@
     <div class="main">
         <NavMenu />
         <div class="content px-4">
-            @Body
+             @Body
         </div>
     </div>
 </div>
@@ -28,10 +28,13 @@
 
     /*Input Styling*/
     .mc-input {
-        background-color: @Constants.McLightGray !important;
-        @*border-color: @Constants.McLightGray !important;*@
-        border-radius: 10px  !important;
+        border-color: @Constants.McGreen !important;
+        border-radius: 5px  !important;
         font-family: 'Roboto';
+    }
+
+    .mc-input:focus {
+        border-color: @Constants.McGreen !important;
     }
 
     /*Button Styling*/
@@ -51,18 +54,22 @@
         background-color: @Constants.McDarkBlack;
     }
 
-    .mc-btn-red {
-        background-color: @Constants.McRed;
-        border-color: @Constants.McRed;
+    .mc-btn-green {
+        background-color: @Constants.McGreen;
+        border-color: @Constants.McGreen;
     }
 
-    .mc-btn-red:hover {
-        background-color:  @Constants.McDarkRed;
+    .mc-btn-green:hover {
+        background-color:  @Constants.McDarkGreen;
     }
 
     .mc-btn-gray {
         background-color: @Constants.McButtonGray;
         border-color: @Constants.McButtonGray;
+    }
+
+    .mc-btn-gray:hover {
+        background-color: @Constants.McButtonDarkGray;
     }
 
     /*Text and heading styling*/
@@ -81,5 +88,11 @@
         width: 800px;
         text-align: center;
         margin: auto;
+    }
+
+    /* Card styling*/
+    .e-card, .e-card:hover{
+        box-shadow: 5px 5px 5px @Constants.McGray;
+        background-color: @Constants.McLightGray
     }
 </style>

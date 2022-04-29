@@ -6,27 +6,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Client.Mentors.Components
+namespace MasterCraft.Client.Mentors.Pages
 {
-    public partial class OfferingInputs : ComponentBase
+    public partial class SetupOfferingPage : ComponentBase
     {
         [Inject]
         public ApiClient ApiClient { get; set; }
 
+        [Inject]
+        public NavigationManager Navigation { get; set; }
+
         [Parameter]
         public OfferingVm Offering { get; set; } = new();
 
-        [Parameter]
-        public Action OnValidSubmit { get; set; }
+        [CascadingParameter]
+        public int CurrentProgressItem { get; set; }
+
+        protected override void OnInitialized()
+        {
+            CurrentProgressItem = 3;
+        }
 
         private async Task<ApiResponse<EmptyVm>> OnSubmit()
         {
             ApiResponse<EmptyVm> apiResponse = await ApiClient.PostAsync<OfferingVm, EmptyVm>("offerings", Offering);
-            apiResponse.Response = new();
 
             if (apiResponse.Success)
             {
-                OnValidSubmit.Invoke();
+                Navigation.NavigateTo("/setup/review");
             }
 
             return apiResponse;

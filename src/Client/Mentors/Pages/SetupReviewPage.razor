@@ -1,0 +1,25 @@
+﻿@page "/setup/review"
+@layout SetupLayout
+@inject NavigationManager Navigation
+
+<h3>Woohoo! you&#39re almost done</h3>
+<MentorDisplay />
+<SfProgressButton Content="Complete Setup" CssClass="mc-btn mc-btn-gray" @onclick="OnCompleteSetupClick">
+    <ProgressButtonAnimationSettings Effect="Syncfusion.Blazor.SplitButtons.AnimationEffect.ZoomIn"></ProgressButtonAnimationSettings>
+    <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+</SfProgressButton>
+
+@code {
+    [CascadingParameter]
+    public int CurrentProgressItem { get; set; }
+
+    protected override void OnInitialized()
+    {
+        CurrentProgressItem = 4;
+    }
+
+    private void OnCompleteSetupClick()
+    {
+        Navigation.NavigateTo("/mentor/complete");
+    }
+}

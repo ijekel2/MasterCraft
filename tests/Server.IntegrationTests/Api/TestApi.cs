@@ -85,7 +85,6 @@ namespace MasterCraft.Server.IntegrationTests.Api
                         testResponse.Response = new TResponse();
                     }
 
-                    testResponse.Headers.Location = response.Headers.Location?.AbsolutePath;
                     testResponse.Success = true;
                     return testResponse;
                 case HttpStatusCode.BadRequest:

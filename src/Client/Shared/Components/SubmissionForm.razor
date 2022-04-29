@@ -1,0 +1,56 @@
+﻿@using Syncfusion.Blazor.Spinner
+@typeparam TRequest
+@typeparam TResponse
+
+<SfCard>
+    <EditForm Model="@Request" OnValidSubmit="OnSubmitClick">
+        <div class="mc-edit-form">
+            @if (showSpinner)
+            {
+                <SfSpinner Size="40" Type="SpinnerType.Fabric" Visible="true"></SfSpinner>
+            }
+            else
+            {
+            
+                <h3>@FormTitle</h3>
+                <DataAnnotationsValidator />
+                <CustomValidation @ref="customValidation" />
+
+                @if (cShowValidationSummary)
+                {
+                    <ValidationSummary />
+                }
+
+                <div class="mc-input-group">
+                    @ChildContent
+                </div>
+
+                <SfButton HtmlAttributes=@SubmitAttribute Content="@ButtonText" CssClass="mc-btn mc-btn-gray" />
+            }
+        </div>
+    </EditForm>
+</SfCard>
+
+<style>
+    .e-card {
+        padding: 10px;
+        width: 450px;
+        margin: auto
+    }
+
+    .mc-edit-form {
+        width: 400px;
+    }
+
+    .mc-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .mc-edit-form > .e-btn {
+        margin: auto;
+        margin-top: 30px;
+    }
+</style>
+

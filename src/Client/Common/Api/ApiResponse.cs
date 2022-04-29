@@ -14,4 +14,5 @@ namespace MasterCraft.Client.Common.Api
 
         public bool Success => Response is not null;
     }
+
 }

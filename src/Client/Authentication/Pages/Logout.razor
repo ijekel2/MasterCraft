@@ -1,6 +1,7 @@
 ﻿@page "/logout"
+@using MasterCraft.Client.Common.Services
 @inject NavigationManager Navigation
-@inject IAuthenticationService AuthService
+@inject AuthenticationService AuthService
 
 @code{
     protected override async Task OnInitializedAsync()

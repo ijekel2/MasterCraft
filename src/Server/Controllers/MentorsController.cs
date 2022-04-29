@@ -19,11 +19,10 @@ namespace MasterCraft.Server.Controllers
     public class MentorsController : ApiBaseController
     {
         [HttpPost]
-        public async Task<ActionResult> Create(MentorVm request, [FromServices] CreateMentorService service)
+        public async Task<ActionResult<MentorCreatedVm>> Create(MentorVm request, [FromServices] CreateMentorService service)
         {
-            Mentor mentor = await service.HandleRequest(request);
-
-            return Created(mentor.Id);
+            MentorCreatedVm mentor = await service.HandleRequest(request);
+            return Created(mentor.Id, mentor);
         }
 
         [HttpGet]

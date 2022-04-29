@@ -1,0 +1,116 @@
+﻿@inherits LayoutComponentBase
+@layout MainLayout
+
+@using MasterCraft.Client.Mentors.Components
+@using MasterCraft.Client.Common.Services
+@using System.Security.Claims;
+
+@inject NavigationManager Navigation
+@inject StripeService Stripe
+
+<AuthorizeView>
+    <Authorized>
+        <div class="mc-title">
+            <h3>Set up your MasterCraft account</h3>
+            <hr />
+        </div>
+        <div class="mc-progress-tracker">
+            @foreach (var crumb in progressItems)
+            {
+                bool active = CurrentProgressItem >= crumb.Key;
+
+                if (crumb.Key > 1)
+                {
+                    string cssClass = active ? "active" : "inactive";
+                    <SfIcon Name="IconName.ChevronRight" IconCss="@cssClass"></SfIcon>
+                }
+
+                string labelClass = active ? "active-label" : "inactive";
+                <label class=@labelClass @onclick="() => OnProgressItemClick(crumb.Key)">@crumb.Value</label>
+            }
+        </div>
+
+        <div class="entry-form">
+            @Body
+        </div>
+        
+    </Authorized>
+</AuthorizeView>
+
+<style>
+    .mc-progress-tracker {
+        display: flex;
+        flex-direction: row;
+        margin: auto;
+        width: 360px
+    }
+
+    .active, .active-label {
+        color:  @Constants.McGreen;
+    }
+
+    .inactive {
+         color: @Constants.McGray;
+    }
+
+    .active-label {
+        color:  @Constants.McGreen;
+    }
+
+    .active-label:hover {
+        color:  @Constants.McDarkGreen;
+    }
+
+    .chevron {
+        margin: 5px;
+        vertical-align: middle
+    }
+
+    .label {
+        vertical-align: middle
+    }
+
+    .bottom-btn, mc-btn{
+        margin:auto;
+        margin-top: 30px;
+    }
+
+    .entry-form{
+        margin: auto;
+        margin-top: 30px;
+    }
+</style>
+
+@code {
+    private Dictionary<int, string> progressItems = new()
+    {
+        { 1, "Profile" },
+        { 2, "Payments" },
+        { 3, "Offering" },
+        { 4, "Review" }
+    };
+
+    public int CurrentProgressItem { get; set; } = 1;
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+
+    private async Task OnProgressItemClick(int crumbNumber)
+    {
+        @switch (crumbNumber)
+        {
+            case 1:
+                Navigation.NavigateTo("/setup/profile");
+                break;
+            case 2:
+                await Stripe.RedirectToVendorOnboarding((await AuthState).User.FindFirst(ClaimTypes.Name).Value, "setup/offering");
+                break;
+            case 3:
+                Navigation.NavigateTo("setup/offering");
+                break;
+            case 4:
+                Navigation.NavigateTo("setup/review");
+                break;
+        }
+    }
+}

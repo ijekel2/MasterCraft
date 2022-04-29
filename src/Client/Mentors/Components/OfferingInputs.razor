@@ -1,46 +1,47 @@
-﻿<SubmissionForm TRequest=OfferingVm TResponse=EmptyVm Request="@Offering" OnValidSubmit="OnSubmit" FormTitle="Offering" ButtonText="Next">
-    <ChildContent>
-        <div>
-            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Name this offering" @bind-Value="Offering.Name" />
-            <ValidationMessage For="@(() => Offering.Name)" />
-        </div>
-        <div>
-            <SfTextBox Type="InputType.Text" Multiline="true" CssClass="mc-input" Placeholder="Describe this offering" @bind-Value="Offering.Description" />
-            <ValidationMessage For="@(() => Offering.Description)" />
-        </div>
-        <div>
-            <SfNumericTextBox CssClass="mc-input" Placeholder="Length of feedback in minutes" @bind-Value="Offering.FeedbackMinutes" />
-            <ValidationMessage For="@(() => Offering.FeedbackMinutes)" />
-        </div>
-        <div>
-            <SfNumericTextBox CssClass="mc-input" Placeholder="Days until feedback is complete" @bind-Value="Offering.DeliveryDays" />
-            <ValidationMessage For="@(() => Offering.DeliveryDays)" />
-        </div>
-        <div>
-            <SfNumericTextBox CssClass="mc-input" Placeholder="Price" @bind-Value="Offering.Price" />
-            <ValidationMessage For="@(() => Offering.Price)" />
-        </div>
-        <div>
-            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 1" @bind-Value="Offering.SampleQuestion1" />
-            <ValidationMessage For="@(() => Offering.SampleQuestion1)" />
-        </div>
-        <div>
-            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 2" @bind-Value="Offering.SampleQuestion2" />
-            <ValidationMessage For="@(() => Offering.SampleQuestion2)" />
-        </div>
-        <div>
-            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 3" @bind-Value="Offering.SampleQuestion3" />
-            <ValidationMessage For="@(() => Offering.SampleQuestion3)" />
-        </div>
-        <div>
-            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 4" @bind-Value="Offering.SampleQuestion4" />
-            <ValidationMessage For="@(() => Offering.SampleQuestion4)" />
-        </div>
-        <div>
-            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 5" @bind-Value="Offering.SampleQuestion5" />
-            <ValidationMessage For="@(() => Offering.SampleQuestion5)" />
-        </div>
-    </ChildContent>
-</SubmissionForm>
+﻿<div>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Name this offering" @bind-Value="Offering.Name" />
+    <ValidationMessage For="@(() => Offering.Name)" />
+</div>
+<div>
+    <SfTextBox Type="InputType.Text" Multiline="true" CssClass="mc-input" Placeholder="Describe this offering" @bind-Value="Offering.Description" />
+    <ValidationMessage For="@(() => Offering.Description)" />
+</div>
+<div>
+    <SfNumericTextBox CssClass="mc-input" Placeholder="Length of feedback in minutes" @bind-Value="Offering.FeedbackMinutes" />
+    <ValidationMessage For="@(() => Offering.FeedbackMinutes)" />
+</div>
+<div>
+    <SfNumericTextBox CssClass="mc-input" Placeholder="Days until feedback is complete" @bind-Value="Offering.DeliveryDays" />
+    <ValidationMessage For="@(() => Offering.DeliveryDays)" />
+</div>
+<div>
+    <SfNumericTextBox CssClass="mc-input" Placeholder="Price" @bind-Value="Offering.Price" />
+    <ValidationMessage For="@(() => Offering.Price)" />
+</div>
+<div>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 1" @bind-Value="Offering.SampleQuestion1" />
+    <ValidationMessage For="@(() => Offering.SampleQuestion1)" />
+</div>
+<div>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 2" @bind-Value="Offering.SampleQuestion2" />
+    <ValidationMessage For="@(() => Offering.SampleQuestion2)" />
+</div>
+<div>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 3" @bind-Value="Offering.SampleQuestion3" />
+    <ValidationMessage For="@(() => Offering.SampleQuestion3)" />
+</div>
+<div>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 4" @bind-Value="Offering.SampleQuestion4" />
+    <ValidationMessage For="@(() => Offering.SampleQuestion4)" />
+</div>
+<div>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 5" @bind-Value="Offering.SampleQuestion5" />
+    <ValidationMessage For="@(() => Offering.SampleQuestion5)" />
+</div>
 
+
+@code {
+    [Parameter]
+    public OfferingVm Offering { get; set; }
+}
 

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Client.Common.Components
+namespace MasterCraft.Client.Shared.Components
 {
     public class CustomValidation : ComponentBase
     {

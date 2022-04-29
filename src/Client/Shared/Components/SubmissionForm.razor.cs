@@ -1,16 +1,15 @@
 ﻿using MasterCraft.Client.Common.Api;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Client.Common.Components
+namespace MasterCraft.Client.Shared.Components
 {
     public partial class SubmissionForm<TRequest, TResponse> : ComponentBase
     {
         private bool cShowValidationSummary = false;
+        private bool showSpinner = false;
         private CustomValidation customValidation = new();
         private Dictionary<string, object> SubmitAttribute = new Dictionary<string, object>()
         {
@@ -34,14 +33,24 @@ namespace MasterCraft.Client.Common.Components
 
         private async Task OnSubmitClick()
         {
-            customValidation?.ClearErrors();
+            showSpinner = true;
 
-            ApiResponse<TResponse> apiResponse = await OnValidSubmit.Invoke();
-
-            if (apiResponse is null)
+            try
             {
-                customValidation?.DisplayErrors(apiResponse.ErrorDetails);
-                cShowValidationSummary = true;
+                customValidation?.ClearErrors();
+
+                ApiResponse<TResponse> apiResponse = await OnValidSubmit.Invoke();
+
+                if (!apiResponse.Success)
+                {
+                    customValidation?.DisplayErrors(apiResponse.ErrorDetails);
+                    cShowValidationSummary = true;
+                }
+            }
+            finally
+            {
+                showSpinner = false;
+                StateHasChanged();
             }
         }
     }

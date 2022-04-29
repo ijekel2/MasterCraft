@@ -3,7 +3,7 @@ using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Client.Authentication
+namespace MasterCraft.Client.Authentication.Pages
 {
     public partial class Register : ComponentBase
     {

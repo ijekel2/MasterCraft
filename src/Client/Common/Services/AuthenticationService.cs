@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using MasterCraft.Client.Authentication;
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -10,9 +11,9 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MasterCraft.Client.Authentication
+namespace MasterCraft.Client.Common.Services
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationService
     {
         private readonly ApiClient cApiClient;
         private readonly AuthStateProvider cAuthStateProvider;
