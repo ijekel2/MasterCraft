@@ -9,6 +9,8 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class ApplicationUserVm
     {
+        public string Id { get; set; }
+
         [Required]
         [MaxLength(64)]
         public string FirstName { get; set; } = string.Empty;

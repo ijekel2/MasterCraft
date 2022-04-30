@@ -26,7 +26,7 @@ namespace MasterCraft.Domain.Services.Offerings
         {
             IQueryable<Offering> list = _dbContext.Offerings;
 
-            if (parameters.MentorId != 0)
+            if (!string.IsNullOrEmpty(parameters.MentorId))
             {
                 list = list.Where(offering => offering.MentorId == parameters.MentorId);
             }

@@ -20,20 +20,20 @@ namespace MasterCraft.Client.Mentors.Pages
         public OfferingVm Offering { get; set; } = new();
 
         [CascadingParameter]
-        public int CurrentProgressItem { get; set; }
+        public SetupLayout SetupLayout { get; set; }
 
         protected override void OnInitialized()
         {
-            CurrentProgressItem = 3;
+            SetupLayout.UpdateProgressTracker(3);
         }
 
-        private async Task<ApiResponse<EmptyVm>> OnSubmit()
+        private async Task<ApiResponse<EmptyVm>> OnSubmitClick()
         {
             ApiResponse<EmptyVm> apiResponse = await ApiClient.PostAsync<OfferingVm, EmptyVm>("offerings", Offering);
 
             if (apiResponse.Success)
             {
-                Navigation.NavigateTo("/setup/review");
+                Navigation.NavigateTo("/setup/video");
             }
 
             return apiResponse;

@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@layout MainLayout
+@layout NavMenuLayout
 
 @using MasterCraft.Client.Mentors.Components
 @using MasterCraft.Client.Common.Services
@@ -11,27 +11,14 @@
 <AuthorizeView>
     <Authorized>
         <div class="mc-title">
-            <h3>Set up your MasterCraft account</h3>
+            <h3>Create your MasterCraft account</h3>
             <hr />
         </div>
-        <div class="mc-progress-tracker">
-            @foreach (var crumb in progressItems)
-            {
-                bool active = CurrentProgressItem >= crumb.Key;
-
-                if (crumb.Key > 1)
-                {
-                    string cssClass = active ? "active" : "inactive";
-                    <SfIcon Name="IconName.ChevronRight" IconCss="@cssClass"></SfIcon>
-                }
-
-                string labelClass = active ? "active-label" : "inactive";
-                <label class=@labelClass @onclick="() => OnProgressItemClick(crumb.Key)">@crumb.Value</label>
-            }
-        </div>
-
+        <ProgressTracker @ref="progressTracker" Items="items"/>
         <div class="entry-form">
-            @Body
+            <CascadingValue Value="this">
+                @Body
+            </CascadingValue>
         </div>
         
     </Authorized>
@@ -39,38 +26,10 @@
 
 <style>
     .mc-progress-tracker {
-        display: flex;
-        flex-direction: row;
-        margin: auto;
-        width: 360px
+        width: 490px;
     }
 
-    .active, .active-label {
-        color:  @Constants.McGreen;
-    }
-
-    .inactive {
-         color: @Constants.McGray;
-    }
-
-    .active-label {
-        color:  @Constants.McGreen;
-    }
-
-    .active-label:hover {
-        color:  @Constants.McDarkGreen;
-    }
-
-    .chevron {
-        margin: 5px;
-        vertical-align: middle
-    }
-
-    .label {
-        vertical-align: middle
-    }
-
-    .bottom-btn, mc-btn{
+    .bottom-btn {
         margin:auto;
         margin-top: 30px;
     }
@@ -82,35 +41,51 @@
 </style>
 
 @code {
-    private Dictionary<int, string> progressItems = new()
-    {
-        { 1, "Profile" },
-        { 2, "Payments" },
-        { 3, "Offering" },
-        { 4, "Review" }
-    };
-
-    public int CurrentProgressItem { get; set; } = 1;
+    
+    private ProgressTracker progressTracker;
+    private List<ProgressTrackerItem> items;
 
     [CascadingParameter]
     public Task<AuthenticationState> AuthState { get; set; }
 
-    private async Task OnProgressItemClick(int crumbNumber)
+    protected override async Task OnInitializedAsync()
     {
-        @switch (crumbNumber)
+        base.OnInitialized();
+        string username = (await AuthState).User.FindFirst(ClaimTypes.Name).Value;
+
+        items = new List<ProgressTrackerItem>()
         {
-            case 1:
-                Navigation.NavigateTo("/setup/profile");
-                break;
-            case 2:
-                await Stripe.RedirectToVendorOnboarding((await AuthState).User.FindFirst(ClaimTypes.Name).Value, "setup/offering");
-                break;
-            case 3:
-                Navigation.NavigateTo("setup/offering");
-                break;
-            case 4:
-                Navigation.NavigateTo("setup/review");
-                break;
-        }
+            new ProgressTrackerItem()
+            {
+                Label = "Profile",
+                OnClick = () => Navigation.NavigateTo("/setup/profile")
+            },
+            new ProgressTrackerItem()
+            {
+                Label = "Payments",
+                OnClick = async () => await Stripe.RedirectToVendorOnboarding(username, "setup/offering")
+            },
+            new ProgressTrackerItem()
+            {
+                Label = "Offering",
+                OnClick = () => Navigation.NavigateTo("/setup/offering")
+            },
+            new ProgressTrackerItem()
+            {
+                Label = "Video",
+                OnClick = () => Navigation.NavigateTo("/setup/video")
+            },
+            new ProgressTrackerItem()
+            {
+                Label = "Review",
+                OnClick = () => Navigation.NavigateTo("/setup/review")
+            }
+        };
+
+    }
+
+    public void UpdateProgressTracker(int itemNumber)
+    {
+        progressTracker.UpdateProgressTracker(itemNumber);
     }
 }

@@ -8,7 +8,7 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class MentorCreatedVm
     {
-        public string Id { get; set; }
+        public string ApplicationUserId { get; set; }
 
         public string StripeAccountId { get; set; }
     }

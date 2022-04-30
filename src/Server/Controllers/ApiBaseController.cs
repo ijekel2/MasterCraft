@@ -13,9 +13,14 @@ namespace MasterCraft.Server.Controllers
             return $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}";
         }
 
-        public CreatedResult Created(int id)
+        public CreatedResult Created(string id)
         {
             return Created($"{GetUrl()}/{id}", null);
+        }
+
+        public CreatedResult Created(int id)
+        {
+            return Created(id.ToString());
         }
 
         protected Claim? GetClaim(string claimType)

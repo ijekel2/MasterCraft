@@ -12,10 +12,10 @@ namespace MasterCraft.Server.IntegrationTests.Mentors
         {
             Mentor mentor = await SeedHelper.SeedTestMentor();
 
-            TestResponse<Mentor> response = await TestApi.GetAsync<Mentor>($"mentors/{mentor.Id}");
+            TestResponse<Mentor> response = await TestApi.GetAsync<Mentor>($"mentors/{mentor.ApplicationUserId}");
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
-            Assert.AreEqual(1, response.Response.Id);
+            Assert.AreEqual(1, response.Response.ApplicationUserId);
         }
     }
 }

@@ -1,24 +1,34 @@
 ﻿<div>
-    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Name this offering" @bind-Value="Offering.Name" />
-    <ValidationMessage For="@(() => Offering.Name)" />
+    <h5>How many minutes can a feedback request video be?</h5>
+    <h6>If someone sends you a video longer than this, they will understand that you will only be looking at the number of seconds/minutes you sepcfiy here.</h6>
+    <SfNumericTextBox CssClass="mc-input" @bind-Value="Offering.RequestMinutes" />
+    <ValidationMessage For="@(() => Offering.RequestMinutes)" />
 </div>
 <div>
-    <SfTextBox Type="InputType.Text" Multiline="true" CssClass="mc-input" Placeholder="Describe this offering" @bind-Value="Offering.Description" />
-    <ValidationMessage For="@(() => Offering.Description)" />
-</div>
-<div>
-    <SfNumericTextBox CssClass="mc-input" Placeholder="Length of feedback in minutes" @bind-Value="Offering.FeedbackMinutes" />
+    <br />
+    <h5>How many minutes of feedback can people expect from you?</h5>
+    <h6>This is the total minutes your feedback video will be including your watching their work.</h6>
+    <SfNumericTextBox CssClass="mc-input" @bind-Value="Offering.FeedbackMinutes" />
     <ValidationMessage For="@(() => Offering.FeedbackMinutes)" />
 </div>
 <div>
-    <SfNumericTextBox CssClass="mc-input" Placeholder="Days until feedback is complete" @bind-Value="Offering.DeliveryDays" />
-    <ValidationMessage For="@(() => Offering.DeliveryDays)" />
-</div>
-<div>
-    <SfNumericTextBox CssClass="mc-input" Placeholder="Price" @bind-Value="Offering.Price" />
+    <br />
+    <h5>What is your price?</h5>
+    <h6>This is what someone will pay for one feedback video.</h6>
+    <SfNumericTextBox CssClass="mc-input"  @bind-Value="Offering.Price" />
     <ValidationMessage For="@(() => Offering.Price)" />
 </div>
 <div>
+    <br />
+    <h5>How many days can people expect to wait for their feedback?</h5>
+    <h6>It is recommended to enter a time less than 7 days.</h6>
+    <SfNumericTextBox CssClass="mc-input" @bind-Value="Offering.DeliveryDays" />
+    <ValidationMessage For="@(() => Offering.DeliveryDays)" />
+</div>
+<div>
+    <br />
+    <h5>What kinds of questions might someone ask you about their work?</h5>
+    <h6>When someone submits their work they submit questions for you to focus on in your feedback. Write down three to five areas that you think people will want help on and put them in the form of a question. For example, "How can I improve my lighting?"</h6>
     <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 1" @bind-Value="Offering.SampleQuestion1" />
     <ValidationMessage For="@(() => Offering.SampleQuestion1)" />
 </div>
@@ -38,7 +48,6 @@
     <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 5" @bind-Value="Offering.SampleQuestion5" />
     <ValidationMessage For="@(() => Offering.SampleQuestion5)" />
 </div>
-
 
 @code {
     [Parameter]

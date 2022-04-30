@@ -70,6 +70,7 @@ namespace MasterCraft.Client.Shared.Components
         {
             messageStore?.Clear();
             CurrentEditContext?.NotifyValidationStateChanged();
+            StateHasChanged();
         }
     }
 }

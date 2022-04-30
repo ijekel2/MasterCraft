@@ -1,9 +1,10 @@
 ﻿<div>
-    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel link" @bind-Value="Profile.ChannelName" />
+    <h5>Set up your profile</h5>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel name" @bind-Value="Profile.ChannelName" />
     <ValidationMessage For="@(() => Profile.ChannelName)" />
 </div>
 <div>
-    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel name" @bind-Value="Profile.ChannelLink" />
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel link" @bind-Value="Profile.ChannelLink" />
     <ValidationMessage For="@(() => Profile.ChannelLink)" />
 </div>
 <div>
@@ -11,10 +12,18 @@
     <ValidationMessage For="@(() => Profile.PersonalTitle)" />
 </div>
 <div>
+    <br />
+    <h5>Choose a profile ID</h5>
+    <h6>This ID will appear in the URL for your landing page<br />(E.G. www.mastercraft.cc/john-doe)</h6>
     <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Custom profile ID" @bind-Value="Profile.ProfileCustomUri" />
     <ValidationMessage For="@(() => Profile.ProfileCustomUri)" />
 </div>
-<SfUploader></SfUploader>
+<div>
+    <br />
+    <h5>Upload a profile image</h5>
+    <SfUploader></SfUploader>
+</div>
+
 
 @code {
     [Parameter]

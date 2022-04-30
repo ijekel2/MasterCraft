@@ -1,0 +1,97 @@
+﻿@inherits LayoutComponentBase
+@layout NavMenuLayout
+
+@using MasterCraft.Client.Mentors.Components
+@using MasterCraft.Client.Common.Services
+@using System.Security.Claims;
+
+@inject NavigationManager Navigation
+@inject StripeService Stripe
+
+<AuthorizeView>
+    <Authorized>
+        <div class="mc-title">
+            <h4>@GetTitleLine()</h4>
+            <hr />
+        </div>
+        <ProgressTracker @ref="progressTracker" Items="items"/>
+        <div class="entry-form">
+            <CascadingValue Value="this">
+                @Body
+            </CascadingValue>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+<style>
+    .mc-progress-tracker {
+        width: 450px;
+    }
+
+    .bottom-btn {
+        margin:auto;
+        margin-top: 30px;
+    }
+
+    .entry-form{
+        margin: auto;
+        margin-top: 30px;
+    }
+</style>
+
+@code {
+
+    private ProgressTracker progressTracker;
+    private List<ProgressTrackerItem> items;
+
+    [Parameter]
+    public MentorVm Mentor { get; set; }
+
+    [Parameter]
+    public OfferingVm Offering { get; set; }
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+
+        //-- We need some kind of state to hold these and load them from the server if we have lost them.
+        Mentor = TestConstants.TestMentor;
+        Offering = TestConstants.TestOffering;
+
+        string username = (await AuthState).User.FindFirst(ClaimTypes.Name).Value;
+
+        items = new List<ProgressTrackerItem>()
+        {
+            new ProgressTrackerItem()
+            {
+                Label = "Share work",
+                OnClick = () => Navigation.NavigateTo($"go/{Mentor.ProfileCustomUri}/share")
+            },
+            new ProgressTrackerItem()
+            {
+                Label = "Ask question",
+                OnClick = () => Navigation.NavigateTo($"go/{Mentor.ProfileCustomUri}/ask")
+            },
+            new ProgressTrackerItem()
+            {
+                Label = "Checkout",
+                OnClick = async () => await Stripe.RedirectToCheckout(Mentor.StripeAccountId, Offering.Price, $"go/{Mentor.ProfileCustomUri}/ask", $"go/{Mentor.ProfileCustomUri}/complete")
+            }
+        };
+
+    }
+
+    public void UpdateProgressTracker(int itemNumber)
+    {
+        progressTracker.UpdateProgressTracker(itemNumber);
+    }
+
+    private string GetTitleLine()
+    {
+        return $"Submit your work to {Mentor.FirstName}";
+    }
+}
+

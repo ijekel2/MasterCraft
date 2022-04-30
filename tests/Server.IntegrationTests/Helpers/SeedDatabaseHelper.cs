@@ -41,7 +41,7 @@ namespace MasterCraft.Server.IntegrationTests.Helpers
 
             await SeedDatabase(mentor);
 
-            offering.MentorId = mentor.Id;
+            offering.MentorId = mentor.ApplicationUserId;
             await SeedDatabase(offering);
 
             return offering;
@@ -57,11 +57,11 @@ namespace MasterCraft.Server.IntegrationTests.Helpers
             await SeedDatabase(mentor);
             await SeedDatabase(learner);
 
-            offering.MentorId = mentor.Id;
+            offering.MentorId = mentor.ApplicationUserId;
             await SeedDatabase(offering);
 
-            request.MentorId = mentor.Id;
-            request.LearnerId = learner.Id;
+            request.MentorId = mentor.ApplicationUserId;
+            request.LearnerId = learner.ApplicationUserId;
             request.OfferingId = offering.Id;
             await SeedDatabase(request);
 
@@ -79,16 +79,16 @@ namespace MasterCraft.Server.IntegrationTests.Helpers
             await SeedDatabase(mentor);
             await SeedDatabase(learner);
 
-            offering.MentorId = mentor.Id;
+            offering.MentorId = mentor.ApplicationUserId;
             await SeedDatabase(offering);
 
-            request.MentorId = mentor.Id;
-            request.LearnerId = learner.Id;
+            request.MentorId = mentor.ApplicationUserId;
+            request.LearnerId = learner.ApplicationUserId;
             request.OfferingId = offering.Id;
             await SeedDatabase(request);
 
-            video.MentorId = mentor.Id;
-            video.LearnerId = learner.Id;
+            video.MentorId = mentor.ApplicationUserId;
+            video.LearnerId = learner.ApplicationUserId;
             video.FeedbackRequestId = request.Id;
             await SeedDatabase(video);
 

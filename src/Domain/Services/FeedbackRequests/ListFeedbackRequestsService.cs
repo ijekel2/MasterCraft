@@ -24,7 +24,7 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
         internal override async Task<List<FeedbackRequest>> Handle(FeedbackRequestParameters parameters, CancellationToken token = default)
         {
             IQueryable<FeedbackRequest> list;
-            if (parameters.MentorId != 0)
+            if (!string.IsNullOrEmpty(parameters.MentorId))
             {
                 list = _dbContext.FeedbackRequests.Where(feedbackRequest => feedbackRequest.MentorId == parameters.MentorId);
             }

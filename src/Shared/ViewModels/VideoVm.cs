@@ -9,9 +9,9 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class VideoVm
     {
-        public int MentorId { get; set; }
+        public string MentorId { get; set; }
 
-        public int LearnerId { get; set; }
+        public string LearnerId { get; set; }
 
         public int FeedbackRequestId { get; set; }
 

@@ -19,15 +19,14 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
 
             OfferingVm request = new()
             {
-                Name = TestConstants.TestOffering.Name,
-                Description = TestConstants.TestOffering.Description,
                 DeliveryDays = TestConstants.TestOffering.DeliveryDays,
+                RequestMinutes = TestConstants.TestOffering.RequestMinutes,
                 FeedbackMinutes = TestConstants.TestOffering.FeedbackMinutes,
                 Price = TestConstants.TestOffering.Price,
                 SampleQuestion1 = TestConstants.TestOffering.SampleQuestion1,
                 SampleQuestion2 = TestConstants.TestOffering.SampleQuestion2,
                 SampleQuestion3 = TestConstants.TestOffering.SampleQuestion3,
-                MentorId = mentor.Id
+                MentorId = mentor.ApplicationUserId
             };
 
             //-- Send create mentor request and validate the response.

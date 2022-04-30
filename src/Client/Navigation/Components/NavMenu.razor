@@ -1,37 +1,35 @@
 ﻿@using Syncfusion.Blazor.Navigations
 
-<SfToolbar CssClass="mc-navbar">
-    <ToolbarItems>
-        <ToolbarItem>
-            <Template>
-                <div>
-                    <a href="/"><img src="images/MasterCraftLogoCropped.png" alt="Home" style="height:30px; vertical-align:middle;"></a>
-                </div>
-            </Template>
-        </ToolbarItem>
-        <ToolbarItem Align="ItemAlign.Right">
-            <Template>
-                <div class="mc-login-display">
-                    <LoginDisplay />
-                </div>
-            </Template>
-        </ToolbarItem>
-    </ToolbarItems>
-</SfToolbar>
+
+
+<div class="navbar">
+    <div id="logo">
+        <a href="/"><img src="images/mastercraftlogocroppedsmall.png" alt="Home" style="height:35px; vertical-align:middle;"></a>
+    </div>
+    <div id="login-display">
+    <LoginDisplay />
+    </div>
+</div>
 
 <style>
-    .mc-navbar {
+    .navbar {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
         height: 60px !important;
-        border-bottom-color: @Constants.McGreen;
-        border-bottom-width: 5px;
+        border-bottom-color: @Colors.McGreen;
+        border-bottom-width: 1px;
     }
 
-    .e-toolbar .e-toolbar-items {
-        background-color: white !important;
-    } 
+    #logo {
+        grid-column: 2;
+        display: inline-block;
+        margin: auto;
+    }
 
-    .mc-login-display{
-        vertical-align: middle
+    #login-display{
+        grid-column: 3;
+        margin-left: auto;
+        vertical-align: middle;
     }
 </style>
 

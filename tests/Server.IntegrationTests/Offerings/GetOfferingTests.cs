@@ -16,7 +16,7 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
 
             await SeedDatabase(mentor);
 
-            offering.MentorId = mentor.Id;
+            offering.MentorId = mentor.ApplicationUserId;
             await SeedDatabase(offering);
 
             TestResponse<OfferingVm> response = await TestApi.GetAsync<OfferingVm>($"offerings/{offering.Id}");

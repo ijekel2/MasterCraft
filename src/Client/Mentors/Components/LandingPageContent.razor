@@ -1,0 +1,73 @@
+﻿<div id="container">
+    <div id="title">
+        <img src="images/mastercraftlogocroppedsmall.png" alt="Home" style="width:200px; vertical-align:middle;">
+    </div>
+    <div id="image">
+
+    </div>
+    <div id="information">
+        <h6>Get a personal video with feedback on your work from</h6>
+        <h5>@GetTitleLine()</h5>
+        <h6 href="@Profile.ChannelLink">@Profile.ChannelName</h6>
+        <br />
+        @GetVideoMarkup()
+        <br />
+        <h5>Ask me questions like:</h5>
+        <ul>
+            <li>@Offering.SampleQuestion1</li>
+            <li>@Offering.SampleQuestion2</li>
+            <li>@Offering.SampleQuestion3</li>
+            @if (!string.IsNullOrEmpty(Offering.SampleQuestion4))
+            {
+                 <li>@Offering.SampleQuestion4</li>
+            }
+            @if (!string.IsNullOrEmpty(Offering.SampleQuestion5))
+            {
+                 <li>@Offering.SampleQuestion5</li>
+            }
+        </ul>
+        <br />
+        <div id="get-feedback">
+            <SfButton CssClass="mc-btn mc-btn-green" OnClick="OnGetFeedbackClick">Get Feedback</SfButton>
+            <div id="terms">
+                <h5>@GetPrice()</h5>
+                <h6>@GetDeliveryTime()</h6>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    #get-feedback{
+        display: flex;
+        flex-direction: row;
+    }
+
+    #terms {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #information {
+        margin: auto;
+        margin-top: 150px;
+        width: 600px;
+    }
+    
+    #title{
+        margin:auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 200px
+    }
+    
+    #get-feedback > .e-btn {
+        width: 140px;
+        margin-right: 10px;
+    }
+
+    body{
+        background-color: @Colors.McLightGray
+    }
+</style>

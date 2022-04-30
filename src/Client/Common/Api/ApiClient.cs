@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -33,6 +34,16 @@ namespace MasterCraft.Client.Common.Api
             HttpContent content = new StringContent(JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json");
             
             HttpResponseMessage response = await client.PostAsync($"/api/{url.TrimStart('/')}", content);
+
+            return await ParseResponse<TResponse>(response);
+        }
+
+        public async Task<ApiResponse<TResponse>> PutAsync<TRequest, TResponse>(string url, TRequest requestBody) where TResponse : new()
+        {
+            HttpClient client = await SetupHttpClient();
+            HttpContent content = new StringContent(JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PutAsync($"/api/{url.TrimStart('/')}", content);
 
             return await ParseResponse<TResponse>(response);
         }
@@ -92,8 +103,8 @@ namespace MasterCraft.Client.Common.Api
 
             if (authState.User.Identity?.IsAuthenticated ?? false)
             {
-                string lToken = await cLocalStorage.GetItemAsStringAsync("authToken");
-                httpClient.DefaultRequestHeaders.Add("Bearer", lToken);
+                string token = (await cLocalStorage.GetItemAsStringAsync("authToken")).Replace("\"", "");
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
            
             return httpClient;

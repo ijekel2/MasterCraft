@@ -73,6 +73,13 @@ namespace MasterCraft.Domain.Services
             return destination;
         }
 
+        protected TDestination Map<TSource, TDestination>(TSource source, TDestination destination)
+        {
+            var mapperConfig = new MapperConfiguration(config => config.CreateMap<TSource, TDestination>());
+            mapperConfig.CreateMapper().Map(source, destination);
+            return destination;
+        }
+
         protected async Task<List<T>> PagedList<T>(IQueryable<T> collection, QueryStringParameters parameters, CancellationToken token = default)
         {
             return await collection

@@ -53,7 +53,7 @@ namespace MasterCraft.Server.IntegrationTests.Api
             GenerateTokenVm request = new()
             {
                 Username = TestUser.Username,
-                Password = TestUser.Password
+                Password = TestPassword
             };
 
             var response = await PostJsonAsync<GenerateTokenVm, AccessTokenVm>("token", request);

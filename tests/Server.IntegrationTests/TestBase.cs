@@ -69,8 +69,8 @@ namespace MasterCraft.Server.IntegrationTests
                 FirstName = TestConstants.TestUser.FirstName,
                 LastName = TestConstants.TestUser.LastName,
                 Email = TestConstants.TestUser.Email,
-                Password = TestConstants.TestUser.Password,
-                ConfirmPassword = TestConstants.TestUser.Password
+                Password = TestConstants.TestPassword,
+                ConfirmPassword = TestConstants.TestPassword
             };
 
             await register.HandleRequest(request);

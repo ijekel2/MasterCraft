@@ -22,12 +22,12 @@ namespace MasterCraft.Server.Controllers
         public async Task<ActionResult> Create(LearnerVm request, [FromServices] CreateLearnerService service)
         {
             Learner learner = await service.HandleRequest(request);
-            return Created(learner.Id);
+            return Created(learner.ApplicationUserId);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<Learner>> Get(int id, [FromServices] GetLearnerService service)
+        public async Task<ActionResult<Learner>> Get(string id, [FromServices] GetLearnerService service)
         {
             return await service.HandleRequest(id);
         }

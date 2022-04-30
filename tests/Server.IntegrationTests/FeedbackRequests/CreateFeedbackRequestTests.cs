@@ -22,15 +22,15 @@ namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
             await SeedDatabase(mentor);
             await SeedDatabase(learner);
 
-            offering.MentorId = mentor.Id;
+            offering.MentorId = mentor.ApplicationUserId;
             await SeedDatabase(offering);
 
             FeedbackRequestVm request = new()
             {
                 Status = TestFeedbackRequest.Status,
                 ContentLink = TestFeedbackRequest.ContentLink,
-                MentorId = mentor.Id,
-                LearnerId = learner.Id,
+                MentorId = mentor.ApplicationUserId,
+                LearnerId = learner.ApplicationUserId,
                 OfferingId = offering.Id
             };
 

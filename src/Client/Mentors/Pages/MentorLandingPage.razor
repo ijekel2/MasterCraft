@@ -1,5 +1,10 @@
-﻿@page "/{ProfileUri}";
-<h2>Mentor Profile</h2>
+﻿@page "/go/{ProfileUri}";
+
+@layout OuterLayout
+
+<div>
+    <LandingPageContent Profile="TestConstants.TestMentor" Offering="TestConstants.TestOffering" />
+</div>
 
 @code {
     [Parameter]

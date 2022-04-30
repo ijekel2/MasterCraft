@@ -13,6 +13,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MasterCraft.Server.Controllers
 {
@@ -22,14 +23,21 @@ namespace MasterCraft.Server.Controllers
         public async Task<ActionResult<MentorCreatedVm>> Create(MentorVm request, [FromServices] CreateMentorService service)
         {
             MentorCreatedVm mentor = await service.HandleRequest(request);
-            return Created(mentor.Id, mentor);
+            return Created(mentor.ApplicationUserId, mentor);
         }
-
+        
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<Mentor>> Get(int id, [FromServices] GetMentorService service)
+        public async Task<ActionResult<MentorVm>> Get(string id, [FromServices] GetMentorService service)
         {
             return await service.HandleRequest(id);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult<EmptyVm>> Put(MentorVm request, [FromServices] UpdateMentorService service)
+        {
+            return await service.HandleRequest(request);
         }
     }
 }

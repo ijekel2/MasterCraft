@@ -10,15 +10,10 @@ namespace MasterCraft.Shared.ViewModels
     public class OfferingVm
     {
         [Range(1, int.MaxValue)]
-        public int MentorId { get; set; }
+        public string MentorId { get; set; }
 
-        [Required]
-        [MaxLength(64)]
-        public string Name { get; set; }
-
-        [Required]
-        [MaxLength(2048)]
-        public string Description { get; set; }
+        [Range(1, 60)]
+        public int RequestMinutes { get; set; }
 
         [Range(1, 60)]
         public int FeedbackMinutes { get; set; }

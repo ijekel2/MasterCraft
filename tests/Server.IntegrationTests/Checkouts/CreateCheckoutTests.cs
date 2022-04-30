@@ -15,17 +15,12 @@ namespace MasterCraft.Server.IntegrationTests.Checkouts
         public async Task ShouldCreateCheckoutSessionWithUrl()
         {
             string accountId = await StripeHelper.CreateConnectedAccount();
-            string customerId = await StripeHelper.CreateCustomer();
-
-            await Task.Delay(10000);
              
             CreateCheckoutVm request = new CreateCheckoutVm()
             {
                 AccountId = accountId,
                 CancelUrl = TestConstants.TestMentor.ChannelLink,
                 SuccessUrl = TestConstants.TestMentor.ChannelLink,
-                OfferingName = TestConstants.TestOffering.Name,
-                OfferingDescription = TestConstants.TestOffering.Description,
                 Price = TestConstants.TestOffering.Price
             };
 

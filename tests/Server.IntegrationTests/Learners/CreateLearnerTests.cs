@@ -18,6 +18,7 @@ namespace MasterCraft.Server.IntegrationTests.Learners
         {
             LearnerVm request = new()
             {
+                ApplicationUserId = TestConstants.TestUser.Id,
                 Email = TestConstants.TestUser.Email
             };
 
@@ -29,11 +30,9 @@ namespace MasterCraft.Server.IntegrationTests.Learners
             Assert.IsTrue(response.Success);
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.IsNotNull(response.Headers.Location);
-            Assert.IsTrue(int.TryParse(response.Headers.Location.Last().ToString(), out int id));
 
             using var context = GetDbContext();
-            Learner learner = await context.Learners.FirstOrDefaultAsync(mentor => mentor.Id == id);
+            Learner learner = await context.Learners.FirstOrDefaultAsync(learner => learner.ApplicationUserId == request.ApplicationUserId);
             Assert.IsNotNull(learner);
 
             //-- Validate that the image was saved

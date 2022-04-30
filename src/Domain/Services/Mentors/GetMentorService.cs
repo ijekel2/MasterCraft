@@ -9,10 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MasterCraft.Shared.ViewModels;
 
 namespace MasterCraft.Domain.Services.Mentors
 {
-    public class GetMentorService : DomainService<int, Mentor>
+    public class GetMentorService : DomainService<string, MentorVm>
     {
         readonly IDbContext _dbContext;
 
@@ -21,13 +22,27 @@ namespace MasterCraft.Domain.Services.Mentors
             _dbContext = dbContext;
         }
 
-        internal override async Task<Mentor> Handle(int id, CancellationToken token = default)
+        internal override async Task<MentorVm> Handle(string id, CancellationToken token = default)
         {
-            return await _dbContext.Mentors.FirstOrDefaultAsync(mentor => mentor.Id == id, token);
+            var mentors = from mentor in _dbContext.Mentors
+                    join user in _dbContext.Users on mentor.ApplicationUserId equals user.Id
+                    where mentor.ApplicationUserId == id
+                    select new MentorVm()
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        ChannelLink = mentor.ChannelLink,
+                        ChannelName = mentor.ChannelName,
+                        PersonalTitle = mentor.PersonalTitle,
+                        ProfileCustomUri = mentor.ProfileCustomUri,
+                        ProfileImageUrl = mentor.ProfileImageUrl
+                    };
+
+            return await mentors.FirstOrDefaultAsync();
 
         }
 
-        internal override async Task Validate(int request, DomainValidator validator, CancellationToken pToken = default)
+        internal override async Task Validate(string id, DomainValidator validator, CancellationToken pToken = default)
         {
             await Task.CompletedTask;
         }

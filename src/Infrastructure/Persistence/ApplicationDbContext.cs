@@ -1,5 +1,4 @@
 ﻿using MasterCraft.Domain.Interfaces;
-using MasterCraft.Infrastructure.Identity;
 using MasterCraft.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -50,16 +49,17 @@ namespace MasterCraft.Infrastructure.Persistence
             modelBuilder.Entity<Mentor>().Property(mentor => mentor.PersonalTitle).HasMaxLength(64);
             modelBuilder.Entity<Mentor>().Property(mentor => mentor.ProfileCustomUri).HasMaxLength(64);
             modelBuilder.Entity<Mentor>().Property(mentor => mentor.ProfileImageUrl).HasMaxLength(1024);
-            modelBuilder.Entity<Mentor>().Property(mentor => mentor.ProfileImageUrl).HasMaxLength(1024);
             modelBuilder.Entity<Mentor>().Property(mentor => mentor.StripeAccountId).HasMaxLength(64);
+            modelBuilder.Entity<Mentor>().HasOne<ExtendedIdentityUser>().WithOne().HasForeignKey<Mentor>(mentor => mentor.ApplicationUserId);
+            modelBuilder.Entity<Mentor>().HasKey(learner => learner.ApplicationUserId);
 
             //-- Configure Learner table
             modelBuilder.Entity<Learner>().Property(learner => learner.ProfileImageUrl).HasMaxLength(256);
             modelBuilder.Entity<Learner>().Property(learner => learner.ApplicationUserId).HasMaxLength(64);
+            modelBuilder.Entity<Learner>().HasOne<ExtendedIdentityUser>().WithOne().HasForeignKey<Learner>(mentor => mentor.ApplicationUserId);
+            modelBuilder.Entity<Learner>().HasKey(learner => learner.ApplicationUserId);
 
             //-- Configure Offering table
-            modelBuilder.Entity<Offering>().Property(offering => offering.Name).HasMaxLength(64);
-            modelBuilder.Entity<Offering>().Property(offering => offering.Description).HasMaxLength(2048);
             modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion1).HasMaxLength(512);
             modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion2).HasMaxLength(512);
             modelBuilder.Entity<Offering>().Property(offering => offering.SampleQuestion3).HasMaxLength(512);

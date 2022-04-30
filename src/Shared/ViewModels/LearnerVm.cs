@@ -9,6 +9,8 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class LearnerVm
     {
+        public string ApplicationUserId { get; set; }
+
         [MaxLength(64)]
         public string FirstName { get; set; }
 

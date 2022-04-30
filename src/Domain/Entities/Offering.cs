@@ -10,8 +10,7 @@ namespace MasterCraft.Domain.Entities
     public class Offering : BaseEntity
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public int RequestMinutes { get; set; }
         public int FeedbackMinutes { get; set; }
         public int DeliveryDays { get; set; }
         public decimal Price { get; set; } 
@@ -21,7 +20,7 @@ namespace MasterCraft.Domain.Entities
         public string SampleQuestion4 { get; set; }
         public string SampleQuestion5 { get; set; }
 
-        public int MentorId { get; set; }
+        public string MentorId { get; set; }
         public Mentor Mentor { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MasterCraft.Domain.Interfaces;
 using MasterCraft.Infrastructure.Persistence;
 using MasterCraft.Domain.Models;
+using MasterCraft.Domain.Entities;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;

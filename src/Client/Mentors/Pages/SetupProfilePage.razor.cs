@@ -28,14 +28,14 @@ namespace MasterCraft.Client.Mentors.Pages
         public MentorVm Profile { get; set; } = new();
 
         [CascadingParameter]
-        public int CurrentProgressItem { get; set; }
+        public SetupLayout SetupLayout { get; set; }
 
         [CascadingParameter]
         public Task<AuthenticationState> AuthState { get; set; }
 
         protected override void OnInitialized()
         {
-            CurrentProgressItem = 1;
+            SetupLayout.UpdateProgressTracker(1);
         }
 
         private async Task<ApiResponse<MentorCreatedVm>> OnSubmitClick()

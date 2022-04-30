@@ -7,6 +7,6 @@ namespace MasterCraft.Domain.Parameters
 {
     public class OfferingParameters : QueryStringParameters
     {
-        public int MentorId { get; set; }
+        public string MentorId { get; set; }
     }
 }

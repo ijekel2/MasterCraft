@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Client.Common.Enums
 {
-    public class Constants
+    public class Colors
     {
         public const string McGreen = "#00765A";
         public const string McDarkGreen = "#005d47";

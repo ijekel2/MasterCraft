@@ -1,0 +1,7 @@
+﻿@page "/go/{ProfileId}/share"
+@layout SubmitLayout
+
+<SubmissionForm TRequest=FeedbackRequestVm TResponse=EmptyVm Request="@FeedbackRequest" OnValidSubmit="OnSubmitClick" ButtonText="Next">
+    <ChildContent>
+    </ChildContent>
+</SubmissionForm>

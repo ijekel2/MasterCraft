@@ -2,44 +2,40 @@
 @typeparam TRequest
 @typeparam TResponse
 
-<SfCard>
-    <EditForm Model="@Request" OnValidSubmit="OnSubmitClick">
-        <div class="mc-edit-form">
-            @if (showSpinner)
+
+<EditForm Model="@Request">
+    <div class="mc-edit-form">
+        @if (showSpinner)
+        {
+            <SfSpinner Size="80" Type="SpinnerType.Fabric" Visible="true"></SfSpinner>
+        }
+        else
+        {
+
+            @if (!string.IsNullOrEmpty(FormTitle))
             {
-                <SfSpinner Size="40" Type="SpinnerType.Fabric" Visible="true"></SfSpinner>
-            }
-            else
-            {
-            
                 <h3>@FormTitle</h3>
-                <DataAnnotationsValidator />
-                <CustomValidation @ref="customValidation" />
-
-                @if (cShowValidationSummary)
-                {
-                    <ValidationSummary />
-                }
-
-                <div class="mc-input-group">
-                    @ChildContent
-                </div>
-
-                <SfButton HtmlAttributes=@SubmitAttribute Content="@ButtonText" CssClass="mc-btn mc-btn-gray" />
             }
-        </div>
-    </EditForm>
-</SfCard>
+            <DataAnnotationsValidator />
+            <CustomValidation @ref="customValidation" />
+
+            @if (cShowValidationSummary)
+            {
+                <ValidationSummary />
+            }
+
+            <div class="mc-input-group">
+                @ChildContent
+            </div>
+
+            <SfButton HtmlAttributes=@SubmitAttribute Content="@ButtonText" CssClass="mc-btn mc-btn-gray" OnClick="OnSubmitClick" />
+        }
+    </div>
+</EditForm>
 
 <style>
-    .e-card {
-        padding: 10px;
-        width: 450px;
-        margin: auto
-    }
-
     .mc-edit-form {
-        width: 400px;
+        width: 600px;
     }
 
     .mc-input-group {
@@ -51,6 +47,7 @@
     .mc-edit-form > .e-btn {
         margin: auto;
         margin-top: 30px;
+        margin-bottom: 30px;
     }
 </style>
 

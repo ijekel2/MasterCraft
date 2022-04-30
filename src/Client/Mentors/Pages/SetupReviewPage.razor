@@ -1,25 +1,63 @@
 ﻿@page "/setup/review"
 @layout SetupLayout
-@inject NavigationManager Navigation
 
-<h3>Woohoo! you&#39re almost done</h3>
-<MentorDisplay />
-<SfProgressButton Content="Complete Setup" CssClass="mc-btn mc-btn-gray" @onclick="OnCompleteSetupClick">
-    <ProgressButtonAnimationSettings Effect="Syncfusion.Blazor.SplitButtons.AnimationEffect.ZoomIn"></ProgressButtonAnimationSettings>
-    <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
-</SfProgressButton>
+@using MasterCraft.Client.Common.Api
+
+@inject NavigationManager Navigation
+@inject ApiClient ApiClient
+
+<h5 id="encouragement">Woohoo! You&#39re almost done!</h5>
+<h6>Here's what your MasterCraft page looks like. If this looks good, then publish your page. If you have any changes you would like to make, you can go back and edit those now. </h6>
+<br/>
+<div id="preview">
+    <LandingPageContent Profile="TestConstants.TestMentor" Offering="TestConstants.TestOffering"/>
+</div>
+<div id="publish">
+    <SfButton Content="Publish Profile" CssClass="mc-btn mc-btn-green" @onclick="OnCompleteSetupClick"></SfButton>
+</div>
+
+<style>
+    #preview {
+        pointer-events: none;
+        margin: auto;
+        width: 600px;
+    }
+    #encouragement {
+        margin: auto;
+    }
+    
+    #publish {
+        margin: auto;
+        width: 140px
+    }
+
+    #publish > .e-btn {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        width: 140px
+    }
+</style>
 
 @code {
+    public UpdateMentorVm Mentor { get; set; } = new();
+
     [CascadingParameter]
-    public int CurrentProgressItem { get; set; }
+    public SetupLayout SetupLayout { get; set; }
 
     protected override void OnInitialized()
     {
-        CurrentProgressItem = 4;
+        SetupLayout.UpdateProgressTracker(5);
     }
 
-    private void OnCompleteSetupClick()
+    private async Task OnCompleteSetupClick()
     {
-        Navigation.NavigateTo("/mentor/complete");
+        //-- Here we need to validate that everything has been completed.
+        Mentor.Active = true;
+        ApiResponse<EmptyVm> apiResponse = await ApiClient.PutAsync<UpdateMentorVm, EmptyVm>("mentors", Mentor);
+
+        if (apiResponse.Success)
+        {
+            Navigation.NavigateTo("/setup/review");
+        }
     }
 }

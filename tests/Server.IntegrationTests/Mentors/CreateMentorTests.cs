@@ -32,11 +32,11 @@ namespace MasterCraft.Server.IntegrationTests.Mentors
             Assert.IsTrue(response.Success);
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.IsNotEmpty(response.Response.Id);
+            Assert.IsNotEmpty(response.Response.ApplicationUserId);
             Assert.IsNotEmpty(response.Response.StripeAccountId);
 
             using var context = GetDbContext();
-            Mentor mentor = await context.Mentors.FirstOrDefaultAsync(mentor => mentor.Id.ToString() == response.Response.Id);
+            Mentor mentor = await context.Mentors.FirstOrDefaultAsync(mentor => mentor.ApplicationUserId.ToString() == response.Response.ApplicationUserId);
             Assert.IsNotNull(mentor);
 
             //-- Validate that the image was saved 

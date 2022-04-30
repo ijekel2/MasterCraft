@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace MasterCraft.Infrastructure.Identity
+namespace MasterCraft.Domain.Entities
 {
     public class ExtendedIdentityUser : IdentityUser
     {

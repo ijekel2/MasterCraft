@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MasterCraft.Domain.Entities;
+using MasterCraft.Domain.Interfaces;
+using MasterCraft.Infrastructure.FileStorage;
 using MasterCraft.Infrastructure.Identity;
+using MasterCraft.Infrastructure.Payments;
 using MasterCraft.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions;
-using Microsoft.EntityFrameworkCore;
-using MasterCraft.Domain.Interfaces;
-using System.Reflection;
-using System.IO;
-using MasterCraft.Infrastructure.FileStorage;
 using Stripe;
-using MasterCraft.Infrastructure.Payments;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Text;
 
 namespace MasterCraft.Infrastructure
 {

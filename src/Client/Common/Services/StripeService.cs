@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
+using MasterCraft.Server.IntegrationTests;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -37,6 +38,25 @@ namespace MasterCraft.Client.Common.Services
 
             //-- Redirect to our stripe link
             _navigation.NavigateTo(response.Response.Url);
+        }
+
+        public async Task RedirectToCheckout(string username, decimal price, string cancelUrl, string successUrl)
+        {
+            CreateCheckoutVm request = new CreateCheckoutVm()
+            {
+                AccountId = await GetStripeAccountId(username), //-- Get account number from mentorvm,
+                CancelUrl = cancelUrl,
+                SuccessUrl = successUrl,
+                Price = price
+            };
+
+            //-- Send create mentor request and validate the response.
+            ApiResponse<CheckoutVm> response = await _api.PostAsync<CreateCheckoutVm, CheckoutVm>(
+                "checkouts",
+                request);
+
+            //-- Redirect to our stripe link
+            _navigation.NavigateTo(response.Response.CheckoutUrl);
         }
 
         private async Task<string> GetStripeAccountId(string username)

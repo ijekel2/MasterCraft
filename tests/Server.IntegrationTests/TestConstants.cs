@@ -1,58 +1,54 @@
-﻿using MasterCraft.Domain.Entities;
-using MasterCraft.Domain.Models;
-using MasterCraft.Shared.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MasterCraft.Shared.ViewModels;
 
 namespace MasterCraft.Server.IntegrationTests
 {
     public class TestConstants
     {
-        public static ApplicationUser TestUser => new()
+        public static ApplicationUserVm TestUser => new()
         {
-            FirstName = "test",
-            LastName = "mentor",
+            FirstName = "Patrick",
+            LastName = "O'Sullivan",
             Username = "mastercraftdev@outlook.com",
             Email = "mastercraftdev@outlook.com",
-            Password = "mentor!123",
         };
 
-        public static Mentor TestMentor => new()
+        public static MentorVm TestMentor => new()
         {
-            ChannelName = "The Testy Tester",
+            FirstName = TestUser.FirstName,
+            LastName = TestUser.LastName,
+            ChannelName = "The Wandering DP",
             ChannelLink = "https://www.mastercraft.cc/",
-            PersonalTitle = "Tester",
-            ProfileCustomUri = "test-mentor"
+            PersonalTitle = "Cinematographer",
+            ProfileCustomUri = "patrick-o-sullivan",
+            VideoEmbedCode = "<iframe title=\"vimeo - player\" src=\"https://player.vimeo.com/video/599902843?h=4e0d4221a9\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>"
         };
 
-        public static Learner TestLearner => new()
+        public static LearnerVm TestLearner => new()
         {
             ProfileImageUrl = "myimageurl"
         };
 
-        public static Offering TestOffering => new()
+        public static OfferingVm TestOffering => new()
         {
-            Name = "Test Feedback",
-            Description = "I offer you great test feedback.",
-            DeliveryDays = 30,
+            DeliveryDays = 7,
+            RequestMinutes = 3,
             FeedbackMinutes = 10,
-            Price = 50,
-            SampleQuestion1 = "How can I improve my tests?",
-            SampleQuestion2 = "How can I test my tests?",
-            SampleQuestion3 = "Why are my tests not working",
-            MentorId = TestMentor.Id
+            Price = 100,
+            SampleQuestion1 = "What is wrong with my lighting?",
+            SampleQuestion2 = "Do you think this commercial is effective?",
+            SampleQuestion3 = "How can improve my composition?",
+            SampleQuestion4 = "How do I make this better?",
+            SampleQuestion5 = "Why do my images look so flat?",
+            MentorId = TestUser.Id
         };
 
-        public static FeedbackRequest TestFeedbackRequest => new()
+        public static FeedbackRequestVm TestFeedbackRequest => new()
         {
             Status = Shared.Enums.FeedbackRequestStatus.Pending,
             ContentLink = "Test Link"
         };
 
-        public static Video TestVideo => new()
+        public static VideoVm TestVideo => new()
         {
             VideoType = Shared.Enums.VideoType.FeedbackRequest,
             Url = "MyFileUrl"
@@ -68,6 +64,7 @@ namespace MasterCraft.Server.IntegrationTests
         };
 
         public static readonly string TestImage = "Content\\TestPic.png";
+        public static readonly string TestPassword = "mentor!123";
 
     }
 }

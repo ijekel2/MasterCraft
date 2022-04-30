@@ -14,6 +14,8 @@ namespace MasterCraft.Server.Services
         }
 
         public string UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+
+        public string Email => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
     }
 }
 

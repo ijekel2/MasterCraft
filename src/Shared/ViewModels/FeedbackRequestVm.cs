@@ -10,11 +10,11 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class FeedbackRequestVm
     {
-        [Range(1, int.MaxValue)]
-        public int MentorId { get; set; }
+        [Required]
+        public string MentorId { get; set; }
 
-        [Range(1, int.MaxValue)]
-        public int LearnerId { get; set; }
+        [Required]
+        public string LearnerId { get; set; }
 
         [Range(1, int.MaxValue)]
         public int OfferingId { get; set; }

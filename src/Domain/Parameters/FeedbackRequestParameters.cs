@@ -8,7 +8,7 @@ namespace MasterCraft.Domain.Parameters
 {
     public class FeedbackRequestParameters : QueryStringParameters
     {
-        public int MentorId { get; set; }
-        public int LearnerId { get; set; }
+        public string MentorId { get; set; }
+        public string LearnerId { get; set; }
     }
 }

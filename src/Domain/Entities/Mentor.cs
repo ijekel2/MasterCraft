@@ -4,13 +4,14 @@ namespace MasterCraft.Domain.Entities
 {
     public class Mentor : BaseEntity
     {
-        public int Id { get; set; }
         public string ApplicationUserId { get; set; }
         public string ChannelLink { get; set; }
         public string ChannelName { get; set; }
         public string PersonalTitle { get; set; }
         public string ProfileCustomUri { get; set; }
         public string ProfileImageUrl { get; set; }
+        public string VideoEmbedCode { get; set; }
         public string StripeAccountId { get; set; }
+        public bool Active { get; set; }
     }
 }

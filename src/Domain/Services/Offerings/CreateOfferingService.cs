@@ -20,6 +20,7 @@ namespace MasterCraft.Domain.Services.Offerings
         internal override async Task<Offering> Handle(OfferingVm request, CancellationToken token = new())
         {
             Offering offering = Map<OfferingVm, Offering>(request);
+            offering.MentorId = Services.CurrentUserService.UserId;
 
             await _dbContext.AddAsync(offering, token);
             await _dbContext.SaveChangesAsync(token);

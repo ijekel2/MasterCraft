@@ -16,10 +16,10 @@ namespace MasterCraft.Domain.Entities
         public DateTime SubmissionDate { get; set; }
         public DateTime? ResponseDate { get; set; }
 
-        public int MentorId { get; set; }
+        public string MentorId { get; set; }
         public Mentor Mentor { get; set; }
 
-        public int LearnerId { get; set; }
+        public string LearnerId { get; set; }
         public Learner Learner { get; set; }
 
         public int OfferingId { get; set; }

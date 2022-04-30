@@ -1,8 +1,8 @@
 ﻿@page "/setup/offering"
 @layout SetupLayout
 
-<SubmissionForm TRequest=OfferingVm TResponse=EmptyVm Request="@Offering" OnValidSubmit="OnSubmit" FormTitle="Offering" ButtonText="Next">
+<SubmissionForm TRequest=OfferingVm TResponse=EmptyVm Request="@Offering" OnValidSubmit="OnSubmitClick" ButtonText="Next">
     <ChildContent>
-        <OfferingInputs/>
+        <OfferingInputs Offering="@Offering"/>
     </ChildContent>
 </SubmissionForm>

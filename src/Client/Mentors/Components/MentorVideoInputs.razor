@@ -1,0 +1,26 @@
+﻿<div>
+    <h5>Record a video inviting your audience to receive feedback</h5>
+    <h6>This video will show up on your profile when your audience lands on your page. This video should be simple, informal, and short. It does not need to be polished! Your audience already knows you and resepcts your work. In fact, not worrying about production and simply recording it on your webcam emphasizes the personal and direct touch you are offering through your MasterCraft. </h6>
+    <br />
+    <h6>The simple formula for this kind of video is <b>1) Tell them who you are 2) Why you are offering this 3) What kind of stuff you can best give them feedback on.</b></h6>
+    <br />
+    <h6>Watch this video as an example: </h6>
+    <iframe title="vimeo-player" src="https://player.vimeo.com/video/599902843?h=4e0d4221a9" width="640" height="360" frameborder="0" allowfullscreen></iframe>
+    <br />
+    <br />
+    <Loom/>
+    <h5 id="or">or</h5>
+    <SfTextBox Type="InputType.Text" Multiline="true" CssClass="mc-input" Placeholder="Paste embed code" @bind-Value="Profile.VideoEmbedCode" />
+</div>
+
+<style>
+    #btn-record, #or, .mc-input{
+        display: block;
+        margin:auto;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public UpdateMentorVm Profile { get; set; }
+}

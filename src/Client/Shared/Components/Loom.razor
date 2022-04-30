@@ -1,5 +1,4 @@
-﻿@page "/loom"
-@using MasterCraft.Client.Common.Api;
+﻿@using MasterCraft.Client.Common.Api;
 @using Microsoft.Extensions.Configuration
 
 @implements IDisposable
@@ -9,16 +8,14 @@
 @inject IConfiguration Configuration
 @inject NavigationManager Navigation
 
-<h3>Loom</h3>
 @VideoHtml
-<br />
-<iframe src="https://antiochianprodsa.blob.core.windows.net/servicetexts/Bright%20Wednesday%20VESP.pdf" style="width: 800px; height: 1200px"></iframe>
-<br />
-<iframe src="https://player.vimeo.com/video/375472770?h=bd806d16f2&color=5AB033&title=0&byline=0&portrait=0" style="width: 800px; height: 600px"></iframe>
-<br />
+<SfButton id="btn-record" CssClass="mc-btn mc-btn-green">Record Video</SfButton>
 
-<br />
-<button id="btn-record">Record</button>
+<style>
+    #btn-record{
+        width: 140px;
+    }
+</style>
 
 @code {
     MarkupString VideoHtml;

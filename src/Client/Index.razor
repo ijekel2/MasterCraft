@@ -1,4 +1,37 @@
 ﻿@page "/"
+@inject NavigationManager Navigation
 
-<h1>What is MasterCraft?</h1>
+<br />
+<br />
+<div class="container">
+    <h1>Welcome to MasterCraft</h1>
+    <br />
+    <iframe title="vimeo-player" src="https://player.vimeo.com/video/686273655?h=804cb2b8c2" width="640" height="480" frameborder="0" allowfullscreen></iframe>
+    <br />
+    <br />
+    <SfButton CssClass="mc-btn mc-btn-green" OnClick="GoToSignUp">@Properties.Resources.SignUp</SfButton>
+</div>
 
+<style>
+    .container > .e-btn {
+        display: block;
+        margin: auto;
+    }
+
+    .container > iframe {
+        display: block;
+        margin: auto;
+    }
+
+    .container {
+        margin: auto;
+        width: 700px;
+    }
+</style>
+
+@code{
+    private void GoToSignUp(MouseEventArgs args)
+    {
+        Navigation.NavigateTo("/signup");
+    }
+}

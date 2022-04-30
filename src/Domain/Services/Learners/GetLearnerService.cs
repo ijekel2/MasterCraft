@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services.Learners
 {
-    public class GetLearnerService : DomainService<int, Learner>
+    public class GetLearnerService : DomainService<string, Learner>
     {
         readonly IDbContext _dbContext;
 
@@ -21,13 +21,13 @@ namespace MasterCraft.Domain.Services.Learners
             _dbContext = dbContext;
         }
 
-        internal override async Task<Learner> Handle(int id, CancellationToken token = default)
+        internal override async Task<Learner> Handle(string id, CancellationToken token = default)
         {
-            return await _dbContext.Learners.FirstOrDefaultAsync(mentor => mentor.Id == id, token);
+            return await _dbContext.Learners.FirstOrDefaultAsync(learner => learner.ApplicationUserId == id, token);
 
         }
 
-        internal override async Task Validate(int request, DomainValidator validator, CancellationToken pToken = default)
+        internal override async Task Validate(string id, DomainValidator validator, CancellationToken pToken = default)
         {
             await Task.CompletedTask;
         }

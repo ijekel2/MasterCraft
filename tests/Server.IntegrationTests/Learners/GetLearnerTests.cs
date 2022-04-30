@@ -12,10 +12,10 @@ namespace MasterCraft.Server.IntegrationTests.Learners
         {
             Learner learner = await SeedHelper.SeedTestLeaner();
 
-            TestResponse<Mentor> response = await TestApi.GetAsync<Mentor>($"learners/{learner.Id}");
+            TestResponse<Mentor> response = await TestApi.GetAsync<Mentor>($"learners/{learner.ApplicationUserId}");
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Response);
-            Assert.AreEqual(1, response.Response.Id);
+            Assert.AreEqual(1, response.Response.ApplicationUserId);
         }
     }
 }

@@ -9,14 +9,12 @@ namespace MasterCraft.Domain.Parameters
 {
     public class VideoParameters : QueryStringParameters
     {
-        public int MentorId { get; set; }
+        public string MentorId { get; set; }
 
-        public int LearnerId { get; set; }
+        public string LearnerId { get; set; }
 
         public int FeedbackRequestId { get; set; }
 
         public VideoType VideoType { get; set; }
-
-        public bool Stream { get; set; }
     }
 }

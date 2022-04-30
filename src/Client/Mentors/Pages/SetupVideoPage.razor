@@ -1,0 +1,8 @@
+﻿@page "/setup/video"
+@layout SetupLayout
+
+<SubmissionForm TRequest=UpdateMentorVm TResponse=EmptyVm Request="@Profile" OnValidSubmit="OnSubmitClick" ButtonText="Next">
+    <ChildContent>
+        <MentorVideoInputs Profile="@Profile"/>
+    </ChildContent>
+</SubmissionForm>

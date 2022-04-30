@@ -31,12 +31,12 @@ namespace MasterCraft.Domain.Services.Videos
             }
             else
             {
-                if (parameters.MentorId != 0)
+                if (!string.IsNullOrEmpty(parameters.MentorId))
                 {
                     list = list.Where(video => video.MentorId == parameters.MentorId);
                 }
 
-                if (parameters.LearnerId != 0)
+                if (!string.IsNullOrEmpty(parameters.LearnerId))
                 {
                     list = list.Where(video => video.LearnerId == parameters.LearnerId);
                 }

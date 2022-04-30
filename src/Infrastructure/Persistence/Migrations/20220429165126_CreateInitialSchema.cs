@@ -51,44 +51,6 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Learners",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ApplicationUserId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ProfileImageUrl = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    StripeCustomerId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Learners", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Mentors",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ApplicationUserId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChannelLink = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
-                    ChannelName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    PersonalTitle = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ProfileCustomUri = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ProfileImageUrl = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
-                    StripeAccountId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Mentors", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -195,13 +157,59 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Learners",
+                columns: table => new
+                {
+                    ApplicationUserId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    ProfileImageUrl = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Learners", x => x.ApplicationUserId);
+                    table.ForeignKey(
+                        name: "FK_Learners_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mentors",
+                columns: table => new
+                {
+                    ApplicationUserId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    ChannelLink = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
+                    ChannelName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    PersonalTitle = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ProfileCustomUri = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ProfileImageUrl = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
+                    VideoEmbedCode = table.Column<string>(type: "TEXT", nullable: true),
+                    StripeAccountId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    Active = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mentors", x => x.ApplicationUserId);
+                    table.ForeignKey(
+                        name: "FK_Mentors_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Offerings",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: true),
+                    RequestMinutes = table.Column<int>(type: "INTEGER", nullable: false),
                     FeedbackMinutes = table.Column<int>(type: "INTEGER", nullable: false),
                     DeliveryDays = table.Column<int>(type: "INTEGER", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
@@ -210,7 +218,7 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                     SampleQuestion3 = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
                     SampleQuestion4 = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
                     SampleQuestion5 = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
-                    MentorId = table.Column<int>(type: "INTEGER", nullable: false),
+                    MentorId = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -221,8 +229,7 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                         name: "FK_Offerings_Mentors_MentorId",
                         column: x => x.MentorId,
                         principalTable: "Mentors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ApplicationUserId");
                 });
 
             migrationBuilder.CreateTable(
@@ -236,7 +243,9 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                     SubmissionDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ResponseDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     MentorId = table.Column<int>(type: "INTEGER", nullable: false),
+                    MentorApplicationUserId = table.Column<string>(type: "TEXT", nullable: false),
                     LearnerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    LearnerApplicationUserId = table.Column<string>(type: "TEXT", nullable: false),
                     OfferingId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
@@ -245,16 +254,16 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_FeedbackRequests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FeedbackRequests_Learners_LearnerId",
-                        column: x => x.LearnerId,
+                        name: "FK_FeedbackRequests_Learners_LearnerApplicationUserId",
+                        column: x => x.LearnerApplicationUserId,
                         principalTable: "Learners",
-                        principalColumn: "Id",
+                        principalColumn: "ApplicationUserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FeedbackRequests_Mentors_MentorId",
-                        column: x => x.MentorId,
+                        name: "FK_FeedbackRequests_Mentors_MentorApplicationUserId",
+                        column: x => x.MentorApplicationUserId,
                         principalTable: "Mentors",
-                        principalColumn: "Id",
+                        principalColumn: "ApplicationUserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FeedbackRequests_Offerings_OfferingId",
@@ -298,7 +307,9 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                     Url = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
                     VideoType = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
                     MentorId = table.Column<int>(type: "INTEGER", nullable: false),
+                    MentorApplicationUserId = table.Column<string>(type: "TEXT", nullable: false),
                     LearnerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    LearnerApplicationUserId = table.Column<string>(type: "TEXT", nullable: false),
                     FeedbackRequestId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
@@ -313,16 +324,16 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Videos_Learners_LearnerId",
-                        column: x => x.LearnerId,
+                        name: "FK_Videos_Learners_LearnerApplicationUserId",
+                        column: x => x.LearnerApplicationUserId,
                         principalTable: "Learners",
-                        principalColumn: "Id",
+                        principalColumn: "ApplicationUserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Videos_Mentors_MentorId",
-                        column: x => x.MentorId,
+                        name: "FK_Videos_Mentors_MentorApplicationUserId",
+                        column: x => x.MentorApplicationUserId,
                         principalTable: "Mentors",
-                        principalColumn: "Id",
+                        principalColumn: "ApplicationUserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -364,14 +375,14 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedbackRequests_LearnerId",
+                name: "IX_FeedbackRequests_LearnerApplicationUserId",
                 table: "FeedbackRequests",
-                column: "LearnerId");
+                column: "LearnerApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedbackRequests_MentorId",
+                name: "IX_FeedbackRequests_MentorApplicationUserId",
                 table: "FeedbackRequests",
-                column: "MentorId");
+                column: "MentorApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FeedbackRequests_OfferingId",
@@ -394,14 +405,14 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 column: "FeedbackRequestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Videos_LearnerId",
+                name: "IX_Videos_LearnerApplicationUserId",
                 table: "Videos",
-                column: "LearnerId");
+                column: "LearnerApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Videos_MentorId",
+                name: "IX_Videos_MentorApplicationUserId",
                 table: "Videos",
-                column: "MentorId");
+                column: "MentorApplicationUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -431,9 +442,6 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "FeedbackRequests");
 
             migrationBuilder.DropTable(
@@ -444,6 +452,9 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Mentors");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

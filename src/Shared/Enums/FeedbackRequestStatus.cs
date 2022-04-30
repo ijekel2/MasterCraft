@@ -8,6 +8,7 @@ namespace MasterCraft.Shared.Enums
 {
     public enum FeedbackRequestStatus
     {
+        Incomplete,
         Pending,
         Fulfilled,
         Declined
