@@ -23,7 +23,7 @@ namespace MasterCraft.Infrastructure.FileStorage
 
         public async Task<Uri> SaveFileAsync(Stream input, CancellationToken token = default)
         {
-            string filePath = Path.GetTempFileName();
+            string filePath = Path.ChangeExtension(Path.GetTempFileName(), ".png");
             using FileStream fileStream = File.Create(filePath);
             input.Seek(0, SeekOrigin.Begin);
             await input.CopyToAsync(fileStream, token);

@@ -6,10 +6,11 @@ using MasterCraft.Shared.ViewModels;
 using System.Threading;
 using System.Threading.Tasks;
 using MasterCraft.Domain.Models;
+using MasterCraft.Shared.ViewModels.Aggregates;
 
 namespace MasterCraft.Domain.Services.Checkouts
 {
-    public class CreateCheckoutService : DomainService<CreateCheckoutVm, CheckoutVm>
+    public class CreateCheckoutService : DomainService<CheckoutDetailsVm, CheckoutSessionVm>
     {
         readonly IDbContext _dbContext;
         readonly IPaymentService _paymentService;
@@ -21,18 +22,31 @@ namespace MasterCraft.Domain.Services.Checkouts
             _paymentService = paymentService;
         }
 
-        internal override async Task Validate(CreateCheckoutVm mentor, DomainValidator validator, CancellationToken token = new())
+        internal override async Task Validate(CheckoutDetailsVm mentor, DomainValidator validator, CancellationToken token = new())
         {
             await Task.CompletedTask;
         }
 
-        internal override async Task<CheckoutVm> Handle(CreateCheckoutVm request, CancellationToken token = new())
+        internal override async Task<CheckoutSessionVm> Handle(CheckoutDetailsVm checkoutDetails, CancellationToken token = new())
         {
-            ApplicationFee appFee = new ApplicationFee(request.Price);
-            request.ApplicationFee = appFee.Value;
-            request.Currency = "USD";
+            checkoutDetails.ApplicationFee = new ApplicationFee(checkoutDetails.Offering.Price).Value;
+            checkoutDetails.Currency = "USD";
+            checkoutDetails.ServiceCharge = new ServiceCharge(checkoutDetails.Offering.Price).Value;
 
-            return await _paymentService.CreateCheckout(request, token);
+            CheckoutSessionVm session = await _paymentService.CreateCheckout(checkoutDetails, token);
+
+            await UpdateFeedbackRequest(checkoutDetails.FeedbackRequest, session);
+
+            return session;
+        }
+
+        private async Task UpdateFeedbackRequest(FeedbackRequestVm feedbackRequest, CheckoutSessionVm checkoutSession, CancellationToken token = new())
+        {
+            FeedbackRequest request = Map<FeedbackRequestVm, FeedbackRequest>(feedbackRequest);
+            _dbContext.Attach(request);
+
+            request.PaymentIntentId = checkoutSession.PaymentIntentId;
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

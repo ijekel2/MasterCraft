@@ -31,5 +31,8 @@ namespace MasterCraft.Shared.ViewModels
             ErrorMessageResourceName = nameof(Properties.Resources.PasswordsDoNotMatch), 
             ErrorMessageResourceType = typeof(Properties.Resources))]
         public string ConfirmPassword { get; set; }
+
+        public string ProfileImageUrl { get; set; }
+
     }
 }

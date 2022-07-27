@@ -1,35 +1,35 @@
 ﻿@using Syncfusion.Blazor.Navigations
 
-
-
-<div class="navbar">
-    <div id="logo">
-        <a href="/"><img src="images/mastercraftlogocroppedsmall.png" alt="Home" style="height:35px; vertical-align:middle;"></a>
-    </div>
-    <div id="login-display">
-    <LoginDisplay />
-    </div>
-</div>
+<SfToolbar CssClass="mc-navbar">
+    <ToolbarItems>
+        <ToolbarItem>
+            <Template>
+                <div>
+                    <a href="/"><img src="images/mastercraftlogocroppedsmall.png" alt="Home" style="height:30px; vertical-align:middle;"></a>
+                </div>
+            </Template>
+        </ToolbarItem>
+        <ToolbarItem Align="ItemAlign.Right">
+            <Template>
+                <div class="mc-login-display">
+                    <LoginDisplay />
+                </div>
+            </Template>
+        </ToolbarItem>
+    </ToolbarItems>
+</SfToolbar>
 
 <style>
-    .navbar {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+    .mc-navbar {
         height: 60px !important;
-        border-bottom-color: @Colors.McGreen;
-        border-bottom-width: 1px;
     }
 
-    #logo {
-        grid-column: 2;
-        display: inline-block;
-        margin: auto;
-    }
+    .e-toolbar .e-toolbar-items {
+        background-color: white !important;
+    } 
 
-    #login-display{
-        grid-column: 3;
-        margin-left: auto;
-        vertical-align: middle;
+    .mc-login-display{
+        vertical-align: middle
     }
 </style>
 

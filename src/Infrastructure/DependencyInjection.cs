@@ -24,17 +24,14 @@ namespace MasterCraft.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             //-- EF Core.
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var dbDirectory = Path.Join(path, Assembly.GetExecutingAssembly().GetName().Name);
-            var dbPath = Path.Join(dbDirectory, configuration["DatabaseName"]);
-
-            Directory.CreateDirectory(dbDirectory);
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var dbPath = Path.Join(path, configuration["DatabaseName"]);
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite($"DataSource={dbPath}"));
 
             //-- ASP.NET Core Identity
-            services.AddDefaultIdentity<ExtendedIdentityUser>(options =>
+            services.AddDefaultIdentity<User>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequireNonAlphanumeric = false;

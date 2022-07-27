@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MasterCraft.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace MasterCraft.Domain.Parameters
     {
         public string MentorId { get; set; }
         public string LearnerId { get; set; }
+        public FeedbackRequestStatus Status { get; set; }
     }
 }

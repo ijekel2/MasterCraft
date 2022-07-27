@@ -1,11 +1,10 @@
 ﻿using MasterCraft.Domain.Entities;
-using MasterCraft.Domain.Interfaces;
 using MasterCraft.Domain.Parameters;
 using MasterCraft.Domain.Services.FeedbackRequests;
 using MasterCraft.Shared.ViewModels;
+using MasterCraft.Shared.ViewModels.Aggregates;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Server.Controllers
@@ -13,23 +12,30 @@ namespace MasterCraft.Server.Controllers
     public class FeedbackRequestsController : ApiBaseController
     {
         [HttpPost]
-        public async Task<ActionResult> Create(FeedbackRequestVm request, [FromServices] CreateFeedbackRequestService service)
+        public async Task<ActionResult<FeedbackRequestCreatedVm>> Create(FeedbackRequestVm request, [FromServices] CreateFeedbackRequestService service)
         {
-            FeedbackRequest feedbackRequest = await service.HandleRequest(request);
-            return Created(feedbackRequest.Id);
+            return await service.HandleRequest(request);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<FeedbackRequest>> Get(int id, [FromServices] GetFeedbackRequestService service)
+        public async Task<ActionResult<FeedbackRequest>> Get(string id, [FromServices] GetFeedbackRequestService service)
         {
             return await service.HandleRequest(id);
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<FeedbackRequest>>> List([FromQuery] FeedbackRequestParameters parameters, [FromServices] ListFeedbackRequestsService service)
+        public async Task<ActionResult<List<FeedbackRequestVm>>> List([FromQuery] FeedbackRequestParameters parameters, [FromServices] ListFeedbackRequestsService service)
         {
             return await service.HandleRequest(parameters);
+        }
+
+        [HttpGet]
+        [Route("{id}/getDetail")]
+        public async Task<ActionResult<FeedbackRequestDetailVm>> GetDetail(
+            string id, [FromServices] GetFeedbackRequestDetailService service)
+        {
+            return await service.HandleRequest(id);
         }
 
         [HttpPost]
@@ -41,19 +47,17 @@ namespace MasterCraft.Server.Controllers
         }
 
         [HttpPost]
-        [Route("{id}/fulfill")]
-        public async Task<ActionResult> Fulfill(int id, FulfillFeedbackRequestVm request, [FromServices] FulfillFeedbackRequestService service)
+        [Route("fulfill")]
+        public async Task<ActionResult> Fulfill(FulfillFeedbackRequestVm request, [FromServices] FulfillFeedbackRequestService service)
         {
-            request.FeedbackRequestId = id;
             await service.HandleRequest(request);
             return Ok();
         }
 
         [HttpPost]
-        [Route("{id}/decline")]
-        public async Task<ActionResult> Decline(int id, DeclineFeedbackRequestVm request, [FromServices] DeclineFeedbackRequestService service)
+        [Route("decline")]
+        public async Task<ActionResult> Decline(DeclineFeedbackRequestVm request, [FromServices] DeclineFeedbackRequestService service)
         {
-            request.FeedbackRequestId = id;
             await service.HandleRequest(request);
             return Ok();
         }

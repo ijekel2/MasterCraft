@@ -1,17 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MasterCraft.Domain.Entities
 {
     public class Mentor : BaseEntity
     {
-        public string ApplicationUserId { get; set; }
-        public string ChannelLink { get; set; }
-        public string ChannelName { get; set; }
-        public string PersonalTitle { get; set; }
-        public string ProfileCustomUri { get; set; }
-        public string ProfileImageUrl { get; set; }
-        public string VideoEmbedCode { get; set; }
+        public string UserId { get; set; }
+        public string ProfileId { get; set; }
+        public string VideoEmbedUrl { get; set; }
         public string StripeAccountId { get; set; }
+        public string SampleQuestion1 { get; set; }
+        public string SampleQuestion2 { get; set; }
+        public string SampleQuestion3 { get; set; }
+        public string SampleQuestion4 { get; set; }
+        public string SampleQuestion5 { get; set; }
         public bool Active { get; set; }
+
+        public virtual User User { get; set; }
+
+        public virtual List<Offering> Offerings { get; set; }
     }
 }

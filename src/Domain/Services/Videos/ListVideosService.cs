@@ -25,7 +25,7 @@ namespace MasterCraft.Domain.Services.Videos
         {
             IQueryable<Video> list = _dbContext.Videos;
 
-            if (parameters.FeedbackRequestId != 0)
+            if (!string.IsNullOrEmpty(parameters.FeedbackRequestId))
             {
                 list = list.Where(video => video.FeedbackRequestId == parameters.FeedbackRequestId);
             }

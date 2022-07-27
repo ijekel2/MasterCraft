@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services.FeedbackRequests
 {
-    public class GetFeedbackRequestService : DomainService<int, FeedbackRequest>
+    public class GetFeedbackRequestService : DomainService<string, FeedbackRequest>
     {
         readonly IDbContext _dbContext;
 
@@ -21,12 +21,12 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
             _dbContext = dbContext;
         }
 
-        internal override async Task<FeedbackRequest> Handle(int id, CancellationToken token = default)
+        internal override async Task<FeedbackRequest> Handle(string id, CancellationToken token = default)
         {
             return await _dbContext.FeedbackRequests.FirstOrDefaultAsync(feedbackRequest => feedbackRequest.Id == id, token);
         }
 
-        internal override async Task Validate(int request, DomainValidator validator, CancellationToken token = default)
+        internal override async Task Validate(string request, DomainValidator validator, CancellationToken token = default)
         {
             await Task.CompletedTask;
         }

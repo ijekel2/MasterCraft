@@ -19,8 +19,8 @@ namespace MasterCraft.Server.IntegrationTests.Links
             CreateOnboardingLinkVm request = new()
             {
                 AccountId = accountId,
-                RefreshUrl = TestConstants.TestMentor.ChannelLink,
-                SuccessUrl = TestConstants.TestMentor.ChannelLink
+                RefreshUrl = TestConstants.TestUrl,
+                SuccessUrl = TestConstants.TestUrl
             };
 
             TestResponse<OnboardingLinkVm> response = await TestApi.PostJsonAsync<CreateOnboardingLinkVm, OnboardingLinkVm>(

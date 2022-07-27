@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
+using MasterCraft.Client.Common.Services;
 using MasterCraft.Client.Shared.Components;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
@@ -19,28 +20,18 @@ namespace MasterCraft.Client.Authentication.Pages
     {
         private GenerateTokenVm request = new();
 
-        [Inject]
-        ApiClient ApiClient { get; set; }
-
-        [Inject]
-        AuthenticationStateProvider AuthStateProvider { get; set; }
-
-        [Inject]
-        NavigationManager Navigation { get; set; }
-
-        [Inject]
-        ILocalStorageService LocalStorage { get; set; }
+        [Inject] ApiClient ApiClient { get; set; }
+        [Inject] AuthenticationStateProvider AuthStateProvider { get; set; }
+        [Inject] NavigationManager Navigation { get; set; }
+        [Inject] ILocalStorageService LocalStorage { get; set; }
+        [Inject] AuthenticationService AuthService { get; set; }
 
         private async Task<ApiResponse<AccessTokenVm>> OnLoginClick()
         {
-            ApiResponse<AccessTokenVm> apiResponse =
-                await ApiClient.PostAsync<GenerateTokenVm, AccessTokenVm>("token", request);
+            var apiResponse = await AuthService.Login(request);
 
             if (apiResponse.Response is not null)
             {
-                await LocalStorage.SetItemAsync("authToken", apiResponse.Response.AccessToken);
-
-                (AuthStateProvider as AuthStateProvider).NotifyUserAuthentication(apiResponse.Response.AccessToken);
                 Navigation.NavigateTo("/portal");
             }
 

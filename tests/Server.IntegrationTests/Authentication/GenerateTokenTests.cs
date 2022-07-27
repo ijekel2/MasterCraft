@@ -28,13 +28,13 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
             var request = new GenerateTokenVm()
             {
                 Username = TestUser.Username,
-                Password = TestUser.Password
+                Password = TestPassword
             };
 
             TestResponse<AccessTokenVm> response = await TestApi.PostJsonAsync<GenerateTokenVm, AccessTokenVm>("token", request);
             Assert.IsTrue(response.Success);
             Assert.IsNotEmpty(response.Response.AccessToken);
-            Assert.AreEqual(TestUser.Username, response.Response.Username);
+            Assert.AreEqual(TestUser.Username, response.Response.User.Username);
         }
     }
 }

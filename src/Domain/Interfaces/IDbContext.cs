@@ -14,11 +14,9 @@ namespace MasterCraft.Domain.Interfaces
 {
     public interface IDbContext
     {
-        DbSet<ExtendedIdentityUser> Users { get; }
+        DbSet<User> Users { get; }
 
         DbSet<Mentor> Mentors { get; }
-
-        DbSet<Learner> Learners { get; }
 
         DbSet<Offering> Offerings { get; }
 

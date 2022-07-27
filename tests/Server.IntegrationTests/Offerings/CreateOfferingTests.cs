@@ -14,19 +14,12 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
         [Test]
         public async Task ShouldSaveOffering()
         {
-            Mentor mentor = TestConstants.TestMentor;
-            await SeedDatabase(mentor);
+            Mentor mentor = await SeedHelper.SeedTestMentor();
 
             OfferingVm request = new()
             {
-                DeliveryDays = TestConstants.TestOffering.DeliveryDays,
-                RequestMinutes = TestConstants.TestOffering.RequestMinutes,
-                FeedbackMinutes = TestConstants.TestOffering.FeedbackMinutes,
                 Price = TestConstants.TestOffering.Price,
-                SampleQuestion1 = TestConstants.TestOffering.SampleQuestion1,
-                SampleQuestion2 = TestConstants.TestOffering.SampleQuestion2,
-                SampleQuestion3 = TestConstants.TestOffering.SampleQuestion3,
-                MentorId = mentor.ApplicationUserId
+                MentorId = mentor.UserId
             };
 
             //-- Send create mentor request and validate the response.

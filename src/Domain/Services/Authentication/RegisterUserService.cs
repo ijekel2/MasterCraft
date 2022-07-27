@@ -1,4 +1,5 @@
 ﻿using MasterCraft.Domain.Common.Utilities;
+using MasterCraft.Domain.Entities;
 using MasterCraft.Domain.Models;
 using MasterCraft.Shared.ViewModels;
 using System.Threading;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services.Authentication
 {
-    public class RegisterUserService : DomainService<RegisterUserVm, ApplicationUserVm>
+    public class RegisterUserService : DomainService<RegisterUserVm, UserVm>
     {
         public RegisterUserService(DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
@@ -19,26 +20,17 @@ namespace MasterCraft.Domain.Services.Authentication
                 Properties.Resources.AccountAlreadyExists);
         }
 
-        internal override async Task<ApplicationUserVm> Handle(RegisterUserVm request, CancellationToken token = new())
+        internal override async Task<UserVm> Handle(RegisterUserVm request, CancellationToken token = new())
         {
-            ApplicationUser newUser = new()
+            await Services.IdentityService.CreateUserAsync(request);
+
+            return new UserVm()
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
                 Username = request.Email,
-                Password = request.Password,
-
-            };
-
-            await Services.IdentityService.CreateUserAsync(newUser);
-
-            return new ApplicationUserVm()
-            {
-                FirstName = newUser.FirstName,
-                LastName = newUser.LastName,
-                Email = newUser.Email,
-                Username = newUser.Username
+                ProfileImageUrl = request.ProfileImageUrl
             };
         }
     }

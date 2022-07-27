@@ -13,7 +13,7 @@ namespace MasterCraft.Domain.Parameters
 
         public string LearnerId { get; set; }
 
-        public int FeedbackRequestId { get; set; }
+        public string FeedbackRequestId { get; set; }
 
         public VideoType VideoType { get; set; }
     }

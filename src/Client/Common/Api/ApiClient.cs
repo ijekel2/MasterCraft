@@ -1,9 +1,12 @@
 ﻿using Blazored.LocalStorage;
+using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,14 +19,14 @@ namespace MasterCraft.Client.Common.Api
     public class ApiClient
     {
         readonly IHttpClientFactory cHttpClientFactory;
-        readonly ILocalStorageService cLocalStorage;
+        readonly IJSRuntime _js;
         readonly AuthenticationStateProvider cAuthenticationStateProvider;
         readonly IConfiguration cConfiguration;
 
-        public ApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILocalStorageService localStorage, AuthenticationStateProvider authenticationStateProvider)
+        public ApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, IJSRuntime js, AuthenticationStateProvider authenticationStateProvider)
         {
             cHttpClientFactory = httpClientFactory;
-            cLocalStorage = localStorage;
+            _js = js;
             cAuthenticationStateProvider = authenticationStateProvider;
             cConfiguration = configuration;
         }
@@ -33,6 +36,25 @@ namespace MasterCraft.Client.Common.Api
             HttpClient client = await SetupHttpClient();
             HttpContent content = new StringContent(JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json");
             
+            HttpResponseMessage response = await client.PostAsync($"/api/{url.TrimStart('/')}", content);
+
+            return await ParseResponse<TResponse>(response);
+        }
+
+        public async Task<ApiResponse<TResponse>> PostFormAsync<TRequest, TResponse>(string url, TRequest requestBody, params UploadFileVm[] files)
+                where TResponse : new()
+        {
+            HttpClient client = await SetupHttpClient();
+            MultipartFormDataContent content = new()
+            {
+                { new StringContent(JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json") }
+            };
+
+            foreach (UploadFileVm file in files)
+            {
+                content.Add(new StreamContent(file.Stream), "file", file.Name);
+            }
+
             HttpResponseMessage response = await client.PostAsync($"/api/{url.TrimStart('/')}", content);
 
             return await ParseResponse<TResponse>(response);
@@ -99,11 +121,10 @@ namespace MasterCraft.Client.Common.Api
         {
             HttpClient httpClient = cHttpClientFactory.CreateClient("MasterCraft");
             httpClient.BaseAddress = new Uri(cConfiguration["API"].TrimEnd('/'));
-            AuthenticationState authState = await cAuthenticationStateProvider.GetAuthenticationStateAsync();
+            string token = (await _js.InvokeAsync<string>("localStorage.getItem", "authToken"))?.Replace("\"", "");
 
-            if (authState.User.Identity?.IsAuthenticated ?? false)
+            if (!string.IsNullOrEmpty(token))
             {
-                string token = (await cLocalStorage.GetItemAsStringAsync("authToken")).Replace("\"", "");
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
            

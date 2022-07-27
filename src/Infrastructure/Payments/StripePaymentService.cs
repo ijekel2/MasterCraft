@@ -8,18 +8,19 @@ using System.Threading.Tasks;
 using Stripe;
 using MasterCraft.Shared.ViewModels;
 using Stripe.Checkout;
+using MasterCraft.Shared.ViewModels.Aggregates;
 
 namespace MasterCraft.Infrastructure.Payments
 {
     internal class StripePaymentService : IPaymentService
     {
-        public async Task<string> CreateConnectedAccount(MentorVm mentor, CancellationToken token = default)
+        public async Task<string> CreateConnectedAccount(UserVm user, CancellationToken token = default)
         {
             var options = new AccountCreateOptions
             {
                 Type = "express",
                 
-                Email = mentor.Email,
+                Email = user.Email,
                 Capabilities = new AccountCapabilitiesOptions
                 {
                     CardPayments = new AccountCapabilitiesCardPaymentsOptions
@@ -34,13 +35,13 @@ namespace MasterCraft.Infrastructure.Payments
                 BusinessType = "individual",
                 Individual = new AccountIndividualOptions
                 {
-                    FirstName = mentor.FirstName,
-                    LastName = mentor.LastName
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
                 },
                 BusinessProfile = new AccountBusinessProfileOptions
                 {
-                    Url = mentor.ChannelLink,
-                    Mcc = "8299" //-- MCC code for Educational Services
+                    ProductDescription = "Content Feedback",
+                    Mcc = "8299", //-- MCC code for Educational Services
                 },
                 Settings = new AccountSettingsOptions
                 {
@@ -75,8 +76,12 @@ namespace MasterCraft.Infrastructure.Payments
             };
         }
 
-        public async Task<CheckoutVm> CreateCheckout(CreateCheckoutVm request, CancellationToken token = default)
+        public async Task<CheckoutSessionVm> CreateCheckout(CheckoutDetailsVm request, CancellationToken token = default)
         {
+            long priceCents = (long)(request.Offering.Price * 100);
+            long chargeCents = (long)(request.ServiceCharge * 100);
+            long appFeeCents = (long)(request.ApplicationFee * 100);
+
             var options = new SessionCreateOptions
             {
                 SuccessUrl = request.SuccessUrl,
@@ -87,20 +92,32 @@ namespace MasterCraft.Infrastructure.Payments
                     {
                         PriceData = new SessionLineItemPriceDataOptions
                         {
-                            UnitAmount = (long)request.Price * 10,
+                            UnitAmount = priceCents,
                             Currency = request.Currency,
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
-                                Name = request.OfferingName,
-                                Description = request.OfferingDescription
+                                Name = "Feedback"
                             }
                         },
                         Quantity = 1
                     },
+                    new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = chargeCents,
+                            Currency = request.Currency,
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = "Service Charge",
+                            }
+                        },
+                        Quantity = 1
+                    }
                 },
                 PaymentIntentData = new SessionPaymentIntentDataOptions()
                 {
-                    ApplicationFeeAmount = (long)request.ApplicationFee * 10,
+                    ApplicationFeeAmount = appFeeCents,
                     CaptureMethod = "manual",
                     SetupFutureUsage = "on_session",
                 },
@@ -110,6 +127,7 @@ namespace MasterCraft.Infrastructure.Payments
                     "card",
                 },
                 Mode = "payment",
+                CustomerEmail = request.CustomerEmail 
             };
 
             var requestOptions = new RequestOptions
@@ -120,7 +138,7 @@ namespace MasterCraft.Infrastructure.Payments
             //-- Create Checkout
             var service = new SessionService();
             Session session = await service.CreateAsync(options, requestOptions, token);
-            return new CheckoutVm()
+            return new CheckoutSessionVm()
             {
                 CheckoutSessionId = session.Id,
                 CheckoutUrl = session.Url,
@@ -139,5 +157,16 @@ namespace MasterCraft.Infrastructure.Payments
             return customer.Id;
         }
 
+        public async Task CapturePayment(string paymentIntentId)
+        {
+            var service = new PaymentIntentService();
+            await service.CaptureAsync(paymentIntentId);
+        }
+
+        public async Task CancelPayment(string paymentIntentId)
+        {
+            var service = new PaymentIntentService();
+            await service.CancelAsync(paymentIntentId);
+        }
     }
 }

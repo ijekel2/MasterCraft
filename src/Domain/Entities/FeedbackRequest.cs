@@ -10,8 +10,10 @@ namespace MasterCraft.Domain.Entities
 {
     public class FeedbackRequest : BaseEntity
     {
-        public int Id { get; set; }
-        public string ContentLink { get; set; }
+        public string Id { get; set; }
+        public string VideoEmbedUrl { get; set; }
+        public string Question { get; set; }
+        public string PaymentIntentId { get; set; }
         public FeedbackRequestStatus Status { get; set; }
         public DateTime SubmissionDate { get; set; }
         public DateTime? ResponseDate { get; set; }
@@ -20,7 +22,7 @@ namespace MasterCraft.Domain.Entities
         public Mentor Mentor { get; set; }
 
         public string LearnerId { get; set; }
-        public Learner Learner { get; set; }
+        public User Learner { get; set; }
 
         public int OfferingId { get; set; }
         public Offering Offering { get; set; }

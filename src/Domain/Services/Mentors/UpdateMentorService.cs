@@ -24,7 +24,7 @@ namespace MasterCraft.Domain.Services.Mentors
 
             internal override async Task<EmptyVm> Handle(MentorVm mentorVm, CancellationToken token = default)
             {
-                Mentor mentor = await _dbContext.Mentors.FirstOrDefaultAsync(mentor => mentor.ApplicationUserId == Services.CurrentUserService.UserId);
+                Mentor mentor = await _dbContext.Mentors.FirstOrDefaultAsync(mentor => mentor.UserId == Services.CurrentUserService.UserId);
 
                 Map(mentorVm, mentor);
 

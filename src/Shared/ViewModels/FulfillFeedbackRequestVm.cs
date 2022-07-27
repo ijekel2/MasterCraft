@@ -12,7 +12,7 @@ namespace MasterCraft.Shared.ViewModels
 
         public string LearnerId { get; set; }
 
-        public int FeedbackRequestId { get; set; }
+        public string FeedbackRequestId { get; set; }
 
         public string VideoUrl { get; set; }
     }

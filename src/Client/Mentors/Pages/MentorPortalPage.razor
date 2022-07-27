@@ -1,32 +1,303 @@
 ﻿@page "/portal";
 @using System.Security.Claims;
-<h2>Mentor Portal</h2>
+@using MasterCraft.Client.Common;
+@using Syncfusion.Blazor.RichTextEditor;
+@using Syncfusion.Blazor.Lists;
 
-@if (cIsAuthenticated)
-{
-    <h4>@cUserName is authenticated</h4>  }
-else
-{
-    <h4>The user is not authenticated</h4>
-}
-
-@code {  
-    [CascadingParameter]
-    public Task<AuthenticationState> AuthState { get; set; }
-
-    private string cUserName;
-    private bool cIsAuthenticated;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var authState = await AuthState;
-
-        if (authState.User.Identity?.IsAuthenticated ?? false)
+<AuthorizeView Context="authContext">
+    <div id="portal-view">
+        @if (!cInRecordingMode)
         {
-            cIsAuthenticated = true;
-
-            cUserName = authState.User.FindFirst(ClaimTypes.Name).Value;
+            <div class="tab-panel-content">
+                <div id="summary">
+                    <div id="earnings-summary">
+                        <div class="earnings-item">
+                            <h6 id="earned-amount">@cEarningsSummary.AmountEarned.FormatPrice()</h6>
+                            <span>earned</span>
+                        </div>
+                        <div class="earnings-item">
+                            <h6 id="queue-amount">@cEarningsSummary.AmountInQueue.FormatPrice()</h6>
+                            <span>queued</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="request-queue">
+                    <SfListView CssClass="e-list-template ui-list" TValue="FeedbackRequestQueueItemVm" DataSource="@cFeedbackRequests" Height="500px">
+                        <ListViewTemplates TValue="FeedbackRequestQueueItemVm">
+                            <Template>
+                                <div id="request-queue-item" @onclick="() => OnQueueItemClick(context)">
+                                    <img class="profile-image" src=@context.ProfileImageUrl/>
+                                    <div id="request-queue-item-name">
+                                        <h6>@GetSubmitterName(context)</h6>
+                                    </div>
+                                    <div id="request-queue-item-price">
+                                        <h6>@GetPrice(context)</h6>
+                                    </div>
+                                    <div id="request-queue-item-time">
+                                        <SfIcon Name=IconName.Clock></SfIcon>
+                                        <span id="time">@GetTimeSinceSubmission(context)</span>
+                                    </div>
+                                </div>
+                            </Template>
+                        </ListViewTemplates>
+                        <ListViewFieldSettings TValue="FeedbackRequestQueueItemVm" Id="Id" Text="Name"></ListViewFieldSettings>
+                    </SfListView>
+                </div>
+            </div>
         }
+        
+        <div id="request-detail" class="@GetRequestDetailCssClass()">
 
+            <div id="request-toolbar">
+                @if (cInRecordingMode)
+                {
+                    <Loom></Loom>
+                    <SfButton CssClass="mc-btn-green" OnClick="ExitRecordingMode">Exit Recording Mode</SfButton>
+                }
+                else
+                {
+                    <h4 style="margin: 0px">Feedback Request from @(cRequestDetail.Learner.FirstName)</h4>
+                    <SfButton CssClass="mc-btn-green" OnClick="EnterRecordingMode">Enter Recording Mode</SfButton>
+                }
+            </div>
+            <SfAccordion ID="request-accordion">
+                <AccordionItems>
+                    <AccordionItem Expanded="true">
+                        <HeaderTemplate>Content</HeaderTemplate>
+                        <ContentTemplate>
+                            <iframe id="request-content-video" src="@cRequestDetail.FeedbackRequest.VideoEmbedUrl" frameborder="0" allowfullscreen></iframe>
+                        </ContentTemplate>
+                    </AccordionItem>
+                    <AccordionItem Expanded="true">
+                        <HeaderTemplate>Question</HeaderTemplate>
+                        <ContentTemplate>
+                            <h6>@cRequestDetail.FeedbackRequest.Question</h6>
+                        </ContentTemplate>
+                    </AccordionItem>
+                    <AccordionItem>
+                        <HeaderTemplate>Mentor Notes</HeaderTemplate>
+                        <ContentTemplate>
+                            <div>
+                                <SfRichTextEditor Height="300px"></SfRichTextEditor>
+                            </div>
+                        </ContentTemplate>
+                    </AccordionItem>
+                </AccordionItems>
+            </SfAccordion>
+        </div>
+    </div>
+</AuthorizeView>
+
+<style>
+    #portal-view {
+        display: flex;
+        flex-direction: row;
     }
-}
+
+    #tab-panel {
+        text-align: center;
+        width: 15vw !important;
+        margin: 10px;
+    }
+
+    .tab-panel-content {
+        display: flex;
+        flex-direction: column;    
+        align-items: center;
+        width: 15vw !important;
+        margin: 10px;
+    }
+
+    .tab-panel-content > h6 {
+        margin: 0px;
+    }
+
+    #summary {
+        margin: 10px;
+        text-align: center;
+    }
+
+    #request-queue {
+        width: 100%;
+    }
+
+    #request-detail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 20px;
+    }
+
+    .queue-request-detail {
+        width: 50vw;
+        margin: 10px;
+    }
+
+    .studio-request-detail {
+        width: 80vw;
+        margin: auto;
+    }
+
+    #request-accordion {
+        width: 100%
+    }
+
+    #request-content-video {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+    }
+
+    #request-content-question {
+        text-align: left;
+        margin: 10px;
+    }
+
+    #request-queue-item {
+        display: grid;
+        grid-template-columns: 33% 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        width: 100%;
+        height: 60px;
+    }
+
+    #request-queue-item-price {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+    }
+
+    #request-queue-item-price > h6{
+        color: @Colors.McGreen;
+        margin: 0px;
+        font-weight: bold;
+    }
+
+    #request-queue-item-time {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        grid-column: 3 / 4;
+        grid-row: 2 / 3;
+        font-style: italic;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+    }
+
+    #request-queue-item-time > .e-icons span {
+        color: @Colors.McBlack;
+    }
+
+    #request-queue-item-time > span {
+        color: @Colors.McBlack;
+    }
+
+    #request-queue-item-name {
+        grid-column: 2 / 4;
+        grid-row: 1 / 2;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+    }
+
+    #request-queue-item-name > h6{
+        font-weight: bold;
+        color: @Colors.McBlack;
+        margin: 0px;
+    }
+
+    #request-queue-item > .profile-image {
+        grid-column: 1 / 2;
+        grid-row: 1 / 3;
+        height: 90%;
+        margin: auto;
+    }
+
+    #request-toolbar {
+        display: flex;
+        align-items: center;
+        width: 100% !important;
+        border: 1px solid @Colors.McBorderGray;
+        border-bottom-width: 0px;
+        margin: 0px;
+        padding: 5px;
+    }
+
+    #btn-record {
+        height: 90%;
+        aspect-ratio: 3 / 1;
+        margin-right: auto;
+    }
+
+    #request-toolbar > .mc-btn-green {
+        margin-left: auto;
+    }
+
+    .earnings-item {
+        display: flex;
+        flex-direction: column;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    #earnings-summary {
+        display: inline-flex;
+        flex-direction: row;
+    }
+    
+    #earned-amount {
+        font-weight: bold;
+    }
+
+    #queue-amount {
+        font-weight: bold;
+        color: @Colors.McGreen;
+    }
+
+    /* Accordion Styling */
+    .e-accordion {
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+        width: 100%;
+    }
+
+    .e-accordion .e-acrdn-item.e-select > .e-acrdn-header {
+        border: none;
+        background-color: white;
+        margin: 0px;
+    }
+
+    .e-accordion .e-acrdn-item.e-select > .e-acrdn-header:hover {
+        background-color: @Colors.McLightGray;
+    }
+
+    .e-accordion .e-acrdn-item.e-select > .e-acrdn-header:focus {
+        border: 1px solid @Colors.McGreen;
+        background-color: @Colors.McLightGray;
+        box-shadow: none;
+    }
+
+    .e-accordion .e-acrdn-item.e-select.e-active>.e-acrdn-header:focus,
+    .e-accordion .e-acrdn-item.e-select.e-item-focus>.e-acrdn-header:focus /* Header */{
+        background-color: @Colors.McLightGray;
+    }
+
+    .e-accordion .e-acrdn-item .e-acrdn-header .e-toggle-icon .e-icons, /* Header toggle icon */
+    .e-accordion .e-acrdn-item .e-acrdn-header .e-acrdn-header-content,  /* Header content */
+    .e-accordion .e-acrdn-item.e-select.e-active>.e-acrdn-header .e-acrdn-header-content,  
+    .e-accordion .e-acrdn-item.e-select.e-item-focus>.e-acrdn-header .e-acrdn-header-content {
+         color: @Colors.McBlack;
+         font-weight: bold;
+    }
+
+     .e-toolbar .e-toolbar-item {
+        height: 100% !important;
+    }
+
+    .oi {
+        font-size: 20px !important;
+    }
+</style>
+

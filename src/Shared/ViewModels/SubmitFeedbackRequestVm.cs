@@ -8,8 +8,6 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class SubmitFeedbackRequestVm
     {
-        public string MentorId { get; set; }
-        public string LearnerId { get; set; }
-        public string VideoUrl { get; set; }
+        public string FeedbackRequestId { get; set; }
     }
 }

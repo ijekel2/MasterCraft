@@ -8,6 +8,6 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class DeclineFeedbackRequestVm
     {
-        public int FeedbackRequestId { get; set; }
+        public string FeedbackRequestId { get; set; }
     }
 }

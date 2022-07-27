@@ -1,8 +1,10 @@
 ﻿using MasterCraft.Domain.Common.Utilities;
 using MasterCraft.Domain.Entities;
 using MasterCraft.Domain.Interfaces;
+using MasterCraft.Domain.Services.Mentors;
 using MasterCraft.Shared.Enums;
 using MasterCraft.Shared.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,31 +18,23 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
     {
         readonly IDbContext _dbContext;
 
-        public SubmitFeedbackRequestService(IDbContext dbContext, DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
+        public SubmitFeedbackRequestService(IDbContext dbContext, 
+            DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
             _dbContext = dbContext;
         }
 
         internal override async Task<EmptyVm> Handle(SubmitFeedbackRequestVm requestVm, CancellationToken token = default)
         {
-            //-- Create new feedbackRequest
-            FeedbackRequest request = new()
+            FeedbackRequest request = await _dbContext.FeedbackRequests.FirstOrDefaultAsync(request => request.Id == requestVm.FeedbackRequestId);
+
+            if (request == null)
             {
-                Status = FeedbackRequestStatus.Pending
-            };
+                throw new Exception();
+            }
 
-            await _dbContext.AddAsync(request);
-
-            //-- Create video for the feedback request
-            Video video = new()
-            {
-                MentorId = requestVm.MentorId,
-                LearnerId = request.LearnerId,
-                Url = requestVm.VideoUrl,
-                VideoType = VideoType.FeedbackRequest
-            };
-
-            await _dbContext.AddAsync(video);
+            request.Status = FeedbackRequestStatus.Submitted;
+            request.SubmissionDate = DateTime.Now;
 
             await _dbContext.SaveChangesAsync();
 

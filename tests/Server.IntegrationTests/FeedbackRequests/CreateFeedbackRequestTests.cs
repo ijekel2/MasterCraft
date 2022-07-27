@@ -15,39 +15,28 @@ namespace MasterCraft.Server.IntegrationTests.FeedbackRequests
         [Test]
         public async Task ShouldSaveFeedbackRequest()
         {
-            Mentor mentor = TestConstants.TestMentor;
-            Learner learner = TestConstants.TestLearner;
-            Offering offering = TestConstants.TestOffering;
-
-            await SeedDatabase(mentor);
-            await SeedDatabase(learner);
-
-            offering.MentorId = mentor.ApplicationUserId;
-            await SeedDatabase(offering);
+            Offering offering = await SeedHelper.SeedTestOffering();
 
             FeedbackRequestVm request = new()
             {
                 Status = TestFeedbackRequest.Status,
-                ContentLink = TestFeedbackRequest.ContentLink,
-                MentorId = mentor.ApplicationUserId,
-                LearnerId = learner.ApplicationUserId,
+                VideoEmbedCode = TestFeedbackRequest.VideoEmbedCode,
+                MentorId = offering.Mentor.UserId,
                 OfferingId = offering.Id
             };
 
             //-- Send create mentor request and validate the response.
-            TestResponse<EmptyVm> response = await TestApi.PostJsonAsync<FeedbackRequestVm, EmptyVm>(
+            TestResponse<FeedbackRequestCreatedVm> response = await TestApi.PostJsonAsync<FeedbackRequestVm, FeedbackRequestCreatedVm>(
                 "feedbackrequests",
                 request);
 
             Assert.IsTrue(response.Success);
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.IsNotNull(response.Headers.Location);
-            Assert.IsTrue(int.TryParse(response.Headers.Location.Last().ToString(), out int id));
 
             //-- Select record and validate.
             using var context = GetDbContext();
-            FeedbackRequest feedbackRequest = await context.FeedbackRequests.FirstOrDefaultAsync(request => request.Id == id);
+            FeedbackRequest feedbackRequest = await context.FeedbackRequests.FirstOrDefaultAsync(request => request.Id == response.Response.FeedbackRequestId);
             Assert.IsNotNull(feedbackRequest);
         }
     }

@@ -1,12 +1,88 @@
-﻿@page "/go/{ProfileUri}";
+﻿@page "/go/{ProfileId}";
+@using MasterCraft.Client.Common.Api
+@using MasterCraft.Shared.ViewModels.Aggregates
 
-@layout OuterLayout
-
-<div>
-    <LandingPageContent Profile="TestConstants.TestMentor" Offering="TestConstants.TestOffering" />
+<div id="information">
+    <div id="header">
+        <img class="profile-image" src="@MentorUser.ProfileImageUrl"/>
+        <div id="title">
+            <h6>Get a personal video with feedback on your work from</h6>
+            <h3 id="name">@GetTitleLine()</h3>
+        </div>
+    </div>
+    <br />
+    <br />
+    <iframe src="@Profile.MentorUser.VideoEmbedCode" width="420" height="240" frameborder="0" allowfullscreen></iframe>
+    <br />
+    <br />
+    <br />
+    <h5>Ask me questions like:</h5>
+    <ul>
+        <li>@MentorUser.SampleQuestion1</li>
+        <li>@MentorUser.SampleQuestion2</li>
+        <li>@MentorUser.SampleQuestion3</li>
+        @if (!string.IsNullOrEmpty(MentorUser.SampleQuestion4))
+        {
+                <li>@MentorUser.SampleQuestion4</li>
+        }
+        @if (!string.IsNullOrEmpty(MentorUser.SampleQuestion5))
+        {
+                <li>@MentorUser.SampleQuestion5</li>
+        }
+    </ul>
+    <br />
+    <div id="get-feedback">
+        <SfButton CssClass="mc-btn mc-btn-green" OnClick="OnGetFeedbackClick">Get Feedback</SfButton>
+        <div id="terms">
+            <h5>@GetPrice()</h5>
+        </div>
+    </div>
 </div>
 
-@code {
-    [Parameter]
-    public string ProfileUri { get; set; }
-}
+<style>
+    #information {
+        width: 500px;
+        margin: auto; 
+    }
+
+    #header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    #get-feedback {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 50px;
+        align-items: center;
+    }
+
+    #name {
+        margin: auto;
+        color: @Colors.McGreen;
+    }
+
+    .profile-image {
+        margin-left: 0px;
+        margin-right: 10px;
+        width: 100px;
+        height: 100px;
+        display: block;
+    }
+
+    #terms {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #terms > h5 {
+        margin: 0px;
+    }
+    
+    #get-feedback > .e-btn {
+        width: 140px;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+</style>

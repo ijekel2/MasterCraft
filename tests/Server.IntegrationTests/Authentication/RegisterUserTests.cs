@@ -18,8 +18,8 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
                 FirstName = TestUser.FirstName,
                 LastName = TestUser.LastName,
                 Email = TestUser.Email,
-                Password = TestUser.Password,
-                ConfirmPassword = TestUser.Password
+                Password = TestPassword,
+                ConfirmPassword = TestPassword
             };
 
             TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserVm, ApplicationUser>("register", request);
@@ -34,8 +34,8 @@ namespace MasterCraft.Server.IntegrationTests.Authentication
                 FirstName = TestUser.FirstName,
                 LastName = TestUser.LastName,
                 Email = "differentmentor@local",
-                Password = TestUser.Password,
-                ConfirmPassword = TestUser.Password
+                Password = TestPassword,
+                ConfirmPassword = TestPassword
             };
 
             TestResponse<ApplicationUser> response = await TestApi.PostJsonAsync<RegisterUserVm, ApplicationUser>("register", request);

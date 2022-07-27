@@ -15,7 +15,7 @@ namespace MasterCraft.Domain.Entities
         public DateTime? AuthorizationDate { get; set; }
         public DateTime? CaptureDate { get; set; }
 
-        public int FeedbackRequestId { get; set; }
+        public string FeedbackRequestId { get; set; }
         public FeedbackRequest FeedbackRequest { get; set; }
 
         public string StripePaymentId { get; set; }

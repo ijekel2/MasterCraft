@@ -18,10 +18,7 @@ namespace MasterCraft.Server.IntegrationTests.Mentors
         {
             MentorVm request = new()
             {
-                ChannelName = TestConstants.TestMentor.ChannelName,
-                ChannelLink = TestConstants.TestMentor.ChannelLink,
-                PersonalTitle = TestConstants.TestMentor.PersonalTitle,
-                ProfileCustomUri = TestConstants.TestMentor.ProfileCustomUri
+                ProfileId = TestConstants.TestMentor.ProfileId
             };
 
             //-- Send create mentor request and validate the response.
@@ -32,11 +29,11 @@ namespace MasterCraft.Server.IntegrationTests.Mentors
             Assert.IsTrue(response.Success);
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.IsNotEmpty(response.Response.ApplicationUserId);
+            Assert.IsNotEmpty(response.Response.UserId);
             Assert.IsNotEmpty(response.Response.StripeAccountId);
 
             using var context = GetDbContext();
-            Mentor mentor = await context.Mentors.FirstOrDefaultAsync(mentor => mentor.ApplicationUserId.ToString() == response.Response.ApplicationUserId);
+            Mentor mentor = await context.Mentors.FirstOrDefaultAsync(mentor => mentor.UserId.ToString() == response.Response.UserId);
             Assert.IsNotNull(mentor);
 
             //-- Validate that the image was saved 

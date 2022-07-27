@@ -19,33 +19,26 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MasterCraft.Domain.Entities.FeedbackRequest", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ContentLink")
-                        .HasMaxLength(256)
+                    b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("LearnerApplicationUserId")
-                        .IsRequired()
+                    b.Property<string>("LearnerId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LearnerId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("MentorApplicationUserId")
-                        .IsRequired()
+                    b.Property<string>("MentorId")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("MentorId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("OfferingId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Question")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("ResponseDate")
                         .HasColumnType("TEXT");
@@ -61,108 +54,35 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("VideoEmbedUrl")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("LearnerApplicationUserId");
+                    b.HasIndex("LearnerId");
 
-                    b.HasIndex("MentorApplicationUserId");
+                    b.HasIndex("MentorId");
 
                     b.HasIndex("OfferingId");
 
                     b.ToTable("FeedbackRequests");
                 });
 
-            modelBuilder.Entity("MasterCraft.Domain.Entities.Learner", b =>
-                {
-                    b.Property<string>("ApplicationUserId")
-                        .HasMaxLength(64)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ProfileImageUrl")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ApplicationUserId");
-
-                    b.ToTable("Learners");
-                });
-
             modelBuilder.Entity("MasterCraft.Domain.Entities.Mentor", b =>
                 {
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<string>("UserId")
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Active")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ChannelLink")
-                        .HasMaxLength(1024)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ChannelName")
-                        .HasMaxLength(64)
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PersonalTitle")
+                    b.Property<string>("ProfileId")
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
-
-                    b.Property<string>("ProfileCustomUri")
-                        .HasMaxLength(64)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ProfileImageUrl")
-                        .HasMaxLength(1024)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("StripeAccountId")
-                        .HasMaxLength(64)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("VideoEmbedCode")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ApplicationUserId");
-
-                    b.ToTable("Mentors");
-                });
-
-            modelBuilder.Entity("MasterCraft.Domain.Entities.Offering", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("DeliveryDays")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("FeedbackMinutes")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("MentorId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("RequestMinutes")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("SampleQuestion1")
                         .HasMaxLength(512)
@@ -182,6 +102,39 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("SampleQuestion5")
                         .HasMaxLength(512)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StripeAccountId")
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VideoEmbedUrl")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Mentors");
+                });
+
+            modelBuilder.Entity("MasterCraft.Domain.Entities.Offering", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MentorId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -209,8 +162,8 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("FeedbackRequestId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("FeedbackRequestId")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
@@ -224,61 +177,13 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FeedbackRequestId");
+                    b.HasIndex("FeedbackRequestId")
+                        .IsUnique();
 
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("MasterCraft.Domain.Entities.Video", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("FeedbackRequestId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("LearnerApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("LearnerId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("MentorApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("MentorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Url")
-                        .HasMaxLength(1024)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("VideoType")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FeedbackRequestId");
-
-                    b.HasIndex("LearnerApplicationUserId");
-
-                    b.HasIndex("MentorApplicationUserId");
-
-                    b.ToTable("Videos");
-                });
-
-            modelBuilder.Entity("MasterCraft.Infrastructure.Identity.ExtendedIdentityUser", b =>
+            modelBuilder.Entity("MasterCraft.Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(64)
@@ -331,6 +236,10 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ProfileImageUrl")
+                        .HasMaxLength(1024)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
@@ -351,6 +260,48 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("MasterCraft.Domain.Entities.Video", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FeedbackRequestId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LearnerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MentorId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(1024)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VideoType")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FeedbackRequestId")
+                        .IsUnique();
+
+                    b.HasIndex("LearnerId");
+
+                    b.HasIndex("MentorId");
+
+                    b.ToTable("Videos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -487,17 +438,13 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MasterCraft.Domain.Entities.FeedbackRequest", b =>
                 {
-                    b.HasOne("MasterCraft.Domain.Entities.Learner", "Learner")
+                    b.HasOne("MasterCraft.Domain.Entities.User", "Learner")
                         .WithMany()
-                        .HasForeignKey("LearnerApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LearnerId");
 
                     b.HasOne("MasterCraft.Domain.Entities.Mentor", "Mentor")
                         .WithMany()
-                        .HasForeignKey("MentorApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MentorId");
 
                     b.HasOne("MasterCraft.Domain.Entities.Offering", "Offering")
                         .WithMany()
@@ -512,28 +459,21 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                     b.Navigation("Offering");
                 });
 
-            modelBuilder.Entity("MasterCraft.Domain.Entities.Learner", b =>
-                {
-                    b.HasOne("MasterCraft.Infrastructure.Identity.ExtendedIdentityUser", null)
-                        .WithOne()
-                        .HasForeignKey("MasterCraft.Domain.Entities.Learner", "ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("MasterCraft.Domain.Entities.Mentor", b =>
                 {
-                    b.HasOne("MasterCraft.Infrastructure.Identity.ExtendedIdentityUser", null)
+                    b.HasOne("MasterCraft.Domain.Entities.User", "User")
                         .WithOne()
-                        .HasForeignKey("MasterCraft.Domain.Entities.Mentor", "ApplicationUserId")
+                        .HasForeignKey("MasterCraft.Domain.Entities.Mentor", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MasterCraft.Domain.Entities.Offering", b =>
                 {
                     b.HasOne("MasterCraft.Domain.Entities.Mentor", "Mentor")
-                        .WithMany()
+                        .WithMany("Offerings")
                         .HasForeignKey("MentorId");
 
                     b.Navigation("Mentor");
@@ -542,10 +482,8 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MasterCraft.Domain.Entities.Payment", b =>
                 {
                     b.HasOne("MasterCraft.Domain.Entities.FeedbackRequest", "FeedbackRequest")
-                        .WithMany()
-                        .HasForeignKey("FeedbackRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne()
+                        .HasForeignKey("MasterCraft.Domain.Entities.Payment", "FeedbackRequestId");
 
                     b.Navigation("FeedbackRequest");
                 });
@@ -553,22 +491,16 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MasterCraft.Domain.Entities.Video", b =>
                 {
                     b.HasOne("MasterCraft.Domain.Entities.FeedbackRequest", "FeedbackRequest")
-                        .WithMany()
-                        .HasForeignKey("FeedbackRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne()
+                        .HasForeignKey("MasterCraft.Domain.Entities.Video", "FeedbackRequestId");
 
-                    b.HasOne("MasterCraft.Domain.Entities.Learner", "Learner")
+                    b.HasOne("MasterCraft.Domain.Entities.User", "Learner")
                         .WithMany()
-                        .HasForeignKey("LearnerApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LearnerId");
 
                     b.HasOne("MasterCraft.Domain.Entities.Mentor", "Mentor")
                         .WithMany()
-                        .HasForeignKey("MentorApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MentorId");
 
                     b.Navigation("FeedbackRequest");
 
@@ -588,7 +520,7 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MasterCraft.Infrastructure.Identity.ExtendedIdentityUser", null)
+                    b.HasOne("MasterCraft.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -597,7 +529,7 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MasterCraft.Infrastructure.Identity.ExtendedIdentityUser", null)
+                    b.HasOne("MasterCraft.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -612,7 +544,7 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MasterCraft.Infrastructure.Identity.ExtendedIdentityUser", null)
+                    b.HasOne("MasterCraft.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -621,11 +553,16 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MasterCraft.Infrastructure.Identity.ExtendedIdentityUser", null)
+                    b.HasOne("MasterCraft.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MasterCraft.Domain.Entities.Mentor", b =>
+                {
+                    b.Navigation("Offerings");
                 });
 #pragma warning restore 612, 618
         }

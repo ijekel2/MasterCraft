@@ -1,0 +1,46 @@
+﻿@page "/setup/profile"
+@layout SetupLayout
+
+<SubmissionForm TRequest=MentorProfileVm TResponse=MentorCreatedVm Request="@Profile" OnValidSubmit="OnSubmitClick" ButtonText="Next">
+    <ChildContent>
+        <div>
+            <p>Price for feedback</p>
+            <SfNumericTextBox CssClass="mc-input"  @bind-Value="Offering.Price" Format="c2"/>
+            <ValidationMessage For="@(() => Offering.Price)" />
+        </div>
+        <div>
+            <p>Give your profile a custom ID which will appear in the URL.</p>
+            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Profile ID" @bind-Value="Profile.MentorUser.ProfileId" />
+            <ValidationMessage For="@(() => Profile.MentorUser.ProfileId)" />
+        </div>
+        <div>
+            <p>Help your followers know what to ask for feedback on by writing below a few exmample questions they might want to ask you. For example: How can I improve my lighting? or How can I improve my composition?</p>
+            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 1" @bind-Value="Profile.MentorUser.SampleQuestion1" />
+            <ValidationMessage For="@(() => Profile.MentorUser.SampleQuestion1)" />
+        </div>
+        <div>
+            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 2" @bind-Value="Profile.MentorUser.SampleQuestion2" />
+            <ValidationMessage For="@(() => Profile.MentorUser.SampleQuestion2)" />
+        </div>
+        <div>
+            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 3" @bind-Value="Profile.MentorUser.SampleQuestion3" />
+            <ValidationMessage For="@(() => Profile.MentorUser.SampleQuestion3)" />
+        </div>
+        <div>
+            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 4" @bind-Value="Profile.MentorUser.SampleQuestion4" />
+            <ValidationMessage For="@(() => Profile.MentorUser.SampleQuestion4)" />
+        </div>
+        <hr />
+        <div>
+             <p>Paste embed code a video inviting your audience to receive feedback.
+             <br />
+             <br />
+            This video will show up on your profile when a follower lands on your page. This video should be simple, informal, and short. It does not need to be polished! Your audience already knows you and resepcts your work.
+             <br />
+             <br />
+            The simple formula for this kind of video is 1) Tell them who you are 
+            2) Why you are offering this 3) What kind of stuff you can best give them feedback on.</p>
+            <SfTextBox Type="InputType.Text" Multiline="true" CssClass="mc-input" Placeholder="Video embed code" @bind-Value="Profile.MentorUser.VideoEmbedCode" />
+        </div>
+    </ChildContent>
+</SubmissionForm>

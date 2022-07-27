@@ -1,5 +1,7 @@
-﻿using MasterCraft.Server.IntegrationTests.Api;
+﻿using MasterCraft.Domain.Entities;
+using MasterCraft.Server.IntegrationTests.Api;
 using MasterCraft.Shared.ViewModels;
+using MasterCraft.Shared.ViewModels.Aggregates;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -15,17 +17,17 @@ namespace MasterCraft.Server.IntegrationTests.Checkouts
         public async Task ShouldCreateCheckoutSessionWithUrl()
         {
             string accountId = await StripeHelper.CreateConnectedAccount();
-             
-            CreateCheckoutVm request = new CreateCheckoutVm()
+
+            CheckoutDetailsVm request = new CheckoutDetailsVm()
             {
                 AccountId = accountId,
-                CancelUrl = TestConstants.TestMentor.ChannelLink,
-                SuccessUrl = TestConstants.TestMentor.ChannelLink,
-                Price = TestConstants.TestOffering.Price
+                CancelUrl = TestConstants.TestUrl,
+                SuccessUrl = TestConstants.TestUrl,
+                Offering = new OfferingVm() { Price = TestConstants.TestOffering.Price }
             };
 
             //-- Send create mentor request and validate the response.
-            TestResponse<CheckoutVm> response = await TestApi.PostJsonAsync<CreateCheckoutVm, CheckoutVm>(
+            TestResponse<CheckoutSessionVm> response = await TestApi.PostJsonAsync<CheckoutDetailsVm, CheckoutSessionVm>(
                 "checkouts",
                 request);
 

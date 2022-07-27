@@ -1,5 +1,6 @@
 ﻿@using MasterCraft.Client.Common.Api;
 @using Microsoft.Extensions.Configuration
+@using MasterCraft.Client.Shared.Models;
 
 @implements IDisposable
 
@@ -9,17 +10,13 @@
 @inject NavigationManager Navigation
 
 @VideoHtml
-<SfButton id="btn-record" CssClass="mc-btn mc-btn-green">Record Video</SfButton>
-
-<style>
-    #btn-record{
-        width: 140px;
-    }
-</style>
+<SfButton id="btn-record" CssClass="e-danger">Record</SfButton>
 
 @code {
     MarkupString VideoHtml;
     DotNetObjectReference<Loom> ObjectReference;
+
+    [Parameter] public Func<LoomVideo, string, Task> OnRecordingCompleted { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -28,14 +25,26 @@
         ApiResponse<AccessTokenVm> response = await ApiClient.GetAsync<AccessTokenVm>("loomtoken");
 
         ObjectReference = DotNetObjectReference.Create(this);
-        await JS.InvokeVoidAsync("LoomService.init", new object [] { response?.Response.AccessToken, "btn-record", ObjectReference });
+        await JS.InvokeVoidAsync("LoomService.init", 
+            new object [] 
+            { 
+                response?.Response.AccessToken, 
+                "btn-record", 
+                ObjectReference, 
+                "Submit Feedback", 
+                Colors.McButtonGray, 
+                Colors.McButtonDarkGray,
+                Colors.McButtonDarkGray,
+                Colors.McGreen,
+                Colors.McDarkGreen,
+                Colors.McDarkGreen
+            });
     }
 
     [JSInvokable]
-    public void InsertVideoHtml(string html)
+    public async Task OnInsertClick(LoomVideo video, string html)
     {
-        VideoHtml = (MarkupString)html;
-        StateHasChanged();
+        await OnRecordingCompleted(video, html);
     }
 
     public void Dispose()
@@ -43,3 +52,5 @@
         ObjectReference?.Dispose();
     }
 }
+
+

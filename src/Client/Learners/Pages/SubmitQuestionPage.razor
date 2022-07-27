@@ -1,8 +1,14 @@
 ﻿@page "/go/{ProfileId}/ask"
 @layout SubmitLayout
 
-<SubmissionForm TRequest=FeedbackRequestVm TResponse=EmptyVm Request="@FeedbackRequest" OnValidSubmit="OnSubmitClick" ButtonText="Checkout">
+<SubmissionForm TRequest=FeedbackRequestVm TResponse=FeedbackRequestCreatedVm Request="@FeedbackRequest" OnValidSubmit="OnSubmitClick" ButtonText="Checkout">
     <ChildContent>
-        
+        <SfTextBox Type="InputType.Text" Multiline="true" CssClass="mc-input" Placeholder="Ask your question" @bind-Value="FeedbackRequest.Question" />
     </ChildContent>
 </SubmissionForm>
+
+<style>
+    .mc-input {
+        height: 200px;
+    }
+</style>

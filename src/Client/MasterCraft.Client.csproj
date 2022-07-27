@@ -3,9 +3,6 @@
     <TargetFramework>net6.0</TargetFramework>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\..\tests\Server.IntegrationTests\TestConstants.cs" Link="Common\Enums\TestConstants.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
@@ -18,7 +15,9 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Syncfusion.Blazor.Buttons" Version="20.1.0.50" />
     <PackageReference Include="Syncfusion.Blazor.Cards" Version="20.1.0.51" />
+    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="20.1.0.50" />
     <PackageReference Include="Syncfusion.Blazor.Navigations" Version="20.1.0.50" />
+    <PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="20.1.0.50" />
     <PackageReference Include="Syncfusion.Blazor.Themes" Version="20.1.0.50" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
   </ItemGroup>
@@ -31,7 +30,6 @@
     <Folder Include="Authentication\Components\" />
     <Folder Include="Learners\Components\" />
     <Folder Include="Navigation\Pages\" />
-    <Folder Include="Shared\Pages\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\fonts\" />
     <Folder Include="wwwroot\js\" />

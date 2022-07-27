@@ -1,8 +1,0 @@
-﻿@page "/setup/profile"
-@layout SetupLayout
-
-<SubmissionForm TRequest=MentorVm TResponse=MentorCreatedVm Request="@Profile" OnValidSubmit="OnSubmitClick" ButtonText="Next">
-    <ChildContent>
-        <MentorProfileInputs Profile="Profile"/>
-    </ChildContent>
-</SubmissionForm>

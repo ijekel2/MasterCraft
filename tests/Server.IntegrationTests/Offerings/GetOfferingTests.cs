@@ -11,13 +11,7 @@ namespace MasterCraft.Server.IntegrationTests.Offerings
         [Test]
         public async Task ShouldReturnOfferingForId()
         {
-            Mentor mentor = TestConstants.TestMentor;
-            Offering offering = TestConstants.TestOffering;
-
-            await SeedDatabase(mentor);
-
-            offering.MentorId = mentor.ApplicationUserId;
-            await SeedDatabase(offering);
+            Offering offering = await SeedHelper.SeedTestOffering();
 
             TestResponse<OfferingVm> response = await TestApi.GetAsync<OfferingVm>($"offerings/{offering.Id}");
             Assert.IsTrue(response.Success);

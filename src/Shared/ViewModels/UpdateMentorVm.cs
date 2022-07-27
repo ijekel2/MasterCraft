@@ -9,17 +9,8 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class UpdateMentorVm
     {
-        [MaxLength(1024)]
-        public string ChannelLink { get; set; }
-
         [MaxLength(64)]
-        public string ChannelName { get; set; }
-
-        [MaxLength(64)]
-        public string PersonalTitle { get; set; }
-
-        [MaxLength(64)]
-        public string ProfileCustomUri { get; set; }
+        public string ProfileId { get; set; }
 
         [MaxLength(256)]
         public string ProfileImageUrl { get; set; }

@@ -1,14 +1,12 @@
-﻿using MasterCraft.Client.Common.Api;
+﻿using Blazored.LocalStorage;
+using MasterCraft.Client.Common.Api;
+using MasterCraft.Client.Common.Enums;
 using MasterCraft.Client.Common.Services;
-using MasterCraft.Client.Shared.Components;
+using MasterCraft.Client.Common.StateManagers;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Client.Learners.Pages
@@ -17,30 +15,38 @@ namespace MasterCraft.Client.Learners.Pages
     {
         [Inject] public ApiClient ApiClient { get; set; }
         [Inject] public NavigationManager Navigation { get; set; }
+        [Inject] public ILocalStorageService Storage { get; set; }
         [Inject] public StripeService Stripe { get; set; }
-        [Parameter] public FeedbackRequestVm FeedbackRequest { get; set; } = new();
+        [Inject] public SubmitStateManager SubmitState { get; set; }
         [Parameter] public string ProfileId { get; set; }
         [CascadingParameter] public SubmitLayout Layout { get; set; }
-        [CascadingParameter] public Task<AuthenticationState> AuthState { get; set; }
+        public FeedbackRequestVm FeedbackRequest => SubmitState.FeedbackRequest;
+        public MentorUserVm MentorUser => SubmitState.MentorProfile.MentorUser;
+        public OfferingVm Offering => SubmitState.MentorProfile.Offerings.FirstOrDefault();
 
         protected override void OnInitialized()
         {
             Layout.UpdateProgressTracker(2);
         }
 
-        private async Task<ApiResponse<EmptyVm>> OnSubmitClick()
+        private async Task<ApiResponse<FeedbackRequestCreatedVm>> OnSubmitClick()
         {
-            //ApiResponse<EmptyVm> apiResponse = await ApiClient.PutAsync<UpdateMentorVm, EmptyVm>("mentors", Profile);
-            //if (apiResponse.Success)
-            //{
-            //    Navigation.NavigateTo("/setup/review");
+            ApiResponse<FeedbackRequestCreatedVm> apiResponse = 
+                await ApiClient.PostAsync<FeedbackRequestVm, FeedbackRequestCreatedVm>("feedbackrequests", FeedbackRequest);
+            
+            if (apiResponse.Success)
+            {
+                FeedbackRequest.Id = apiResponse.Response.FeedbackRequestId;
 
-            //}
+                await Stripe.RedirectToCheckout(MentorUser.StripeAccountId, 
+                    $"go/{MentorUser.ProfileId}/ask", 
+                    $"go/{MentorUser.ProfileId}/complete/{FeedbackRequest.Id}",
+                    FeedbackRequest,
+                    Offering);
+            }
 
-            //return apiResponse;
-
-            await Stripe.RedirectToCheckout(Layout.Mentor.StripeAccountId, Layout.Offering.Price, $"go/{Layout.Mentor.ProfileCustomUri}/ask", $"go/{Layout.Mentor.ProfileCustomUri}/complete");
-            return await Task.FromResult(new ApiResponse<EmptyVm>());
+               
+            return apiResponse;
         }
 
     }

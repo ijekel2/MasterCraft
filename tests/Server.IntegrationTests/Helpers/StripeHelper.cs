@@ -21,13 +21,12 @@ namespace MasterCraft.Server.IntegrationTests.Helpers
 
         public async Task<string> CreateConnectedAccount()
         {
-            MentorVm testMentor = new()
+            UserVm testUser = new()
             {
                 Email = TestConstants.TestUser.Email,
-                ChannelLink = TestConstants.TestMentor.ChannelLink
             };
 
-            return await _paymentService.CreateConnectedAccount(testMentor);
+            return await _paymentService.CreateConnectedAccount(testUser);
         }
 
         public async Task<string> CreateCustomer()
@@ -42,13 +41,12 @@ namespace MasterCraft.Server.IntegrationTests.Helpers
 
         public async Task<string> CreateOnboardedConnectedAccount()
         {
-            MentorVm testMentor = new()
+            UserVm testUser = new()
             {
                 Email = TestConstants.TestUser.Email,
-                ChannelLink = TestConstants.TestMentor.ChannelLink
             };
 
-            string accountId = await _paymentService.CreateConnectedAccount(testMentor);
+            string accountId = await _paymentService.CreateConnectedAccount(testUser);
 
             //-- Update account with info needed for it to be used.
             var options = new AccountUpdateOptions

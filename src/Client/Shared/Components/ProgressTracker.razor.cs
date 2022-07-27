@@ -30,6 +30,11 @@ namespace MasterCraft.Client.Shared.Components
             StateHasChanged();
         }
 
+        public int GetCurrentItem()
+        {
+            return currentProgressItem;
+        }
+
         private void OnProgressItemClick(int itemNumber)
         {
             if (currentProgressItem > itemNumber)

@@ -17,5 +17,6 @@ namespace MasterCraft.Client.Common.Enums
         public const string McButtonGray = "#3d3d3d";
         public const string McButtonDarkGray = "#303030";
         public const string McLightGray = "#eeeeee";
+        public const string McBorderGray = "#dee2e6";
     }
 }

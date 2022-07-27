@@ -23,7 +23,7 @@ namespace MasterCraft.Server.Controllers
 
         [Route("/api/register")]
         [HttpPost]
-        public async Task<ActionResult<ApplicationUserVm>> RegisterUser(RegisterUserVm request, [FromServices] RegisterUserService service)
+        public async Task<ActionResult<UserVm>> RegisterUser(RegisterUserVm request, [FromServices] RegisterUserService service)
         {
             return await service.HandleRequest(request);
         }

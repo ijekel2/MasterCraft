@@ -10,6 +10,6 @@ namespace MasterCraft.Shared.ViewModels
     {
         public string AccessToken { get; set; }
 
-        public string Username { get; set; }
+        public UserVm User { get; set; }
     }
 }

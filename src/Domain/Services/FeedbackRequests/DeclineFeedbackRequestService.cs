@@ -3,6 +3,7 @@ using MasterCraft.Domain.Entities;
 using MasterCraft.Domain.Interfaces;
 using MasterCraft.Shared.Enums;
 using MasterCraft.Shared.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,22 +16,31 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
     public class DeclineFeedbackRequestService : DomainService<DeclineFeedbackRequestVm, EmptyVm>
     {
         readonly IDbContext _dbContext;
+        readonly IPaymentService _paymentService;
 
-        public DeclineFeedbackRequestService(IDbContext dbContext, DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
+        public DeclineFeedbackRequestService(IDbContext dbContext, IPaymentService paymentService, 
+            DomainServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
             _dbContext = dbContext;
+            _paymentService = paymentService;
         }
 
         internal override async Task<EmptyVm> Handle(DeclineFeedbackRequestVm requestVm, CancellationToken token = default)
         {
-            FeedbackRequest request = new();
-            request.Id = requestVm.FeedbackRequestId;
-            _dbContext.FeedbackRequests.Attach(request);
+            FeedbackRequest request = await _dbContext.FeedbackRequests.FirstOrDefaultAsync(request => request.Id == requestVm.FeedbackRequestId);
+
+            if (request == null)
+            {
+                throw new Exception();
+            }
 
             request.Status = FeedbackRequestStatus.Declined;
+            request.ResponseDate = DateTime.Now;
+
+            await _paymentService.CancelPayment(request.PaymentIntentId);
 
             await _dbContext.SaveChangesAsync();
-            
+
             return EmptyVm.Value;
         }
 

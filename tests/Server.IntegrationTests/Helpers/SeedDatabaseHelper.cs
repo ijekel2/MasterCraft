@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using MasterCraft.Shared.ViewModels;
 
 namespace MasterCraft.Server.IntegrationTests.Helpers
 {
@@ -20,28 +22,21 @@ namespace MasterCraft.Server.IntegrationTests.Helpers
 
         public async Task<Mentor> SeedTestMentor()
         {            
-            Mentor mentor = TestConstants.TestMentor;
+            Mentor mentor = Map<MentorVm, Mentor>(TestConstants.TestMentor);
             await SeedDatabase(mentor);
 
             return mentor;
         }
 
-        public async Task<Learner> SeedTestLeaner()
-        {
-            Learner learner = TestConstants.TestLearner;
-            await SeedDatabase(learner);
-
-            return learner;
-        }
 
         public async Task<Offering> SeedTestOffering()
         {
-            Mentor mentor = TestConstants.TestMentor;
-            Offering offering = TestConstants.TestOffering;
+            Mentor mentor = Map<MentorVm, Mentor>(TestConstants.TestMentor);
+            Offering offering = Map<OfferingVm, Offering>(TestConstants.TestOffering);
 
             await SeedDatabase(mentor);
 
-            offering.MentorId = mentor.ApplicationUserId;
+            offering.MentorId = mentor.UserId;
             await SeedDatabase(offering);
 
             return offering;
@@ -49,19 +44,19 @@ namespace MasterCraft.Server.IntegrationTests.Helpers
 
         public async Task<FeedbackRequest> SeedTestFeedbackRequest()
         {
-            Mentor mentor = TestConstants.TestMentor;
-            Learner learner = TestConstants.TestLearner;
-            Offering offering = TestConstants.TestOffering;
-            FeedbackRequest request = TestConstants.TestFeedbackRequest;
+            Mentor mentor = Map<MentorVm, Mentor>(TestConstants.TestMentor);
+            User learner = Map<UserVm, User>(TestConstants.TestUser);
+            Offering offering = Map<OfferingVm, Offering>(TestConstants.TestOffering);
+            FeedbackRequest request = Map<FeedbackRequestVm, FeedbackRequest>(TestConstants.TestFeedbackRequest);
 
             await SeedDatabase(mentor);
             await SeedDatabase(learner);
 
-            offering.MentorId = mentor.ApplicationUserId;
+            offering.MentorId = mentor.UserId;
             await SeedDatabase(offering);
 
-            request.MentorId = mentor.ApplicationUserId;
-            request.LearnerId = learner.ApplicationUserId;
+            request.MentorId = mentor.UserId;
+            request.LearnerId = learner.Id;
             request.OfferingId = offering.Id;
             await SeedDatabase(request);
 
@@ -70,25 +65,25 @@ namespace MasterCraft.Server.IntegrationTests.Helpers
 
         public async Task<Video> SeedTestVideo()
         {
-            Mentor mentor = TestConstants.TestMentor;
-            Learner learner = TestConstants.TestLearner;
-            Offering offering = TestConstants.TestOffering;
-            FeedbackRequest request = TestConstants.TestFeedbackRequest;
-            Video video = TestConstants.TestVideo;
+            Mentor mentor = Map<MentorVm, Mentor>(TestConstants.TestMentor);
+            User learner = Map<UserVm, User>(TestConstants.TestUser);
+            Offering offering = Map<OfferingVm, Offering>(TestConstants.TestOffering);
+            FeedbackRequest request = Map<FeedbackRequestVm, FeedbackRequest>(TestConstants.TestFeedbackRequest);
+            Video video = Map<VideoVm, Video>(TestConstants.TestVideo);
 
             await SeedDatabase(mentor);
             await SeedDatabase(learner);
 
-            offering.MentorId = mentor.ApplicationUserId;
+            offering.MentorId = mentor.UserId;
             await SeedDatabase(offering);
 
-            request.MentorId = mentor.ApplicationUserId;
-            request.LearnerId = learner.ApplicationUserId;
+            request.MentorId = mentor.UserId;
+            request.LearnerId = learner.Id;
             request.OfferingId = offering.Id;
             await SeedDatabase(request);
 
-            video.MentorId = mentor.ApplicationUserId;
-            video.LearnerId = learner.ApplicationUserId;
+            video.MentorId = mentor.UserId;
+            video.LearnerId = learner.Id;
             video.FeedbackRequestId = request.Id;
             await SeedDatabase(video);
 
@@ -103,6 +98,13 @@ namespace MasterCraft.Server.IntegrationTests.Helpers
             }
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        protected static TDestination Map<TSource, TDestination>(TSource source)
+        {
+            var mapperConfig = new MapperConfiguration(config => config.CreateMap<TSource, TDestination>());
+            TDestination destination = mapperConfig.CreateMapper().Map<TDestination>(source);
+            return destination;
         }
     }
 }

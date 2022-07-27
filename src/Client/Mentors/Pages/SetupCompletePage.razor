@@ -1,2 +1,88 @@
 ﻿@page "/setup/complete"
-<h3>MentorSetupCompletePage</h3>
+@layout SetupLayout
+
+@using MasterCraft.Client.Common.Api
+@using System.Security.Claims
+
+@inject NavigationManager Navigation
+
+<div id="congrats">
+    <img id="profile-pic" src="@Profile.MentorUser.ProfileImageUrl"/>
+    <br />
+    <br />
+    <h3>Congratulations!</h3>
+    <h6>Your account is created! You can start offering 
+    feedback immediately by sharing your personal link:</h6>
+    <br/>
+    <a id="link" href="@GetLink()">@GetLink()</a>
+</div>
+<br/>
+<br />
+<div id="actions">
+    <SfButton Content="Copy link" CssClass="mc-btn mc-btn-gray" @onclick="OnCopyLinkClick"></SfButton>
+    <SfButton Content="Go to account" CssClass="mc-btn mc-btn-green" @onclick="OnGoToAccountClick"></SfButton>
+</div>
+
+<style>
+    #profile-pic {
+        border-radius: 50%;
+        border-color: @Colors.McGreen;
+        border-width: 5px;
+        margin: auto;
+        width: 100px;
+        height: 100px;
+    }
+
+    #congrats {
+        text-align: center;
+        margin: auto;
+        width: 400px;
+    }
+    
+    #actions {
+        margin: auto;
+        width: 130px
+    }
+
+    #actions > .e-btn {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 130px
+    }
+</style>
+
+@code {
+    [Inject] public ApiClient Api { get; set; }
+    [Parameter] public MentorProfileVm Profile { get; set; } = new();
+    [CascadingParameter] public Task<AuthenticationState> AuthState { get; set; }
+    [CascadingParameter] public SetupLayout SetupLayout { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        string id = (await AuthState).User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        var apiResponse = await Api.GetAsync<MentorProfileVm>($"mentors/getProfile?userid={id}");
+
+            if (apiResponse.Success)
+            {
+                Profile = apiResponse.Response;
+            }
+    }
+
+    protected override void OnInitialized() => SetupLayout.UpdateProgressTracker(3);
+
+    private void OnCopyLinkClick()
+    {
+        Navigation.NavigateTo("/portal");
+    }
+
+    private void OnGoToAccountClick()
+    {
+        Navigation.NavigateTo("/portal");
+    }
+
+    private string GetLink()
+    {
+        return Navigation.ToAbsoluteUri($"/go/{Profile.MentorUser.ProfileId}").AbsoluteUri;
+    }
+}

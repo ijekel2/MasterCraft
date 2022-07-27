@@ -9,37 +9,33 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class MentorVm
     {
-        [MaxLength(64)]
-        public string FirstName { get; set; }
-
-        [MaxLength(64)]
-        public string LastName { get; set; }
-
-        [MaxLength(128)]
-        public string Email { get; set; }
-
-        [Required]
-        [MaxLength(1024)]
-        public string ChannelLink { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         [MaxLength(64)]
-        public string ChannelName { get; set; }
-
-        [Required]
-        [MaxLength(64)]
-        public string PersonalTitle { get; set; }
-
-        [Required]
-        [MaxLength(64)]
-        public string ProfileCustomUri { get; set; }
-
-        [MaxLength(256)]
-        public string ProfileImageUrl { get; set; }
+        public string ProfileId { get; set; }
 
         public string StripeAccountId { get; set; }
 
         public string VideoEmbedCode { get; set; }
+
+        [Required]
+        [MaxLength(512)]
+        public string SampleQuestion1 { get; set; }
+
+        [Required]
+        [MaxLength(512)]
+        public string SampleQuestion2 { get; set; }
+
+        [Required]
+        [MaxLength(512)]
+        public string SampleQuestion3 { get; set; }
+
+        [MaxLength(512)]
+        public string SampleQuestion4 { get; set; }
+
+        [MaxLength(512)]
+        public string SampleQuestion5 { get; set; }
 
         public bool Active { get; set; }
     }

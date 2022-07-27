@@ -1,31 +1,124 @@
-﻿<div>
-    <h5>Set up your profile</h5>
-    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel name" @bind-Value="Profile.ChannelName" />
-    <ValidationMessage For="@(() => Profile.ChannelName)" />
+﻿@using System.IO;
+@using MasterCraft.Shared.ViewModels
+@using MasterCraft.Shared.ViewModels.Aggregates
+
+<div>
+    <p>Price for feedback</p>
+    <SfNumericTextBox CssClass="mc-input"  @bind-Value="Offering.Price" Format="c2"/>
+    <ValidationMessage For="@(() => Offering.Price)" />
 </div>
 <div>
-    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Channel link" @bind-Value="Profile.ChannelLink" />
-    <ValidationMessage For="@(() => Profile.ChannelLink)" />
+    <p>Give your profile a custom ID which will appear in the URL.</p>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Profile ID" @bind-Value="MentorProfile.MentorUser.ProfileId" />
+    <ValidationMessage For="@(() => MentorProfile.MentorUser.ProfileId)" />
 </div>
 <div>
-    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Personal title" @bind-Value="Profile.PersonalTitle" />
-    <ValidationMessage For="@(() => Profile.PersonalTitle)" />
+    <p>Help your followers know what to ask for feedback on by writing below a few exmample questions they might want to ask you. For example: How can I improve my lighting? or How can I improve my composition?</p>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 1" @bind-Value="MentorProfile.MentorUser.SampleQuestion1" />
+    <ValidationMessage For="@(() => MentorProfile.MentorUser.SampleQuestion1)" />
 </div>
 <div>
-    <br />
-    <h5>Choose a profile ID</h5>
-    <h6>This ID will appear in the URL for your landing page<br />(E.G. www.mastercraft.cc/john-doe)</h6>
-    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Custom profile ID" @bind-Value="Profile.ProfileCustomUri" />
-    <ValidationMessage For="@(() => Profile.ProfileCustomUri)" />
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 2" @bind-Value="MentorProfile.MentorUser.SampleQuestion2" />
+    <ValidationMessage For="@(() => MentorProfile.MentorUser.SampleQuestion2)" />
 </div>
 <div>
-    <br />
-    <h5>Upload a profile image</h5>
-    <SfUploader></SfUploader>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 3" @bind-Value="MentorProfile.MentorUser.SampleQuestion3" />
+    <ValidationMessage For="@(() => MentorProfile.MentorUser.SampleQuestion3)" />
+</div>
+<div>
+    <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder="Sample question 4" @bind-Value="MentorProfile.MentorUser.SampleQuestion4" />
+    <ValidationMessage For="@(() => MentorProfile.MentorUser.SampleQuestion4)" />
+</div>
+<hr />
+<div>
+    <p>Upload a headshot for your offer page. Drop your file below.</p>
+    <SfUploader ID="UploadFiles" AllowedExtensions=".png,.jpeg,.jpg" @ref="@UploadControl">
+        <UploaderEvents ValueChange="OnChange" OnRemove="OnRemove"></UploaderEvents>
+        <UploaderTemplates>
+            <Template Context="HttpContext">
+                <table>
+                    <tr>
+                        <td>
+                            <img class="upload-image" alt="Preview Image @(HttpContext.Name)"
+                                    src="@(ProfileImage?.Path ?? string.Empty)">
+                        </td>
+                        <td>
+                            <div style="padding: 7px;">
+                                <h5 title="@(HttpContext.Name)">@(HttpContext.Name)</h5>
+                                <i>@(HttpContext.Size) Bytes</i>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
+            </Template>
+        </UploaderTemplates>
+    </SfUploader>
+</div>
+<hr />
+<div>
+     <p>Paste embed code a video inviting your audience to receive feedback.
+     <br />
+     <br />
+    This video will show up on your profile when a follower lands on your page. This video should be simple, informal, and short. It does not need to be polished! Your audience already knows you and resepcts your work.
+     <br />
+     <br />
+    The simple formula for this kind of video is 1) Tell them who you are 
+    2) Why you are offering this 3) What kind of stuff you can best give them feedback on.</p>
+    <SfTextBox Type="InputType.Text" Multiline="true" CssClass="mc-input" Placeholder="Video embed code" @bind-Value="MentorProfile.MentorUser.VideoEmbedCode" />
 </div>
 
+<style>
+    .upload-image {
+        border-radius: 50%;
+        width: 75px;
+        height: 75px;
+        margin-left: 10px
+    }
+</style>
 
 @code {
-    [Parameter]
-    public MentorVm Profile { get; set; }
+    [Parameter] public MentorProfileVm MentorProfile { get; set; } = new();
+
+    [Parameter] public UploadFileVm ProfileImage { get; set; } = new();
+
+    private OfferingVm Offering = new();
+
+    private SfUploader UploadControl { get; set; }
+
+    public async Task OnChange(UploadChangeEventArgs args)
+    {
+        Syncfusion.Blazor.Inputs.UploadFiles newestFile = args.Files[0];
+
+        //-- Get preview for selected file.
+        byte[] bytes = newestFile.Stream.ToArray();
+        string base64 = Convert.ToBase64String(bytes);
+        ProfileImage.Path = @"data:image/" + newestFile.FileInfo.Type + ";base64," + base64;
+        ProfileImage.Name = newestFile.FileInfo.Name;
+        ProfileImage.Size = newestFile.FileInfo.Size;
+        ProfileImage.Stream = newestFile.Stream;
+
+        MentorProfile.MentorUser.ProfileImageUrl = ProfileImage.Path; //-- Till we have blob storage just embed the image data in the url
+
+        //-- Delete any other files that are already in the list.
+        foreach (var file in await UploadControl.GetFilesDataAsync())
+        {
+            if (file.Id != newestFile.FileInfo.Id)
+            {
+                await UploadControl.RemoveAsync(new[] { file });
+            }
+        }
+    }
+
+    public void OnRemove(RemovingEventArgs args)
+    {
+        foreach (var removeFile in args.FilesData)
+        {
+            if (File.Exists(Path.Combine(@"\Images", removeFile.Name)))
+            {
+                File.Delete(Path.Combine(@"\Images\", removeFile.Name));
+            }
+        }
+    }
 }
+

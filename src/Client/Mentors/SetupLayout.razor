@@ -10,10 +10,10 @@
 
 <AuthorizeView>
     <Authorized>
-        <div class="mc-title">
+@*        <div class="mc-title">
             <h3>Create your MasterCraft account</h3>
             <hr />
-        </div>
+        </div>*@
         <ProgressTracker @ref="progressTracker" Items="items"/>
         <div class="entry-form">
             <CascadingValue Value="this">
@@ -25,10 +25,6 @@
 </AuthorizeView>
 
 <style>
-    .mc-progress-tracker {
-        width: 490px;
-    }
-
     .bottom-btn {
         margin:auto;
         margin-top: 30px;
@@ -51,35 +47,25 @@
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
-        string username = (await AuthState).User.FindFirst(ClaimTypes.Name).Value;
+        string userId = (await AuthState).User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
         items = new List<ProgressTrackerItem>()
         {
             new ProgressTrackerItem()
             {
-                Label = "Profile",
+                Label = "Offering",
                 OnClick = () => Navigation.NavigateTo("/setup/profile")
             },
             new ProgressTrackerItem()
             {
                 Label = "Payments",
-                OnClick = async () => await Stripe.RedirectToVendorOnboarding(username, "setup/offering")
+                OnClick = async () => await Stripe.RedirectToVendorOnboarding(userId, "setup/profile", "setup/complete")
             },
             new ProgressTrackerItem()
             {
-                Label = "Offering",
-                OnClick = () => Navigation.NavigateTo("/setup/offering")
+                Label = "Complete",
+                OnClick = () => Navigation.NavigateTo("/setup/profile")
             },
-            new ProgressTrackerItem()
-            {
-                Label = "Video",
-                OnClick = () => Navigation.NavigateTo("/setup/video")
-            },
-            new ProgressTrackerItem()
-            {
-                Label = "Review",
-                OnClick = () => Navigation.NavigateTo("/setup/review")
-            }
         };
 
     }

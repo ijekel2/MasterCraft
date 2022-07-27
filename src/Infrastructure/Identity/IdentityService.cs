@@ -18,10 +18,10 @@ namespace MasterCraft.Infrastructure.Identity
 {
     public class IdentityService : IIdentityService
     {
-        private readonly UserManager<ExtendedIdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _dbContext;
 
-        public IdentityService(UserManager<ExtendedIdentityUser> userManager, ApplicationDbContext dbContext)
+        public IdentityService(UserManager<User> userManager, ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _dbContext = dbContext;
@@ -60,7 +60,14 @@ namespace MasterCraft.Infrastructure.Identity
             AccessTokenVm output = new()
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-                Username = username
+                User = new UserVm()
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Username = user.UserName,
+                    Email = user.Email
+                }
             };
 
             return output;
@@ -91,7 +98,7 @@ namespace MasterCraft.Infrastructure.Identity
 
         public async Task<ApplicationUser> FindUserByEmailAsync(string email, CancellationToken token = default)
         {
-            ExtendedIdentityUser identityUser = await _userManager.FindByEmailAsync(email);
+            User identityUser = await _userManager.FindByEmailAsync(email);
             ApplicationUser user = null;
 
             if (identityUser != null)
@@ -110,14 +117,15 @@ namespace MasterCraft.Infrastructure.Identity
             return user;
         }
 
-        public async Task CreateUserAsync(ApplicationUser user, CancellationToken token = default)
+        public async Task CreateUserAsync(RegisterUserVm user, CancellationToken token = default)
         {
-            ExtendedIdentityUser identityUser = new ExtendedIdentityUser()
+            User identityUser = new User()
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
                 UserName = user.Email,
+                ProfileImageUrl = user.ProfileImageUrl
             };
 
             await _userManager.CreateAsync(identityUser, user.Password);

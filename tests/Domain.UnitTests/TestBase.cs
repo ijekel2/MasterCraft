@@ -60,7 +60,7 @@ namespace MasterCraft.Domain.UnitTests
         protected void AuthenticateUser(ApplicationUser user)
         {
             cIdentityService.Setup(service => service.FindUserByEmailAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(() => Task.FromResult(user));
-            cIdentityService.Setup(service => service.CreateUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<CancellationToken>())).Returns(() => Task.CompletedTask);
+            cIdentityService.Setup(service => service.CreateUserAsync(It.IsAny<RegisterUserVm>(), It.IsAny<CancellationToken>())).Returns(() => Task.CompletedTask);
             cIdentityService.Setup(service => service.IsValidUserNameAndPassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(() => Task.FromResult(true));
             cIdentityService.Setup(service => service.GenerateToken(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(() => Task.FromResult(new AccessTokenVm()));
             cIdentityService.Setup(service => service.GetUserNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(() => Task.FromResult(user.Username));

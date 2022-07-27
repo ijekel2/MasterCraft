@@ -2,13 +2,15 @@
 using MasterCraft.Domain.Entities;
 using MasterCraft.Domain.Interfaces;
 using MasterCraft.Domain.Services;
+using MasterCraft.Shared.Enums;
 using MasterCraft.Shared.ViewModels;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Domain.Services.FeedbackRequests
 {
-    public class CreateFeedbackRequestService : DomainService<FeedbackRequestVm, FeedbackRequest>
+    public class CreateFeedbackRequestService : DomainService<FeedbackRequestVm, FeedbackRequestCreatedVm>
     {
         readonly IDbContext _dbContext;
 
@@ -17,13 +19,18 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
             _dbContext = dbContext;
         }
 
-        internal override async Task<FeedbackRequest> Handle(FeedbackRequestVm request, CancellationToken token = new())
+        internal override async Task<FeedbackRequestCreatedVm> Handle(FeedbackRequestVm request, CancellationToken token = new())
         {
             FeedbackRequest feedbackRequest = Map<FeedbackRequestVm, FeedbackRequest>(request);
+            feedbackRequest.Id = Guid.NewGuid().ToString();
+            feedbackRequest.Status = FeedbackRequestStatus.Pending;
 
             await _dbContext.AddAsync(feedbackRequest, token);
             await _dbContext.SaveChangesAsync(token);
-            return feedbackRequest;
+            return new FeedbackRequestCreatedVm()
+            {
+                FeedbackRequestId = feedbackRequest.Id
+            };
         }
 
         internal async override Task Validate(FeedbackRequestVm request, DomainValidator validator, CancellationToken token = new())

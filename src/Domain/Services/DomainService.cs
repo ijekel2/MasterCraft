@@ -66,18 +66,25 @@ namespace MasterCraft.Domain.Services
 
         internal abstract Task<TResponse> Handle(TRequest request, CancellationToken token = new());
 
-        protected TDestination Map<TSource, TDestination>(TSource source)
+        protected static TDestination Map<TSource, TDestination>(TSource source)
         {
             var mapperConfig = new MapperConfiguration(config => config.CreateMap<TSource, TDestination>());
             TDestination destination = mapperConfig.CreateMapper().Map<TDestination>(source);
             return destination;
         }
 
-        protected TDestination Map<TSource, TDestination>(TSource source, TDestination destination)
+        protected static TDestination Map<TSource, TDestination>(TSource source, TDestination destination)
         {
             var mapperConfig = new MapperConfiguration(config => config.CreateMap<TSource, TDestination>());
             mapperConfig.CreateMapper().Map(source, destination);
             return destination;
+        }
+
+        protected IQueryable<T> Page<T>(IQueryable<T> collection, QueryStringParameters parameters)
+        {
+            return collection
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
         }
 
         protected async Task<List<T>> PagedList<T>(IQueryable<T> collection, QueryStringParameters parameters, CancellationToken token = default)
@@ -85,7 +92,7 @@ namespace MasterCraft.Domain.Services
             return await collection
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize)
-                .ToListAsync(token);
+                .ToListAsync();
         }
 
         private void LogRequest(TRequest request, string userId, string userName)

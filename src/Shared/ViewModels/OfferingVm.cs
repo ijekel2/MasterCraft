@@ -9,37 +9,15 @@ namespace MasterCraft.Shared.ViewModels
 {
     public class OfferingVm
     {
-        [Range(1, int.MaxValue)]
+        public int Id { get; set; }
+
+        [Required]
         public string MentorId { get; set; }
+        public string Name { get; set; }
 
-        [Range(1, 60)]
-        public int RequestMinutes { get; set; }
-
-        [Range(1, 60)]
-        public int FeedbackMinutes { get; set; }
-
-        [Range(1, 30)]
-        public int DeliveryDays { get; set; }
+        public string Description { get; set; }
 
         [Range(0.01, 1000)]
         public decimal Price { get; set; }
-
-        [Required]
-        [MaxLength(512)]
-        public string SampleQuestion1 { get; set; }
-
-        [Required]
-        [MaxLength(512)]
-        public string SampleQuestion2 { get; set; }
-
-        [Required]
-        [MaxLength(512)]
-        public string SampleQuestion3 { get; set; }
-
-        [MaxLength(512)]
-        public string SampleQuestion4 { get; set; }
-
-        [MaxLength(512)]
-        public string SampleQuestion5 { get; set; }
     }
 }

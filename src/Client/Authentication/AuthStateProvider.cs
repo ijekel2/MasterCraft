@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,30 +14,31 @@ namespace MasterCraft.Client.Authentication
     public class AuthStateProvider : AuthenticationStateProvider
     {
         private readonly HttpClient cHttpClient;
-        private readonly ILocalStorageService cLocalStorage;
         private readonly AuthenticationState cAnonymousState;
+        readonly IJSRuntime _js;
 
-        public AuthStateProvider(HttpClient pHttpClient, ILocalStorageService pLocalStorage)
+        public AuthStateProvider(HttpClient pHttpClient, IJSRuntime js)
         {
             cHttpClient = pHttpClient;
-            cLocalStorage = pLocalStorage;
+            _js = js;
             cAnonymousState = new(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var lToken = await cLocalStorage.GetItemAsync<string>("authToken");
+            string token = (await _js.InvokeAsync<string>("localStorage.getItem", "authToken"))?.Replace("\"", "");
 
-            if (string.IsNullOrWhiteSpace(lToken))
+
+            if (string.IsNullOrWhiteSpace(token))
             {
                 return cAnonymousState;
             }
 
-            cHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", lToken);
+            cHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
             return new AuthenticationState(
                 new ClaimsPrincipal(
-                    new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(lToken), "jwtAuthType")));
+                    new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
         }
 
         public void NotifyUserAuthentication(string pToken)

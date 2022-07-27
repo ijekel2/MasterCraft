@@ -1,0 +1,78 @@
+﻿@page "/signup";
+
+<SubmissionForm TRequest=RegisterUserVm TResponse=EmptyVm Request="@request"
+                OnValidSubmit="OnRegisterClick" FormTitle="@Properties.Resources.SignUp" ButtonText="@Properties.Resources.SignUp">
+    <ChildContent>
+        <div id="firstname">
+            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder=@Properties.Resources.FirstName @bind-Value="request.FirstName" />
+            <ValidationMessage For="@(() => request.FirstName)" />
+        </div>
+        <div id="lastname">
+            <SfTextBox Type="InputType.Text" CssClass="mc-input" Placeholder=@Properties.Resources.LastName @bind-Value="request.LastName" />
+            <ValidationMessage For="@(() => request.LastName)" />
+        </div>
+        <div>
+            <SfTextBox Type="InputType.Email" CssClass="mc-input" Placeholder=@Properties.Resources.Email @bind-Value="request.Email" />
+            <ValidationMessage For="@(() => request.Email)" />
+        </div>
+        <div>
+            <SfTextBox Type="InputType.Password" CssClass="mc-input" Placeholder=@Properties.Resources.Password @bind-Value="request.Password" />
+            <ValidationMessage For="@(() => request.Password)" />
+        </div>
+        <div>
+            <SfTextBox Type="InputType.Password" CssClass="mc-input" Placeholder=@Properties.Resources.ConfirmPassword @bind-Value="request.ConfirmPassword" />
+            <ValidationMessage For="@(() => request.ConfirmPassword)" />
+        </div>
+        <hr />
+        <div>
+            <p>Upload a headshot for your offer page. Drop your file below.</p>
+            <SfUploader ID="UploadFiles" AllowedExtensions=".png,.jpeg,.jpg" @ref="@UploadControl">
+                <UploaderEvents ValueChange="OnChange" OnRemove="OnRemove"></UploaderEvents>
+                <UploaderTemplates>
+                    <Template Context="HttpContext">
+                        <table>
+                            <tr>
+                                <td>
+                                    <img class="profile-image" alt="Preview Image @(HttpContext.Name)"
+                                            src="@(ProfileImage?.Path ?? string.Empty)">
+                                </td>
+                                <td>
+                                    <div style="padding: 7px;">
+                                        <h5 title="@(HttpContext.Name)">@(HttpContext.Name)</h5>
+                                        <i>@(HttpContext.Size) Bytes</i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
+                    </Template>
+                </UploaderTemplates>
+            </SfUploader>
+        </div>
+        
+    </ChildContent>
+</SubmissionForm>
+
+<style>
+    .mc-input-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: auto;
+    }
+
+    .mc-input-group > div {
+        grid-column-start: span 2;
+    }
+
+    #firstname, #lastname {
+        grid-column: span 1;
+    }
+
+    .profile-image {
+        width: 75px;
+        height: 75px;
+        margin-left: 10px
+    }
+</style>
+

@@ -19,6 +19,6 @@ namespace MasterCraft.Domain.Interfaces
 
         Task<ApplicationUser> FindUserByEmailAsync(string email, CancellationToken token = default);
 
-        Task CreateUserAsync(ApplicationUser user, CancellationToken token = default);
+        Task CreateUserAsync(RegisterUserVm user, CancellationToken token = default);
     }
 }

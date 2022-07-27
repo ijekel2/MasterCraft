@@ -1,7 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
-using MasterCraft.Server.IntegrationTests;
 using MasterCraft.Shared.ViewModels;
+using MasterCraft.Shared.ViewModels.Aggregates;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Collections.Generic;
@@ -15,21 +15,26 @@ namespace MasterCraft.Client.Common.Services
         private NavigationManager _navigation;
         private ApiClient _api;
         private ILocalStorageService _localStorage;
+        private CurrentUserService _currentUser;
 
-        public StripeService(NavigationManager navigation, ApiClient api, ILocalStorageService localStorage)
+        public object TestConstants { get; private set; }
+
+        public StripeService(NavigationManager navigation, ApiClient api, 
+            ILocalStorageService localStorage, CurrentUserService currentUser)
         {
             _navigation = navigation;
             _api = api;
             _localStorage = localStorage;
+            _currentUser = currentUser;
         }
 
-        public async Task RedirectToVendorOnboarding(string username, string returnUrl)
+        public async Task RedirectToVendorOnboarding(string userId, string refreshUrl, string successUrl)
         {
             CreateOnboardingLinkVm request = new()
             {
-                AccountId = await GetStripeAccountId(username),
-                RefreshUrl = _navigation.ToAbsoluteUri(returnUrl).AbsoluteUri,
-                SuccessUrl = _navigation.ToAbsoluteUri(returnUrl).AbsoluteUri
+                AccountId = await GetStripeAccountId(userId),
+                RefreshUrl = _navigation.ToAbsoluteUri(refreshUrl).AbsoluteUri,
+                SuccessUrl = _navigation.ToAbsoluteUri(successUrl).AbsoluteUri
             };
 
             ApiResponse<OnboardingLinkVm> response = await _api.PostAsync<CreateOnboardingLinkVm, OnboardingLinkVm>(
@@ -40,20 +45,23 @@ namespace MasterCraft.Client.Common.Services
             _navigation.NavigateTo(response.Response.Url);
         }
 
-        public async Task RedirectToCheckout(string username, decimal price, string cancelUrl, string successUrl)
+        public async Task RedirectToCheckout(string accountId, string cancelUrl, string successUrl, 
+            FeedbackRequestVm request, OfferingVm offering)
         {
-            CreateCheckoutVm request = new CreateCheckoutVm()
+            CheckoutDetailsVm checkoutDetails = new CheckoutDetailsVm()
             {
-                AccountId = await GetStripeAccountId(username), //-- Get account number from mentorvm,
-                CancelUrl = cancelUrl,
-                SuccessUrl = successUrl,
-                Price = price
+                AccountId = accountId, //-- Get account number from mentorvm,
+                CancelUrl = _navigation.ToAbsoluteUri(cancelUrl).AbsoluteUri,
+                SuccessUrl = _navigation.ToAbsoluteUri(successUrl).AbsoluteUri,
+                CustomerEmail = (await _currentUser.GetCurrentUser()).Email,
+                FeedbackRequest = request,
+                Offering = offering
             };
 
             //-- Send create mentor request and validate the response.
-            ApiResponse<CheckoutVm> response = await _api.PostAsync<CreateCheckoutVm, CheckoutVm>(
+            ApiResponse<CheckoutSessionVm> response = await _api.PostAsync<CheckoutDetailsVm, CheckoutSessionVm>(
                 "checkouts",
-                request);
+                checkoutDetails);
 
             //-- Redirect to our stripe link
             _navigation.NavigateTo(response.Response.CheckoutUrl);

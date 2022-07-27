@@ -18,9 +18,9 @@ namespace MasterCraft.Domain.Entities
         public Mentor Mentor { get; set; }
 
         public string LearnerId { get; set; }
-        public Learner Learner { get; set; }
+        public User Learner { get; set; }
 
-        public int FeedbackRequestId { get; set; }
+        public string FeedbackRequestId { get; set; }
         public FeedbackRequest FeedbackRequest { get; set; }
 
         public string GetStreamUrl(IFileStorage fileStorage, IStreamingService streamingService)
