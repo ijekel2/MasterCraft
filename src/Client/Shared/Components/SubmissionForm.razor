@@ -3,7 +3,7 @@
 @typeparam TResponse
 
 
-<EditForm Model="@Request">
+<EditForm @ref="editForm" Model="@Request">
     <div class="mc-edit-form">
         @if (showSpinner)
         {
@@ -11,18 +11,12 @@
         }
         else
         {
-
             @if (!string.IsNullOrEmpty(FormTitle))
             {
                 <h3>@FormTitle</h3>
             }
             <DataAnnotationsValidator />
             <CustomValidation @ref="customValidation" />
-
-            @if (cShowValidationSummary)
-            {
-                <ValidationSummary />
-            }
 
             <div class="mc-input-group">
                 @ChildContent

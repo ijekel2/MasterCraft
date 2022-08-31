@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Client.Shared.Components
@@ -26,6 +28,7 @@ namespace MasterCraft.Client.Shared.Components
                     $"inside an {nameof(EditForm)}.");
             }
 
+            
             messageStore = new(CurrentEditContext);
 
             CurrentEditContext.OnValidationRequested += (s, e) =>
@@ -59,6 +62,7 @@ namespace MasterCraft.Client.Shared.Components
                 foreach (var err in errors)
                 {
                     string lKey = string.IsNullOrEmpty(err.Key) ? CurrentEditContext.Model.GetType().Name : err.Key;
+                    messageStore?.Clear(CurrentEditContext.Field(lKey));
                     messageStore?.Add(CurrentEditContext.Field(lKey), err.Value);
                 }
 
@@ -68,8 +72,6 @@ namespace MasterCraft.Client.Shared.Components
 
         public void ClearErrors()
         {
-            messageStore?.Clear();
-            CurrentEditContext?.NotifyValidationStateChanged();
             StateHasChanged();
         }
     }

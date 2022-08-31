@@ -3,12 +3,14 @@ using MasterCraft.Domain.Parameters;
 using MasterCraft.Domain.Services.FeedbackRequests;
 using MasterCraft.Shared.ViewModels;
 using MasterCraft.Shared.ViewModels.Aggregates;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Server.Controllers
 {
+    [Authorize]
     public class FeedbackRequestsController : ApiBaseController
     {
         [HttpPost]

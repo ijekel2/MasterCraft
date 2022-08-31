@@ -1,10 +1,11 @@
 ﻿using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Services;
-using MasterCraft.Client.Common.StateManagers;
+using MasterCraft.Client.Common.State;
 using MasterCraft.Shared.ViewModels;
 using MasterCraft.Shared.ViewModels.Aggregates;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace MasterCraft.Client.Learners.Pages
         [Inject] public ApiClient ApiClient { get; set; }
         [Inject] public NavigationManager Navigation { get; set; }
         [Inject] public StripeService Stripe { get; set; }
-        [Inject] public SubmitStateManager SubmitState { get; set; }
+        [Inject] public SubmissionState SubmitState { get; set; }
         [Inject] public CurrentUserService CurrentUser { get; set; }
         [Parameter] public string ProfileId { get; set; }
         [CascadingParameter] public SubmitLayout Layout { get; set; }
@@ -24,7 +25,9 @@ namespace MasterCraft.Client.Learners.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            if (SubmitState.MentorProfile.MentorUser.UserId is null)
+            Layout.ReconcilePageBasedOnSubmissionState(ProfileId);
+
+            if (string.IsNullOrEmpty(SubmitState.MentorProfile.MentorUser.UserId))
             {
                 var apiResponse = await ApiClient.GetAsync<MentorProfileVm>($"mentors/getProfile?profileid={ProfileId}");
 
@@ -37,6 +40,7 @@ namespace MasterCraft.Client.Learners.Pages
             FeedbackRequest.MentorId = SubmitState.MentorProfile.MentorUser.UserId;
             FeedbackRequest.LearnerId = (await CurrentUser.GetCurrentUser()).Id;
             FeedbackRequest.OfferingId = SubmitState.MentorProfile.Offerings.FirstOrDefault()?.Id ?? 0;
+            FeedbackRequest.Id = Guid.NewGuid().ToString();
 
             Layout.UpdateProgressTracker(1);
         }

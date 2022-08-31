@@ -1,6 +1,6 @@
 ﻿using MasterCraft.Shared.ViewModels;
 
-namespace MasterCraft.Client.Common.StateManagers
+namespace MasterCraft.Client.Common.State
 {
     public class UserStateManager
     {

@@ -45,7 +45,7 @@ namespace MasterCraft.Client.Common.Services
             _navigation.NavigateTo(response.Response.Url);
         }
 
-        public async Task RedirectToCheckout(string accountId, string cancelUrl, string successUrl, 
+        public async Task<CheckoutSessionVm> GetCheckoutSession(string accountId, string cancelUrl, string successUrl,
             FeedbackRequestVm request, OfferingVm offering)
         {
             CheckoutDetailsVm checkoutDetails = new CheckoutDetailsVm()
@@ -63,8 +63,13 @@ namespace MasterCraft.Client.Common.Services
                 "checkouts",
                 checkoutDetails);
 
+            return response.Response;
+        }
+
+        public void RedirectToCheckout(CheckoutSessionVm session)
+        {
             //-- Redirect to our stripe link
-            _navigation.NavigateTo(response.Response.CheckoutUrl);
+            _navigation.NavigateTo(session.CheckoutUrl);
         }
 
         private async Task<string> GetStripeAccountId(string username)

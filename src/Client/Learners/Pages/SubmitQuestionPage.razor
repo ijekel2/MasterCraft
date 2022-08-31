@@ -1,5 +1,6 @@
 ﻿@page "/go/{ProfileId}/ask"
 @layout SubmitLayout
+@attribute [Authorize]
 
 <SubmissionForm TRequest=FeedbackRequestVm TResponse=FeedbackRequestCreatedVm Request="@FeedbackRequest" OnValidSubmit="OnSubmitClick" ButtonText="Checkout">
     <ChildContent>

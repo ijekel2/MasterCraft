@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Shared.ViewModels;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -18,17 +19,17 @@ namespace MasterCraft.Client.Common.Api
 {
     public class ApiClient
     {
-        readonly IHttpClientFactory cHttpClientFactory;
+        readonly IHttpClientFactory _httpClientFactory;
         readonly IJSRuntime _js;
-        readonly AuthenticationStateProvider cAuthenticationStateProvider;
-        readonly IConfiguration cConfiguration;
+        readonly IConfiguration _configuration;
+        readonly NavigationManager _navigation;
 
-        public ApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, IJSRuntime js, AuthenticationStateProvider authenticationStateProvider)
+        public ApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, IJSRuntime js, NavigationManager navigation)
         {
-            cHttpClientFactory = httpClientFactory;
+            _httpClientFactory = httpClientFactory;
             _js = js;
-            cAuthenticationStateProvider = authenticationStateProvider;
-            cConfiguration = configuration;
+            _configuration = configuration;
+            _navigation = navigation;
         }
 
         public async Task<ApiResponse<TResponse>> PostAsync<TRequest, TResponse>(string url, TRequest requestBody) where TResponse : new()
@@ -110,17 +111,14 @@ namespace MasterCraft.Client.Common.Api
                         }
                     };
                 default:
-                    return new ApiResponse<TResponse>()
-                    {
-                        ErrorDetails = JsonSerializer.Deserialize<ProblemDetails>(responseBody, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })
-                    };
+                    throw new Exception($"{response.StatusCode}: {responseBody}");
             }
         }
 
         private async Task<HttpClient> SetupHttpClient()
         {
-            HttpClient httpClient = cHttpClientFactory.CreateClient("MasterCraft");
-            httpClient.BaseAddress = new Uri(cConfiguration["API"].TrimEnd('/'));
+            HttpClient httpClient = _httpClientFactory.CreateClient("MasterCraft");
+            httpClient.BaseAddress = new Uri(_navigation.BaseUri.TrimEnd('/'));
             string token = (await _js.InvokeAsync<string>("localStorage.getItem", "authToken"))?.Replace("\"", "");
 
             if (!string.IsNullOrEmpty(token))

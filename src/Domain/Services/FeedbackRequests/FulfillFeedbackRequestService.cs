@@ -27,7 +27,10 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
 
         internal override async Task<EmptyVm> Handle(FulfillFeedbackRequestVm requestVm, CancellationToken token = default)
         {
-            FeedbackRequest request = await _dbContext.FeedbackRequests.FirstOrDefaultAsync(request => request.Id == requestVm.FeedbackRequestId);
+            FeedbackRequest request = await _dbContext.FeedbackRequests
+                .Where(request => request.Id == requestVm.FeedbackRequestId)
+                .Include(request => request.Mentor)
+                .FirstOrDefaultAsync();
 
             if (request == null)
             {
@@ -36,8 +39,10 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
 
             request.Status = FeedbackRequestStatus.Fulfilled;
             request.ResponseDate = DateTime.Now;
+            request.VideoEmbedUrl = requestVm.VideoUrl;
+            request.MentorId = requestVm.MentorId;
 
-            await _paymentService.CapturePayment(request.PaymentIntentId);
+            await _paymentService.CapturePayment(request.PaymentIntentId, request.Mentor.StripeAccountId);
 
             await _dbContext.SaveChangesAsync();
 

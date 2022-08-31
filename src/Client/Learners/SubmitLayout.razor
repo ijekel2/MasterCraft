@@ -4,14 +4,14 @@
 @using MasterCraft.Client.Mentors.Components
 @using MasterCraft.Client.Common.Services
 @using System.Security.Claims;
-@using MasterCraft.Client.Common.StateManagers;
+@using MasterCraft.Client.Common.State;
 @using MasterCraft.Client.Common.Api;
 @using MasterCraft.Shared.ViewModels.Aggregates;
 
 @inject NavigationManager Navigation
 @inject StripeService Stripe
 @inject ApiClient Api
-@inject SubmitStateManager SubmitState
+@inject SubmissionState SubmissionState
 
 <AuthorizeView>
     <Authorized>
@@ -62,14 +62,44 @@
     private ProgressTracker progressTracker;
     private List<ProgressTrackerItem> items;
 
-    public MentorUserVm MentorUser => SubmitState.MentorProfile.MentorUser;
-    public OfferingVm Offering => SubmitState.MentorProfile.Offerings.FirstOrDefault();
-    public FeedbackRequestVm FeedbackRequest => SubmitState.FeedbackRequest;
+    public MentorUserVm MentorUser => SubmissionState.MentorProfile.MentorUser;
+    public OfferingVm Offering => SubmissionState.MentorProfile.Offerings.FirstOrDefault();
+    public FeedbackRequestVm FeedbackRequest => SubmissionState.FeedbackRequest;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        InitializeProgressTracker();
+    }
 
+    public void ReconcilePageBasedOnSubmissionState(string profileId)
+    {
+        bool hasWork = !string.IsNullOrEmpty(FeedbackRequest.VideoEmbedUrl);
+        bool hasQuestion = !string.IsNullOrEmpty(FeedbackRequest.Question);
+
+        if (!hasWork)
+        {
+            Navigation.NavigateTo($"go/{profileId}/share");
+        }
+
+        if (hasWork && !hasQuestion)
+        {
+            Navigation.NavigateTo($"go/{profileId}/ask");
+        }
+    }
+
+    public void UpdateProgressTracker(int itemNumber)
+    {
+        progressTracker.UpdateProgressTracker(itemNumber);
+    }
+
+    private string GetTitleLine()
+    {
+        return $"Submit your work to {MentorUser.FirstName}";
+    }
+
+    private void InitializeProgressTracker()
+    {
         items = new List<ProgressTrackerItem>()
         {
             new ProgressTrackerItem()
@@ -85,24 +115,13 @@
             new ProgressTrackerItem()
             {
                 Label = "Checkout",
-                OnClick = async () => await Stripe.RedirectToCheckout(MentorUser.StripeAccountId,
+                OnClick = async () => Stripe.RedirectToCheckout(await Stripe.GetCheckoutSession(MentorUser.StripeAccountId,
                     $"go/{MentorUser.ProfileId}/ask", 
                     $"go/{MentorUser.ProfileId}/complete",
                     FeedbackRequest,
-                    Offering)
+                    Offering))
             }
         };
-
-    }
-
-    public void UpdateProgressTracker(int itemNumber)
-    {
-        progressTracker.UpdateProgressTracker(itemNumber);
-    }
-
-    private string GetTitleLine()
-    {
-        return $"Submit your work to {MentorUser.FirstName}";
     }
 }
 

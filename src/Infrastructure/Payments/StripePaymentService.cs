@@ -142,6 +142,7 @@ namespace MasterCraft.Infrastructure.Payments
             {
                 CheckoutSessionId = session.Id,
                 CheckoutUrl = session.Url,
+                PaymentIntentId = session.PaymentIntentId
             };
         }
 
@@ -157,16 +158,26 @@ namespace MasterCraft.Infrastructure.Payments
             return customer.Id;
         }
 
-        public async Task CapturePayment(string paymentIntentId)
+        public async Task CapturePayment(string paymentIntentId, string merchantAccountId)
         {
             var service = new PaymentIntentService();
-            await service.CaptureAsync(paymentIntentId);
+            RequestOptions options = new RequestOptions()
+            {
+                StripeAccount = merchantAccountId,
+            };
+
+            await service.CaptureAsync(paymentIntentId, requestOptions: options);
         }
 
-        public async Task CancelPayment(string paymentIntentId)
+        public async Task CancelPayment(string paymentIntentId, string merchantAccountId)
         {
             var service = new PaymentIntentService();
-            await service.CancelAsync(paymentIntentId);
+            RequestOptions options = new RequestOptions()
+            {
+                StripeAccount = merchantAccountId,
+            };
+
+            await service.CancelAsync(paymentIntentId, requestOptions: options);
         }
     }
 }

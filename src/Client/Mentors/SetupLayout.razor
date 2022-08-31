@@ -37,7 +37,7 @@
 </style>
 
 @code {
-    
+
     private ProgressTracker progressTracker;
     private List<ProgressTrackerItem> items;
 
@@ -47,8 +47,17 @@
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
-        string userId = (await AuthState).User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        await InitializeProgressTracker();
+    }
 
+    public void UpdateProgressTracker(int itemNumber)
+    {
+        progressTracker.UpdateProgressTracker(itemNumber);
+    }
+
+    private async Task InitializeProgressTracker()
+    {
+        string userId = (await AuthState).User.FindFirst(ClaimTypes.NameIdentifier).Value;
         items = new List<ProgressTrackerItem>()
         {
             new ProgressTrackerItem()
@@ -67,11 +76,5 @@
                 OnClick = () => Navigation.NavigateTo("/setup/profile")
             },
         };
-
-    }
-
-    public void UpdateProgressTracker(int itemNumber)
-    {
-        progressTracker.UpdateProgressTracker(itemNumber);
     }
 }

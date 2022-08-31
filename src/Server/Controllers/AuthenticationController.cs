@@ -1,6 +1,7 @@
 ﻿using MasterCraft.Domain.Models;
 using MasterCraft.Domain.Services.Authentication;
 using MasterCraft.Shared.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -30,9 +31,10 @@ namespace MasterCraft.Server.Controllers
 
         [Route("/api/loomtoken")]
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<AccessTokenVm>> GetLoomToken([FromServices] IConfiguration configuration)
         {
-            string privateKeyPem = System.IO.File.ReadAllText(configuration["LoomKeyFile"]);
+            string privateKeyPem = System.IO.File.ReadAllText(Environment.GetEnvironmentVariable("LOOM_PRIVATE_KEY_FILE") ?? string.Empty);
 
             privateKeyPem = privateKeyPem.Replace("-----BEGIN PRIVATE KEY-----", "");
             privateKeyPem = privateKeyPem.Replace("-----END PRIVATE KEY-----", "");
@@ -53,7 +55,7 @@ namespace MasterCraft.Server.Controllers
             var jwt = new JwtSecurityToken(
                 claims: new Claim[] {
                     new Claim(JwtRegisteredClaimNames.Iat, nowUnixSeconds.ToString(), ClaimValueTypes.Integer64),
-                    new Claim(JwtRegisteredClaimNames.Iss, configuration["LoomPublicKey"]),
+                    new Claim(JwtRegisteredClaimNames.Iss, Environment.GetEnvironmentVariable("LOOM_PUBLIC_KEY")),
                     new Claim(JwtRegisteredClaimNames.Exp, expUnixSeconds.ToString(), ClaimValueTypes.Integer64)
                 },
                 signingCredentials: signingCredentials

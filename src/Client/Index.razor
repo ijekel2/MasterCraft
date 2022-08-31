@@ -6,11 +6,29 @@
 <div class="container">
     <h1>Welcome to MasterCraft</h1>
     <br />
-    <iframe title="vimeo-player" src="https://player.vimeo.com/video/686273655?h=804cb2b8c2" width="640" height="480" frameborder="0" allowfullscreen></iframe>
-    <br />
-    <br />
     <SfButton CssClass="mc-btn mc-btn-green" OnClick="GoToSignUp">@Properties.Resources.SignUp</SfButton>
+    <div id="test-buttons">
+        <SfButton OnClick="ProcessException">Create Handled Error</SfButton>
+        <br />
+        <SfButton OnClick="ThrowException">Create Unhandled Error</SfButton>
+    </div>
+
+
 </div>
+
+@code{
+    [CascadingParameter] public Error Error { get; set; }
+
+    private async Task ProcessException()
+    {
+        await Error.ProcessError(new Exception("This is a handled error."));
+    }
+
+    private void ThrowException()
+    {
+        throw new Exception("This is an unhandled error.");
+    }
+}
 
 <style>
     .container > .e-btn {
@@ -26,6 +44,15 @@
     .container {
         margin: auto;
         width: 700px;
+    }
+
+    #test-buttons{
+        display: flex;
+        flex-direction: row;
+        padding: 30px;
+        justify-content: space-around;
+        margin: auto;
+        width: 400px;
     }
 </style>
 

@@ -35,18 +35,7 @@ namespace MasterCraft.Domain.Services.Checkouts
 
             CheckoutSessionVm session = await _paymentService.CreateCheckout(checkoutDetails, token);
 
-            await UpdateFeedbackRequest(checkoutDetails.FeedbackRequest, session);
-
             return session;
-        }
-
-        private async Task UpdateFeedbackRequest(FeedbackRequestVm feedbackRequest, CheckoutSessionVm checkoutSession, CancellationToken token = new())
-        {
-            FeedbackRequest request = Map<FeedbackRequestVm, FeedbackRequest>(feedbackRequest);
-            _dbContext.Attach(request);
-
-            request.PaymentIntentId = checkoutSession.PaymentIntentId;
-            await _dbContext.SaveChangesAsync();
         }
     }
 }

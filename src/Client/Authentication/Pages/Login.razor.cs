@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using MasterCraft.Client.Common;
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Services;
 using MasterCraft.Client.Shared.Components;
@@ -20,8 +21,6 @@ namespace MasterCraft.Client.Authentication.Pages
     {
         private GenerateTokenVm request = new();
 
-        [Inject] ApiClient ApiClient { get; set; }
-        [Inject] AuthenticationStateProvider AuthStateProvider { get; set; }
         [Inject] NavigationManager Navigation { get; set; }
         [Inject] ILocalStorageService LocalStorage { get; set; }
         [Inject] AuthenticationService AuthService { get; set; }
@@ -32,7 +31,16 @@ namespace MasterCraft.Client.Authentication.Pages
 
             if (apiResponse.Response is not null)
             {
-                Navigation.NavigateTo("/portal");
+                string returnUrl = Navigation.QueryString("returnUrl");
+
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    Navigation.NavigateTo(returnUrl);
+                }
+                else
+                {
+                    Navigation.NavigateTo("/portal");
+                }
             }
 
             return apiResponse;

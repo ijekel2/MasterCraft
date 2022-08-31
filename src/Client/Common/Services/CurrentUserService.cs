@@ -1,5 +1,5 @@
 ﻿using MasterCraft.Client.Common.Api;
-using MasterCraft.Client.Common.StateManagers;
+using MasterCraft.Client.Common.State;
 using MasterCraft.Shared.ViewModels;
 using System.Threading.Tasks;
 using MasterCraft.Client.Authentication;

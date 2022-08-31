@@ -17,6 +17,8 @@ namespace MasterCraft.Shared.ViewModels
         [Range(1, int.MaxValue)]
         public int OfferingId { get; set; }
 
+        public string PaymentIntentId { get; set; }
+
         public string VideoEmbedCode { get; set; }
 
         public string VideoEmbedUrl { get; set; }

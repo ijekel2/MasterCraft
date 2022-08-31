@@ -1,10 +1,32 @@
 ﻿@inherits LayoutComponentBase
+@using Syncfusion.Blazor.Notifications;
 
-<div class="page">
-    <div class="main">    
-        @Body
-    </div>
-</div>
+<ErrorBoundary @ref="errorBoundary">
+    <ChildContent>
+        <Error>
+            <div class="page">
+                <div class="main">
+                   @Body
+                </div>
+            </div>
+        </Error>
+    </ChildContent>
+    <ErrorContent Context = "ex">
+        <p>An unexpected error occurred: @ex.Message</p>
+        <button @onclick="Recover">Reload</button>
+    </ErrorContent>
+</ErrorBoundary>
+
+
+@code{
+    private ErrorBoundary errorBoundary;
+
+    private void Recover()
+    {
+        errorBoundary.Recover();
+    }
+}
+
 
 <style>
     /*Edit form styling*/

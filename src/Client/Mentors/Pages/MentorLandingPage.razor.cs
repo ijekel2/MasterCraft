@@ -1,6 +1,6 @@
 ﻿using MasterCraft.Client.Common;
 using MasterCraft.Client.Common.Api;
-using MasterCraft.Client.Common.StateManagers;
+using MasterCraft.Client.Common.State;
 using MasterCraft.Shared.ViewModels;
 using MasterCraft.Shared.ViewModels.Aggregates;
 using Microsoft.AspNetCore.Components;
@@ -17,7 +17,7 @@ namespace MasterCraft.Client.Mentors.Pages
         [Parameter] public MentorProfileVm Profile { get; set; } = new();
         [Inject] public ApiClient Api { get; set; }
         [Inject] public NavigationManager Navigation { get; set; }
-        [Inject] public SubmitStateManager SubmitState { get; set; }
+        [Inject] public SubmissionState SubmitState { get; set; }
 
         private MentorUserVm MentorUser => Profile.MentorUser;
         private OfferingVm Offering => Profile.Offerings.FirstOrDefault() ?? new();

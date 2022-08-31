@@ -1,5 +1,6 @@
 ﻿@page "/setup/profile"
 @layout SetupLayout
+@attribute [Authorize]
 
 <SubmissionForm TRequest=MentorProfileVm TResponse=MentorCreatedVm Request="@Profile" OnValidSubmit="OnSubmitClick" ButtonText="Next">
     <ChildContent>

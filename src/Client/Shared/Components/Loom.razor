@@ -9,14 +9,12 @@
 @inject IConfiguration Configuration
 @inject NavigationManager Navigation
 
-@VideoHtml
 <SfButton id="btn-record" CssClass="e-danger">Record</SfButton>
 
 @code {
-    MarkupString VideoHtml;
     DotNetObjectReference<Loom> ObjectReference;
 
-    [Parameter] public Func<LoomVideo, string, Task> OnRecordingCompleted { get; set; }
+    [Parameter] public Func<LoomVideo, string, Task> OnSubmitFeedbackClick { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -44,7 +42,7 @@
     [JSInvokable]
     public async Task OnInsertClick(LoomVideo video, string html)
     {
-        await OnRecordingCompleted(video, html);
+        await OnSubmitFeedbackClick(video, html);
     }
 
     public void Dispose()

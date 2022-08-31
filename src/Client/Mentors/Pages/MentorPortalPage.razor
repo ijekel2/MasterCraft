@@ -1,4 +1,6 @@
 ﻿@page "/portal";
+@attribute [Authorize]
+
 @using System.Security.Claims;
 @using MasterCraft.Client.Common;
 @using Syncfusion.Blazor.RichTextEditor;
@@ -51,7 +53,7 @@
             <div id="request-toolbar">
                 @if (cInRecordingMode)
                 {
-                    <Loom></Loom>
+                    <Loom OnSubmitFeedbackClick="OnSubmitFeedbackClick"></Loom>
                     <SfButton CssClass="mc-btn-green" OnClick="ExitRecordingMode">Exit Recording Mode</SfButton>
                 }
                 else

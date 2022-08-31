@@ -2,7 +2,8 @@ using Blazored.LocalStorage;
 using MasterCraft.Client.Authentication;
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Services;
-using MasterCraft.Client.Common.StateManagers;
+using MasterCraft.Client.Common.State;
+using MasterCraft.Client.Mentors.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,15 +22,17 @@ namespace MasterCraft.Client
             builder.Services.AddHttpClient("MasterCraft");
 
             builder.Services
-                .AddSingleton<SubmitStateManager>()
+                .AddSingleton<SubmissionState>()
                 .AddSingleton<SetupStateManager>()
                 .AddSingleton<UserStateManager>()
                 .AddScoped<AuthenticationService>()
                 .AddScoped<StripeService>()
+                .AddScoped<LoomService>()
                 .AddTransient<ApiClient>()
                 .AddTransient<CurrentUserService>();
 
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
             builder.Services.AddSyncfusionBlazor();

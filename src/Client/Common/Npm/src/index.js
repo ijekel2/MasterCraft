@@ -36,8 +36,12 @@ window.LoomService = new function () {
         const sdkButton = configureButton({ element: button });
 
         sdkButton.on("insert-click", async (video) => {
-            const { html } = await oembed(video.sharedUrl, { width: 800 });
+            const { html } = this.getVideoEmbedHtml(video.sharedUrl, 800);
             dotNetObject.invokeMethodAsync('OnInsertClick', video, html)
         });
+    }
+
+    this.getVideoEmbedHtml = async function (videoSharedUrl, width) {
+        return await oembed(videoSharedUrl, { width: width })
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Authentication;
 using MasterCraft.Client.Common.Api;
-using MasterCraft.Client.Common.StateManagers;
+using MasterCraft.Client.Common.State;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;

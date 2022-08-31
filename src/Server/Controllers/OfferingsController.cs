@@ -2,12 +2,14 @@
 using MasterCraft.Domain.Parameters;
 using MasterCraft.Domain.Services.Offerings;
 using MasterCraft.Shared.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MasterCraft.Server.Controllers
 {
+    [Authorize]
     public class OfferingsController : ApiBaseController
     {
         [HttpPost]

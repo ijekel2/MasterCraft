@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace MasterCraft.Server.Controllers
 {
+    [Authorize]
     public class MentorsController : ApiBaseController
     {
         [HttpPost]

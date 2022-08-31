@@ -1,10 +1,12 @@
 ﻿using MasterCraft.Client.Common;
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Services;
+using MasterCraft.Client.Shared.Components;
 using MasterCraft.Client.Shared.Models;
 using MasterCraft.Shared.ViewModels;
 using MasterCraft.Shared.ViewModels.Aggregates;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,7 @@ namespace MasterCraft.Client.Mentors.Pages
         [Inject] public ApiClient ApiClient { get; set; }
         [Inject] public NavigationManager Navigation { get; set; }
         [Inject] public CurrentUserService UserService { get; set; }
+        [CascadingParameter] public Error Error { get; set; }
 
         private UserVm cCurrentUser  = new();
         private IEnumerable<FeedbackRequestQueueItemVm> cFeedbackRequests = Enumerable.Empty<FeedbackRequestQueueItemVm>();
@@ -26,44 +29,51 @@ namespace MasterCraft.Client.Mentors.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            cCurrentUser = await UserService.GetCurrentUser();
-
-            //-- Request queue
-            ApiResponse<List<FeedbackRequestQueueItemVm>> queueResponse =
-                await ApiClient.GetAsync<List<FeedbackRequestQueueItemVm>>($"mentors/{cCurrentUser.Id}/getRequestQueue?pagesize=50");
-
-            if (queueResponse.Success)
+            try
             {
-                cFeedbackRequests = queueResponse.Response;
+                cCurrentUser = await UserService.GetCurrentUser();
+
+                //-- Request queue
+                ApiResponse<List<FeedbackRequestQueueItemVm>> queueResponse =
+                    await ApiClient.GetAsync<List<FeedbackRequestQueueItemVm>>($"mentors/{cCurrentUser.Id}/getRequestQueue?pagesize=50");
+
+                if (queueResponse.Success)
+                {
+                    cFeedbackRequests = queueResponse.Response;
+                }
+
+                //-- Request detail
+                await OnQueueItemClick(cFeedbackRequests.FirstOrDefault());
+
+                //-- Earnings summary
+                ApiResponse<EarningsSummaryVm> summaryResponse =
+                    await ApiClient.GetAsync<EarningsSummaryVm>($"mentors/{cCurrentUser.Id}/getEarningsSummary");
+
+                if (summaryResponse.Success)
+                {
+                    cEarningsSummary = summaryResponse.Response;
+                }
+
+                //-- For some reason the toolbar wants this.
+                StateHasChanged();
             }
-
-            //-- Request detail
-            await OnQueueItemClick(cFeedbackRequests.FirstOrDefault());
-
-            //-- Earnings summary
-            ApiResponse<EarningsSummaryVm> summaryResponse =
-                await ApiClient.GetAsync<EarningsSummaryVm>($"mentors/{cCurrentUser.Id}/getEarningsSummary");
-
-            if (summaryResponse.Success)
+            catch (Exception ex)
             {
-                cEarningsSummary = summaryResponse.Response;
+                await Error.ProcessError(ex);
             }
-
-            //-- For some reason the toolbar wants this.
-            StateHasChanged();
         }
 
         private async Task OnQueueItemClick(FeedbackRequestQueueItemVm queueItem)
         {
             if (queueItem != null)
             {
-                ApiResponse<FeedbackRequestDetailVm> detailResponse =
+               ApiResponse<FeedbackRequestDetailVm> detailResponse =
                     await ApiClient.GetAsync<FeedbackRequestDetailVm>($"feedbackRequests/{queueItem.FeedbackRequestId}/getDetail");
 
                 if (detailResponse.Success)
                 {
                     cRequestDetail = detailResponse.Response;
-                }
+                } 
             }
         }
 
@@ -74,14 +84,15 @@ namespace MasterCraft.Client.Mentors.Pages
                 FeedbackRequestId = cRequestDetail.FeedbackRequest.Id,
                 MentorId = cRequestDetail.FeedbackRequest.MentorId,
                 LearnerId = cRequestDetail.FeedbackRequest.LearnerId,
-                VideoUrl = video.EmbedUrl,
+                VideoUrl = video.sharedUrl,
             };
 
             ApiResponse<EmptyVm> fulfillResponse =
-                    await ApiClient.PostAsync<FulfillFeedbackRequestVm, EmptyVm>($"feedbackRequests/{cRequestDetail.FeedbackRequest.Id}/fufill", fulfillRequest);
+                    await ApiClient.PostAsync<FulfillFeedbackRequestVm, EmptyVm>($"feedbackRequests/fulfill", fulfillRequest);
 
             if (fulfillResponse.Success)
             {
+                Navigation.NavigateTo($"/feedback/{cRequestDetail.FeedbackRequest.Id}");
             }
         }
 

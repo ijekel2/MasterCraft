@@ -22,8 +22,8 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
         internal override async Task<FeedbackRequestCreatedVm> Handle(FeedbackRequestVm request, CancellationToken token = new())
         {
             FeedbackRequest feedbackRequest = Map<FeedbackRequestVm, FeedbackRequest>(request);
-            feedbackRequest.Id = Guid.NewGuid().ToString();
             feedbackRequest.Status = FeedbackRequestStatus.Pending;
+            feedbackRequest.PaymentIntentId = request.PaymentIntentId;
 
             await _dbContext.AddAsync(feedbackRequest, token);
             await _dbContext.SaveChangesAsync(token);

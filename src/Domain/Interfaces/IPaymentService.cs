@@ -16,8 +16,8 @@ namespace MasterCraft.Domain.Interfaces
         Task<OnboardingLinkVm> CreateOnboardingLink(CreateOnboardingLinkVm accountId, CancellationToken token = default);
         Task<CheckoutSessionVm> CreateCheckout(CheckoutDetailsVm request, CancellationToken token = default);
         Task<string> CreateCustomer(LearnerVm learner, CancellationToken token = default);
-        Task CapturePayment(string paymentIntentId);
-        Task CancelPayment(string paymentIntentId);
+        Task CapturePayment(string paymentIntentId, string merchantAccountId);
+        Task CancelPayment(string paymentIntentId, string merchantAccountId);
 
 
     }

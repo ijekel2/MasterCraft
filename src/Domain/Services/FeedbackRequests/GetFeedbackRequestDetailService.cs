@@ -29,7 +29,7 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
             IQueryable<FeedbackRequest> list = _dbContext.FeedbackRequests;
 
             FeedbackRequest request = await list
-                .Where(feedbackRequest => feedbackRequest.Id == id && feedbackRequest.Status == FeedbackRequestStatus.Submitted)
+                .Where(feedbackRequest => feedbackRequest.Id == id)
                 .Include(request => request.Learner)
                 .Include(request => request.Offering)
                 .FirstOrDefaultAsync(token);

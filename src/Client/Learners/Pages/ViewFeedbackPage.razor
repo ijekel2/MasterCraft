@@ -1,0 +1,16 @@
+﻿@page "/feedback/{Id}"
+@attribute [Authorize]
+
+<div id="feedback">
+    <h3>Here is your feedback!</h3>
+    @VideoHtml
+</div>
+
+
+<style>
+    #feedback{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>

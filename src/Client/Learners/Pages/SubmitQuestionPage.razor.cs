@@ -1,11 +1,9 @@
 ﻿using Blazored.LocalStorage;
 using MasterCraft.Client.Common.Api;
-using MasterCraft.Client.Common.Enums;
 using MasterCraft.Client.Common.Services;
-using MasterCraft.Client.Common.StateManagers;
+using MasterCraft.Client.Common.State;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,7 +15,7 @@ namespace MasterCraft.Client.Learners.Pages
         [Inject] public NavigationManager Navigation { get; set; }
         [Inject] public ILocalStorageService Storage { get; set; }
         [Inject] public StripeService Stripe { get; set; }
-        [Inject] public SubmitStateManager SubmitState { get; set; }
+        [Inject] public SubmissionState SubmitState { get; set; }
         [Parameter] public string ProfileId { get; set; }
         [CascadingParameter] public SubmitLayout Layout { get; set; }
         public FeedbackRequestVm FeedbackRequest => SubmitState.FeedbackRequest;
@@ -26,11 +24,20 @@ namespace MasterCraft.Client.Learners.Pages
 
         protected override void OnInitialized()
         {
+            Layout.ReconcilePageBasedOnSubmissionState(ProfileId);
             Layout.UpdateProgressTracker(2);
         }
 
         private async Task<ApiResponse<FeedbackRequestCreatedVm>> OnSubmitClick()
         {
+            CheckoutSessionVm checkoutSession = await Stripe.GetCheckoutSession(MentorUser.StripeAccountId,
+                    $"go/{MentorUser.ProfileId}/ask",
+                    $"go/{MentorUser.ProfileId}/complete/{FeedbackRequest.Id}",
+                    FeedbackRequest,
+                    Offering);
+
+            FeedbackRequest.PaymentIntentId = checkoutSession.PaymentIntentId;
+
             ApiResponse<FeedbackRequestCreatedVm> apiResponse = 
                 await ApiClient.PostAsync<FeedbackRequestVm, FeedbackRequestCreatedVm>("feedbackrequests", FeedbackRequest);
             
@@ -38,11 +45,7 @@ namespace MasterCraft.Client.Learners.Pages
             {
                 FeedbackRequest.Id = apiResponse.Response.FeedbackRequestId;
 
-                await Stripe.RedirectToCheckout(MentorUser.StripeAccountId, 
-                    $"go/{MentorUser.ProfileId}/ask", 
-                    $"go/{MentorUser.ProfileId}/complete/{FeedbackRequest.Id}",
-                    FeedbackRequest,
-                    Offering);
+                Stripe.RedirectToCheckout(checkoutSession);
             }
 
                

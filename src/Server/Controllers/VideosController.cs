@@ -14,9 +14,11 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using MasterCraft.Domain.Parameters;
 using MasterCraft.Domain.Services.Videos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MasterCraft.Server.Controllers
 {
+    [Authorize]
     public class VideosController : ApiBaseController
     {
         [HttpPost]
