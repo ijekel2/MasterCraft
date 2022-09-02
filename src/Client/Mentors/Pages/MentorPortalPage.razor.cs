@@ -19,7 +19,7 @@ namespace MasterCraft.Client.Mentors.Pages
         [Inject] public ApiClient ApiClient { get; set; }
         [Inject] public NavigationManager Navigation { get; set; }
         [Inject] public CurrentUserService UserService { get; set; }
-        [CascadingParameter] public Error Error { get; set; }
+        [CascadingParameter] public ErrorHandler Error { get; set; }
 
         private UserVm cCurrentUser  = new();
         private IEnumerable<FeedbackRequestQueueItemVm> cFeedbackRequests = Enumerable.Empty<FeedbackRequestQueueItemVm>();

@@ -3,13 +3,13 @@
 
 <ErrorBoundary @ref="errorBoundary">
     <ChildContent>
-        <Error>
+        <ErrorHandler>
             <div class="page">
                 <div class="main">
                    @Body
                 </div>
             </div>
-        </Error>
+        </ErrorHandler>
     </ChildContent>
     <ErrorContent Context = "ex">
         <p>An unexpected error occurred: @ex.Message</p>

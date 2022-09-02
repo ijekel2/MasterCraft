@@ -1,5 +1,6 @@
 ﻿using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Services;
+using MasterCraft.Client.Shared.Components;
 using MasterCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.Inputs;
@@ -16,24 +17,32 @@ namespace MasterCraft.Client.Authentication.Pages
         [Inject] ApiClient ApiClient { get; set; }
         [Inject] NavigationManager Navigation { get; set; }
         [Inject] AuthenticationService AuthService { get; set; }
+        [CascadingParameter] ErrorHandler ErrorHandler {get; set; }
         public UploadFileVm ProfileImage { get; set; } = new();
         private SfUploader UploadControl { get; set; }
 
         private async Task<ApiResponse<EmptyVm>> OnRegisterClick()
         {
-
-            ApiResponse<EmptyVm> apiResponse =
-                await ApiClient.PostAsync<RegisterUserVm, EmptyVm>("register", request);
-
-            if (apiResponse.Success)
+            ApiResponse<EmptyVm> apiResponse = new();
+            try
             {
-                var loginResponse = await AuthService.Login(new GenerateTokenVm() { Username = request.Email, Password = request.Password });
+                apiResponse =
+                    await ApiClient.PostAsync<RegisterUserVm, EmptyVm>("register", request);
 
-                if (loginResponse.Success)
+                if (apiResponse.Success)
                 {
-                    Navigation.NavigateTo("/setup/profile");
+                    var loginResponse = await AuthService.Login(new GenerateTokenVm() { Username = request.Email, Password = request.Password });
 
+                    if (loginResponse.Success)
+                    {
+                        Navigation.NavigateTo("/setup/profile");
+
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler?.ProcessError(ex);
             }
 
             return apiResponse;

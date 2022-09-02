@@ -26,7 +26,6 @@ namespace MasterCraft.Server.Controllers
             string jsonKey = HttpContext.Request.Form.Keys.First();
             HttpContext.Request.Form.TryGetValue(jsonKey, out StringValues profileJson);
             MentorProfileVm? request = JsonSerializer.Deserialize<MentorProfileVm>(profileJson.ToString());
-
             MentorCreatedVm mentorCreated = await service.HandleRequest(request);
 
             //-- Handle any files sent through

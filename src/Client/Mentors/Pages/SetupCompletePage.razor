@@ -9,7 +9,7 @@
 @inject NavigationManager Navigation
 
 <div id="congrats">
-    <img id="profile-pic" src="@Profile.MentorUser.ProfileImageUrl"/>
+    <img id="profile-pic" src="@Profile.ProfileImageUrl"/>
     <br />
     <br />
     <h3>Congratulations!</h3>
@@ -85,6 +85,6 @@
 
     private string GetLink()
     {
-        return Navigation.ToAbsoluteUri($"/go/{Profile.MentorUser.ProfileId}").AbsoluteUri;
+        return Navigation.ToAbsoluteUri($"/go/{Profile.ProfileId}").AbsoluteUri;
     }
 }

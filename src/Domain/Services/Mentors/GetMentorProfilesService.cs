@@ -45,21 +45,18 @@ namespace MasterCraft.Domain.Services.Mentors
                 .Select(mentor =>
                     new MentorProfileVm()
                     {
-                        MentorUser = new MentorUserVm()
-                        {
-                            FirstName = mentor.User.FirstName,
-                            LastName = mentor.User.LastName,
-                            ProfileImageUrl = mentor.User.ProfileImageUrl,
-                            UserId = mentor.UserId,
-                            ProfileId = mentor.ProfileId,
-                            StripeAccountId = mentor.StripeAccountId,
-                            VideoEmbedCode = mentor.VideoEmbedUrl,
-                            SampleQuestion1 = mentor.SampleQuestion1,
-                            SampleQuestion2 = mentor.SampleQuestion2,
-                            SampleQuestion3 = mentor.SampleQuestion3,
-                            SampleQuestion4 = mentor.SampleQuestion4,
-                            SampleQuestion5 = mentor.SampleQuestion5
-                        },
+                        FirstName = mentor.User.FirstName,
+                        LastName = mentor.User.LastName,
+                        ProfileImageUrl = mentor.User.ProfileImageUrl,
+                        UserId = mentor.UserId,
+                        ProfileId = mentor.ProfileId,
+                        StripeAccountId = mentor.StripeAccountId,
+                        VideoEmbedCode = mentor.VideoEmbedUrl,
+                        SampleQuestion1 = mentor.SampleQuestion1,
+                        SampleQuestion2 = mentor.SampleQuestion2,
+                        SampleQuestion3 = mentor.SampleQuestion3,
+                        SampleQuestion4 = mentor.SampleQuestion4,
+                        SampleQuestion5 = mentor.SampleQuestion5,
                         Offerings = mentor.Offerings.Select(offering => Map<Offering, OfferingVm>(offering))
                     }
                 );

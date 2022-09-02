@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MasterCraft.Domain.Parameters;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace MasterCraft.Domain.Services
 {
@@ -42,7 +43,7 @@ namespace MasterCraft.Domain.Services
 
                 await Validate(request, validator, token);
 
-                if (validator.HasFailure)
+                if (validator.HasFailure )
                 {
                     throw new ValidationException(validator.Errors);
                 }
@@ -66,9 +67,16 @@ namespace MasterCraft.Domain.Services
 
         internal abstract Task<TResponse> Handle(TRequest request, CancellationToken token = new());
 
-        protected static TDestination Map<TSource, TDestination>(TSource source)
+        protected static TDestination Map<TSource, TDestination>(TSource source, params Expression<Func<TSource, object>>[] membersToIgnore)
         {
-            var mapperConfig = new MapperConfiguration(config => config.CreateMap<TSource, TDestination>());
+            var mapperConfig = new MapperConfiguration(config => 
+            {
+                var map = config.CreateMap<TSource, TDestination>();
+                foreach (var member in membersToIgnore)
+                {
+                    map.ForSourceMember(member, opt => opt.DoNotValidate());
+                }
+            });
             TDestination destination = mapperConfig.CreateMapper().Map<TDestination>(source);
             return destination;
         }

@@ -27,7 +27,7 @@ namespace MasterCraft.Client.Learners.Pages
         {
             Layout.ReconcilePageBasedOnSubmissionState(ProfileId);
 
-            if (string.IsNullOrEmpty(SubmitState.MentorProfile.MentorUser.UserId))
+            if (string.IsNullOrEmpty(SubmitState.MentorProfile.UserId))
             {
                 var apiResponse = await ApiClient.GetAsync<MentorProfileVm>($"mentors/getProfile?profileid={ProfileId}");
 
@@ -37,7 +37,7 @@ namespace MasterCraft.Client.Learners.Pages
                 }
             }
 
-            FeedbackRequest.MentorId = SubmitState.MentorProfile.MentorUser.UserId;
+            FeedbackRequest.MentorId = SubmitState.MentorProfile.UserId;
             FeedbackRequest.LearnerId = (await CurrentUser.GetCurrentUser()).Id;
             FeedbackRequest.OfferingId = SubmitState.MentorProfile.Offerings.FirstOrDefault()?.Id ?? 0;
             FeedbackRequest.Id = Guid.NewGuid().ToString();
@@ -48,7 +48,7 @@ namespace MasterCraft.Client.Learners.Pages
         private async Task<ApiResponse<EmptyVm>> OnSubmitClick()
         {
             FeedbackRequest.VideoEmbedUrl = new EmbedCodeService().ParseSourceUrl(FeedbackRequest.VideoEmbedCode);
-            Navigation.NavigateTo($"go/{Layout.MentorUser.ProfileId}/ask");
+            Navigation.NavigateTo($"go/{Layout.MentorProfile.ProfileId}/ask");
             return await Task.FromResult(new ApiResponse<EmptyVm>());
         }
 

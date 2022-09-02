@@ -52,10 +52,5 @@ namespace MasterCraft.Server
                     webBuilder.UseStartup<Startup>();
                 });
         }
-
-        private static bool IsStaging()
-        {
-            return (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? string.Empty).ToLower().Trim().Equals("staging");
-        }
     }
 }

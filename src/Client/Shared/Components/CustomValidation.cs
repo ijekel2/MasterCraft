@@ -12,10 +12,10 @@ namespace MasterCraft.Client.Shared.Components
 {
     public class CustomValidation : ComponentBase
     {
-        private ValidationMessageStore messageStore;
+        private ValidationMessageStore _messageStore;
+        [CascadingParameter] private EditContext CurrentEditContext { get; set; }
 
-        [CascadingParameter]
-        private EditContext CurrentEditContext { get; set; }
+        public bool HasGeneralErrors { get; private set; }
 
         protected override void OnInitialized()
         {
@@ -28,13 +28,23 @@ namespace MasterCraft.Client.Shared.Components
                     $"inside an {nameof(EditForm)}.");
             }
 
-            
-            messageStore = new(CurrentEditContext);
+
+            _messageStore = new(CurrentEditContext);
 
             CurrentEditContext.OnValidationRequested += (s, e) =>
-                messageStore?.Clear();
+            {
+                _messageStore?.Clear();
+                HasGeneralErrors = false;
+            };
+
             CurrentEditContext.OnFieldChanged += (s, e) =>
-                messageStore?.Clear(e.FieldIdentifier);
+            {
+                _messageStore?.Clear(e.FieldIdentifier);
+                if (string.IsNullOrEmpty(e.FieldIdentifier.FieldName))
+                {
+                    HasGeneralErrors = false;
+                }
+            };
         }
 
         public void DisplayErrors(ProblemDetails errorDetails)
@@ -62,8 +72,13 @@ namespace MasterCraft.Client.Shared.Components
                 foreach (var err in errors)
                 {
                     string lKey = string.IsNullOrEmpty(err.Key) ? CurrentEditContext.Model.GetType().Name : err.Key;
-                    messageStore?.Clear(CurrentEditContext.Field(lKey));
-                    messageStore?.Add(CurrentEditContext.Field(lKey), err.Value);
+                    _messageStore?.Clear(CurrentEditContext.Field(lKey));
+                    _messageStore?.Add(CurrentEditContext.Field(lKey), err.Value);
+
+                    if (string.IsNullOrEmpty(err.Key))
+                    {
+                        HasGeneralErrors = true; 
+                    }
                 }
 
                 CurrentEditContext.NotifyValidationStateChanged();

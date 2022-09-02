@@ -5,12 +5,12 @@
     <ChildContent>
         <div>
             <SfTextBox Type="InputType.Email" CssClass="mc-input" Placeholder="@Properties.Resources.Email" @bind-Value="request.Username" />
-            <ValidationMessage For="@(() => request.Username)" />
-        </div>
+@*            <ValidationMessage For="@(() => request.Username)" />
+*@        </div>
         <div>
             <SfTextBox Type="InputType.Password" CssClass="mc-input" Placeholder="@Properties.Resources.Password" @bind-Value="request.Password" />
-            <ValidationMessage For="@(() => request.Password)" />
-        </div>
+@*            <ValidationMessage For="@(() => request.Password)" />
+*@        </div>
     </ChildContent>
 </SubmissionForm>
 

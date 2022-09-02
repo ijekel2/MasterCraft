@@ -30,10 +30,11 @@ namespace MasterCraft.Domain.Services.Mentors
         internal override async Task<MentorCreatedVm> Handle(MentorProfileVm request, CancellationToken token = new())
         {
             //-- Save the mentor record.
-            Mentor mentor = Map<MentorUserVm, Mentor>(request.MentorUser);
+            MentorUserVm mentorUser = Map<MentorProfileVm, MentorUserVm>(request);
+            Mentor mentor = Map<MentorUserVm, Mentor>(mentorUser);
             mentor.UserId = Services.CurrentUserService.UserId;
-            mentor.ProfileId = request.MentorUser.ProfileId;
-            UserVm user = Map<MentorUserVm, UserVm>(request.MentorUser);
+            mentor.ProfileId = request.ProfileId;
+            UserVm user = Map<MentorUserVm, UserVm>(mentorUser);
             mentor.StripeAccountId = await _paymentService.CreateConnectedAccount(user, token);
 
             await _dbContext.AddAsync(mentor, token);
@@ -67,7 +68,7 @@ namespace MasterCraft.Domain.Services.Mentors
             {
                 UserId = mentor.UserId,
                 StripeAccountId = mentor.StripeAccountId,
-                ProfileImageUrl = request.MentorUser.ProfileImageUrl,
+                ProfileImageUrl = request.ProfileImageUrl,
             };
         }
     }

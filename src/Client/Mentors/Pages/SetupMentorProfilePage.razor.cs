@@ -19,7 +19,7 @@ namespace MasterCraft.Client.Mentors.Pages
         [Inject] public ApiClient ApiClient { get; set; }
         [Inject] public NavigationManager Navigation { get; set; }
         [Inject] public StripeService Stripe { get; set; }
-        [Inject] public CurrentUserService CurrentUser { get; set; }
+        [Inject] public CurrentUserService CurrentUserService { get; set; }
         public MentorProfileVm Profile { get; set; } = new();
         public OfferingVm Offering { get; set; } = new();
         [CascadingParameter] public SetupLayout SetupLayout { get; set; }
@@ -27,12 +27,16 @@ namespace MasterCraft.Client.Mentors.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            string userId = (await CurrentUser.GetCurrentUser()).Id;
+            string userId = (await CurrentUserService.GetCurrentUser()).Id;
             var apiResponse = await ApiClient.GetAsync<MentorProfileVm>($"mentors/getProfile?userid={userId}");
 
             if (apiResponse.Success)
             {
                 Profile = apiResponse.Response;
+
+                UserVm lCurrentUser = await CurrentUserService.GetCurrentUser();
+                Profile.FirstName = lCurrentUser.FirstName;
+                Profile.LastName = lCurrentUser.LastName;
             }
 
             SetupLayout.UpdateProgressTracker(1);
@@ -40,7 +44,7 @@ namespace MasterCraft.Client.Mentors.Pages
 
         private async Task<ApiResponse<MentorCreatedVm>> OnSubmitClick()
         {
-            Profile.MentorUser.VideoEmbedUrl = new EmbedCodeService().ParseSourceUrl(Profile.MentorUser.VideoEmbedCode);
+            Profile.VideoEmbedUrl = new EmbedCodeService().ParseSourceUrl(Profile.VideoEmbedCode);
 
             Profile.Offerings = new List<OfferingVm>() { Offering };
             ApiResponse<MentorCreatedVm> apiResponse = await ApiClient.PostFormAsync<MentorProfileVm, MentorCreatedVm>($"mentors/setupProfile", Profile);

@@ -19,7 +19,6 @@ namespace MasterCraft.Client.Mentors.Pages
         [Inject] public NavigationManager Navigation { get; set; }
         [Inject] public SubmissionState SubmitState { get; set; }
 
-        private MentorUserVm MentorUser => Profile.MentorUser;
         private OfferingVm Offering => Profile.Offerings.FirstOrDefault() ?? new();
 
         protected override async Task OnInitializedAsync()
@@ -35,12 +34,12 @@ namespace MasterCraft.Client.Mentors.Pages
         private void OnGetFeedbackClick()
         {
             SubmitState.MentorProfile = Profile;
-            Navigation.NavigateTo($"go/{Profile.MentorUser.ProfileId}/share");
+            Navigation.NavigateTo($"go/{Profile.ProfileId}/share");
         }
 
         private string GetTitleLine()
         {
-            return $"{Profile.MentorUser.FirstName} {Profile.MentorUser.LastName}";
+            return $"{Profile.FirstName} {Profile.LastName}";
         }
 
         private string GetPrice()

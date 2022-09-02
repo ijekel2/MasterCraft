@@ -18,7 +18,7 @@
         @if ((progressTracker?.GetCurrentItem() ?? 0) != 3)
         {
             <div id="header">
-                <img class="profile-image" src="@MentorUser.ProfileImageUrl"/>
+                <img class="profile-image" src="@MentorProfile.ProfileImageUrl"/>
                 <div class="mc-title">
                     <h4>@GetTitleLine()</h4>
                     <hr />
@@ -62,7 +62,7 @@
     private ProgressTracker progressTracker;
     private List<ProgressTrackerItem> items;
 
-    public MentorUserVm MentorUser => SubmissionState.MentorProfile.MentorUser;
+    public MentorProfileVm MentorProfile => SubmissionState.MentorProfile;
     public OfferingVm Offering => SubmissionState.MentorProfile.Offerings.FirstOrDefault();
     public FeedbackRequestVm FeedbackRequest => SubmissionState.FeedbackRequest;
 
@@ -95,7 +95,7 @@
 
     private string GetTitleLine()
     {
-        return $"Submit your work to {MentorUser.FirstName}";
+        return $"Submit your work to {MentorProfile.FirstName}";
     }
 
     private void InitializeProgressTracker()
@@ -105,19 +105,19 @@
             new ProgressTrackerItem()
             {
                 Label = "Share work",
-                OnClick = () => Navigation.NavigateTo($"go/{MentorUser.ProfileId}/share")
+                OnClick = () => Navigation.NavigateTo($"go/{MentorProfile.ProfileId}/share")
             },
             new ProgressTrackerItem()
             {
                 Label = "Ask question",
-                OnClick = () => Navigation.NavigateTo($"go/{MentorUser.ProfileId}/ask")
+                OnClick = () => Navigation.NavigateTo($"go/{MentorProfile.ProfileId}/ask")
             },
             new ProgressTrackerItem()
             {
                 Label = "Checkout",
-                OnClick = async () => Stripe.RedirectToCheckout(await Stripe.GetCheckoutSession(MentorUser.StripeAccountId,
-                    $"go/{MentorUser.ProfileId}/ask", 
-                    $"go/{MentorUser.ProfileId}/complete",
+                OnClick = async () => Stripe.RedirectToCheckout(await Stripe.GetCheckoutSession(MentorProfile.StripeAccountId,
+                    $"go/{MentorProfile.ProfileId}/ask", 
+                    $"go/{MentorProfile.ProfileId}/complete",
                     FeedbackRequest,
                     Offering))
             }

@@ -7,7 +7,7 @@
 @using Blazored.LocalStorage;
 
 <div id="congrats">
-    <img class="profile-image" src="@MentorUser.ProfileImageUrl"/>
+    <img class="profile-image" src="@Profile.ProfileImageUrl"/>
     <br />
     <br />
     <h3>You work is submitted!</h3>
@@ -84,7 +84,6 @@
     [Parameter] public string FeedbackRequestId { get; set; }
     [CascadingParameter] public SubmitLayout SubmitLayout { get; set; }
     private UserVm cCurrentUser = new();
-    private MentorUserVm MentorUser => Profile.MentorUser;
 
     protected override async Task OnInitializedAsync()
     {
@@ -121,7 +120,7 @@
 
     private string GetConfirmationPhrase()
     {
-        return $"Your work was sent to {MentorUser.FirstName} {MentorUser.LastName}.";
+        return $"Your work was sent to {Profile.FirstName} {Profile.LastName}.";
     }
 
     private string GetStepOneText()
@@ -131,7 +130,7 @@
 
     private string GetStepTwoText()
     {
-        return $"{MentorUser.FirstName} will look at your video and record a personal with feedback — usually within 24-72 hrs.";
+        return $"{Profile.FirstName} will look at your video and record a personal with feedback — usually within 24-72 hrs.";
     }
 
     private string GetStepThreeText()
@@ -141,6 +140,6 @@
 
     private string GetRefundText()
     {
-        return $"If {MentorUser.FirstName} isn't able to complete your request, the hold on your card will be removed within 5-7 business days.";
+        return $"If {Profile.FirstName} isn't able to complete your request, the hold on your card will be removed within 5-7 business days.";
     }
 }

@@ -3,7 +3,7 @@
 @typeparam TResponse
 
 
-<EditForm @ref="editForm" Model="@Request">
+<EditForm @ref="editForm" Model="@Request" OnValidSubmit="OnSubmitClick">
     <div class="mc-edit-form">
         @if (showSpinner)
         {
@@ -15,14 +15,16 @@
             {
                 <h3>@FormTitle</h3>
             }
-            <DataAnnotationsValidator />
+
+            <DataAnnotationsValidator/>
             <CustomValidation @ref="customValidation" />
+            <ValidationSummary/>
 
             <div class="mc-input-group">
                 @ChildContent
             </div>
 
-            <SfButton HtmlAttributes=@SubmitAttribute Content="@ButtonText" CssClass="mc-btn mc-btn-gray" OnClick="OnSubmitClick" />
+            <SfButton HtmlAttributes=@SubmitAttribute Content="@ButtonText" CssClass="mc-btn mc-btn-gray"/>
         }
     </div>
 </EditForm>

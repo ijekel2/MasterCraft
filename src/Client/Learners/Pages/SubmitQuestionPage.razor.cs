@@ -3,6 +3,7 @@ using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Services;
 using MasterCraft.Client.Common.State;
 using MasterCraft.Shared.ViewModels;
+using MasterCraft.Shared.ViewModels.Aggregates;
 using Microsoft.AspNetCore.Components;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace MasterCraft.Client.Learners.Pages
         [Parameter] public string ProfileId { get; set; }
         [CascadingParameter] public SubmitLayout Layout { get; set; }
         public FeedbackRequestVm FeedbackRequest => SubmitState.FeedbackRequest;
-        public MentorUserVm MentorUser => SubmitState.MentorProfile.MentorUser;
+        public MentorProfileVm MentorProfile => SubmitState.MentorProfile;
         public OfferingVm Offering => SubmitState.MentorProfile.Offerings.FirstOrDefault();
 
         protected override void OnInitialized()
@@ -30,9 +31,9 @@ namespace MasterCraft.Client.Learners.Pages
 
         private async Task<ApiResponse<FeedbackRequestCreatedVm>> OnSubmitClick()
         {
-            CheckoutSessionVm checkoutSession = await Stripe.GetCheckoutSession(MentorUser.StripeAccountId,
-                    $"go/{MentorUser.ProfileId}/ask",
-                    $"go/{MentorUser.ProfileId}/complete/{FeedbackRequest.Id}",
+            CheckoutSessionVm checkoutSession = await Stripe.GetCheckoutSession(MentorProfile.StripeAccountId,
+                    $"go/{MentorProfile.ProfileId}/ask",
+                    $"go/{MentorProfile.ProfileId}/complete/{FeedbackRequest.Id}",
                     FeedbackRequest,
                     Offering);
 
