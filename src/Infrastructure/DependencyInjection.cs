@@ -62,7 +62,7 @@ namespace MasterCraft.Infrastructure
             });
 
             //-- Configure Stripe
-            StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("STRIPE_PRIVATE_KEY");
+            StripeConfiguration.ApiKey = configuration["STRIPE_PRIVATE_KEY"];
 
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IFileStorage, LocalFileStorage>();

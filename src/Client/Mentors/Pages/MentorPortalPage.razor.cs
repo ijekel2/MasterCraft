@@ -7,6 +7,7 @@ using MasterCraft.Shared.ViewModels;
 using MasterCraft.Shared.ViewModels.Aggregates;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Syncfusion.Blazor.RichTextEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;

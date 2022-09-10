@@ -2,9 +2,11 @@
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Services;
 using MasterCraft.Client.Common.State;
+using MasterCraft.Client.Shared.Components;
 using MasterCraft.Shared.ViewModels;
 using MasterCraft.Shared.ViewModels.Aggregates;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +21,8 @@ namespace MasterCraft.Client.Learners.Pages
         [Inject] public SubmissionState SubmitState { get; set; }
         [Parameter] public string ProfileId { get; set; }
         [CascadingParameter] public SubmitLayout Layout { get; set; }
+        [CascadingParameter] ErrorHandler ErrorHandler { get; set; }
+
         public FeedbackRequestVm FeedbackRequest => SubmitState.FeedbackRequest;
         public MentorProfileVm MentorProfile => SubmitState.MentorProfile;
         public OfferingVm Offering => SubmitState.MentorProfile.Offerings.FirstOrDefault();
@@ -31,26 +35,35 @@ namespace MasterCraft.Client.Learners.Pages
 
         private async Task<ApiResponse<FeedbackRequestCreatedVm>> OnSubmitClick()
         {
-            CheckoutSessionVm checkoutSession = await Stripe.GetCheckoutSession(MentorProfile.StripeAccountId,
+            try
+            {
+                CheckoutSessionVm checkoutSession = await Stripe.GetCheckoutSession(MentorProfile.StripeAccountId,
                     $"go/{MentorProfile.ProfileId}/ask",
                     $"go/{MentorProfile.ProfileId}/complete/{FeedbackRequest.Id}",
                     FeedbackRequest,
                     Offering);
 
-            FeedbackRequest.PaymentIntentId = checkoutSession.PaymentIntentId;
+                FeedbackRequest.PaymentIntentId = checkoutSession.PaymentIntentId;
 
-            ApiResponse<FeedbackRequestCreatedVm> apiResponse = 
-                await ApiClient.PostAsync<FeedbackRequestVm, FeedbackRequestCreatedVm>("feedbackrequests", FeedbackRequest);
-            
-            if (apiResponse.Success)
+                ApiResponse<FeedbackRequestCreatedVm> apiResponse =
+                    await ApiClient.PostAsync<FeedbackRequestVm, FeedbackRequestCreatedVm>("feedbackrequests", FeedbackRequest);
+
+                if (apiResponse.Success)
+                {
+                    FeedbackRequest.Id = apiResponse.Response.FeedbackRequestId;
+
+                    Stripe.RedirectToCheckout(checkoutSession);
+                }
+
+                return apiResponse;
+            }
+            catch (Exception ex)
             {
-                FeedbackRequest.Id = apiResponse.Response.FeedbackRequestId;
-
-                Stripe.RedirectToCheckout(checkoutSession);
+                ErrorHandler?.ProcessError(ex);
             }
 
-               
-            return apiResponse;
+            return new();
+            
         }
 
     }

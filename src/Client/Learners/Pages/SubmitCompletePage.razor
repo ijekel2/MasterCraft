@@ -6,15 +6,12 @@
 @using MasterCraft.Client.Common.Services;
 @using Blazored.LocalStorage;
 
-<div id="congrats">
+<div id="header">
     <img class="profile-image" src="@Profile.ProfileImageUrl"/>
-    <br />
-    <br />
-    <h3>You work is submitted!</h3>
+    <h3>Your work is submitted!</h3>
     <h6>@GetConfirmationPhrase()</h6>
-    <br/>
+    <hr />
 </div>
-<hr />
 <br/>
 <br />
 <div id="next-steps">
@@ -41,14 +38,17 @@
 
 <style>
     .profile-image {
-        margin: auto;
         height: 100px;
+        aspect-ratio: 1 / 1;
+        margin: 10px;
     }
 
-    #congrats {
-        text-align: center;
+    #header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 800px;
         margin: auto;
-        width: 400px;
     }
     
     #next-steps {

@@ -1,6 +1,7 @@
 ﻿using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Services;
 using MasterCraft.Client.Common.State;
+using MasterCraft.Client.Shared.Components;
 using MasterCraft.Shared.ViewModels;
 using MasterCraft.Shared.ViewModels.Aggregates;
 using Microsoft.AspNetCore.Components;
@@ -20,6 +21,8 @@ namespace MasterCraft.Client.Learners.Pages
         [Inject] public CurrentUserService CurrentUser { get; set; }
         [Parameter] public string ProfileId { get; set; }
         [CascadingParameter] public SubmitLayout Layout { get; set; }
+        [CascadingParameter] ErrorHandler ErrorHandler { get; set; }
+
 
         public FeedbackRequestVm FeedbackRequest => SubmitState.FeedbackRequest;
 
@@ -47,9 +50,18 @@ namespace MasterCraft.Client.Learners.Pages
 
         private async Task<ApiResponse<EmptyVm>> OnSubmitClick()
         {
-            FeedbackRequest.VideoEmbedUrl = new EmbedCodeService().ParseSourceUrl(FeedbackRequest.VideoEmbedCode);
-            Navigation.NavigateTo($"go/{Layout.MentorProfile.ProfileId}/ask");
-            return await Task.FromResult(new ApiResponse<EmptyVm>());
+            try
+            {
+                FeedbackRequest.VideoEmbedUrl = new EmbedCodeService().ParseSourceUrl(FeedbackRequest.VideoEmbedCode);
+                Navigation.NavigateTo($"go/{Layout.MentorProfile.ProfileId}/ask");
+                return await Task.FromResult(new ApiResponse<EmptyVm>());
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler?.ProcessError(ex);
+            }
+
+            return new();
         }
 
     }

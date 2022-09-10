@@ -1,5 +1,6 @@
 ﻿using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Services;
+using MasterCraft.Client.Shared.Components;
 using MasterCraft.Shared.ViewModels;
 using MasterCraft.Shared.ViewModels.Aggregates;
 using Microsoft.AspNetCore.Components;
@@ -20,6 +21,8 @@ namespace MasterCraft.Client.Mentors.Pages
         [Inject] public NavigationManager Navigation { get; set; }
         [Inject] public StripeService Stripe { get; set; }
         [Inject] public CurrentUserService CurrentUserService { get; set; }
+        [CascadingParameter] ErrorHandler ErrorHandler { get; set; }
+
         public MentorProfileVm Profile { get; set; } = new();
         public OfferingVm Offering { get; set; } = new();
         [CascadingParameter] public SetupLayout SetupLayout { get; set; }
@@ -44,19 +47,28 @@ namespace MasterCraft.Client.Mentors.Pages
 
         private async Task<ApiResponse<MentorCreatedVm>> OnSubmitClick()
         {
-            Profile.VideoEmbedUrl = new EmbedCodeService().ParseSourceUrl(Profile.VideoEmbedCode);
-
-            Profile.Offerings = new List<OfferingVm>() { Offering };
-            ApiResponse<MentorCreatedVm> apiResponse = await ApiClient.PostFormAsync<MentorProfileVm, MentorCreatedVm>($"mentors/setupProfile", Profile);
-
-            if (apiResponse.Success)
+            try
             {
-                await Stripe.SetStripeAccountId(apiResponse.Response.UserId, apiResponse.Response.StripeAccountId);
-                await Stripe.RedirectToVendorOnboarding(apiResponse.Response.UserId, "setup/profile", "setup/complete");
-                await Task.Delay(5000); //-- We are directing away from the app anyway, so just delay hear to make sure the loading screen stays up.
+                Profile.VideoEmbedUrl = new EmbedCodeService().ParseSourceUrl(Profile.VideoEmbedCode);
+
+                Profile.Offerings = new List<OfferingVm>() { Offering };
+                ApiResponse<MentorCreatedVm> apiResponse = await ApiClient.PostFormAsync<MentorProfileVm, MentorCreatedVm>($"mentors/setupProfile", Profile);
+
+                if (apiResponse.Success)
+                {
+                    await Stripe.SetStripeAccountId(apiResponse.Response.UserId, apiResponse.Response.StripeAccountId);
+                    await Stripe.RedirectToVendorOnboarding(apiResponse.Response.UserId, "setup/profile", "setup/complete");
+                    await Task.Delay(5000); //-- We are directing away from the app anyway, so just delay hear to make sure the loading screen stays up.
+                }
+
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler?.ProcessError(ex);
             }
 
-            return apiResponse;
+            return new();
         }
     }
 }

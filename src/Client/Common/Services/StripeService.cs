@@ -4,6 +4,7 @@ using MasterCraft.Shared.ViewModels;
 using MasterCraft.Shared.ViewModels.Aggregates;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -63,7 +64,15 @@ namespace MasterCraft.Client.Common.Services
                 "checkouts",
                 checkoutDetails);
 
-            return response.Response;
+            if (response.Success)
+            {
+                return response.Response;
+            }
+            else
+            {
+                throw new Exception($"{response.ErrorDetails.Title}: {response.ErrorDetails.Detail}");
+            }
+
         }
 
         public void RedirectToCheckout(CheckoutSessionVm session)

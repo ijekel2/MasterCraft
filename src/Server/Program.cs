@@ -23,24 +23,21 @@ namespace MasterCraft.Server
         {
             var host = CreateHostBuilder(args).Build();
             var hostEnv = host.Services.GetService<IHostEnvironment>();
-            
+
             //-- Auto migrate DB on startup
-            if (hostEnv.IsDevelopment() || hostEnv.IsStaging())
+            using (var scope = host.Services.CreateScope())
             {
-                using (var scope = host.Services.CreateScope())
+                try
                 {
-                    try
-                    {
-                        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                        db.Database.Migrate();
-                    }
-                    catch
-                    {
-                        //-- We did our best
-                    }
+                    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    db.Database.Migrate();
+                }
+                catch
+                {
+                    //-- We did our best
                 }
             }
-           
+
             host.Run();
         }
 
