@@ -16,9 +16,11 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  inputs: 
-   command: publish
-   arguments: "--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)"
-   zipAfterPublish: true
+- task: PublishBuildArtifacts@1
+
+# - task: DotNetCoreCLI@2
+#   inputs: 
+#    command: publish
+#    arguments: "--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)"
+#    zipAfterPublish: true
 
