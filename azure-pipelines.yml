@@ -20,9 +20,12 @@ steps:
   inputs:
     PathtoPublish: '$(System.DefaultWorkingDirectory)'
 
-# - task: DotNetCoreCLI@2
-#   inputs: 
-#    command: publish
-#    arguments: "--configuration $(BuildConfiguration) --output $(System.DefaultWorkingDirectory)"
-#    zipAfterPublish: true
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/drop' 
+    includeRootFolder: true 
+    archiveType: 'zip'
+    archiveFile: '$(System.DefaultWorkingDirectory)/drop.zip' 
+    replaceExistingArchive: true 
+
 
