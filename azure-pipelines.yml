@@ -22,10 +22,10 @@ steps:
 
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/drop' 
+    rootFolderOrFile: '#/$(Build.BuildId)/drop' 
     includeRootFolder: true 
     archiveType: 'zip'
-    archiveFile: '$(System.DefaultWorkingDirectory)/drop.zip' 
+    archiveFile: '#/$(Build.BuildId)/drop.zip' 
     replaceExistingArchive: true 
 
 
