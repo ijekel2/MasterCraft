@@ -20,7 +20,7 @@ steps:
   displayName: 'dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
   inputs:
     command: publish
-    publishWebProjects: true
+    publishWebProjects: false
     projects: 'src/Server/MasterCraft.Server.csproj'
     arguments: ' --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
