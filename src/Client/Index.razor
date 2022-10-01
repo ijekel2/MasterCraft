@@ -1,5 +1,4 @@
 ﻿@page "/"
-@inject NavigationManager Navigation
 
 <br />
 <br />
@@ -12,23 +11,7 @@
         <br />
         <SfButton OnClick="ThrowException">Create Unhandled Error</SfButton>
     </div>
-
-
 </div>
-
-@code{
-    [CascadingParameter] public ErrorHandler Error { get; set; }
-
-    private async Task ProcessException()
-    {
-        await Error.ProcessError(new Exception("This is a handled error."));
-    }
-
-    private void ThrowException()
-    {
-        throw new Exception("This is an unhandled error.");
-    }
-}
 
 <style>
     .container > .e-btn {
@@ -55,10 +38,3 @@
         width: 400px;
     }
 </style>
-
-@code{
-    private void GoToSignUp(MouseEventArgs args)
-    {
-        Navigation.NavigateTo("/signup");
-    }
-}

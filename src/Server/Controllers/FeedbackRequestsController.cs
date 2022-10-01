@@ -21,7 +21,7 @@ namespace MasterCraft.Server.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<FeedbackRequest>> Get(string id, [FromServices] GetFeedbackRequestService service)
+        public async Task<ActionResult<FeedbackRequestVm>> Get(string id, [FromServices] GetFeedbackRequestService service)
         {
             return await service.HandleRequest(id);
         }

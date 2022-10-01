@@ -1,9 +1,7 @@
 using Blazored.LocalStorage;
-using MasterCraft.Client.Authentication;
 using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.Services;
 using MasterCraft.Client.Common.State;
-using MasterCraft.Client.Mentors.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,8 +21,7 @@ namespace MasterCraft.Client
 
             builder.Services
                 .AddSingleton<SubmissionState>()
-                .AddSingleton<SetupStateManager>()
-                .AddSingleton<UserStateManager>()
+                .AddSingleton<UserState>()
                 .AddScoped<AuthenticationService>()
                 .AddScoped<StripeService>()
                 .AddScoped<LoomService>()
@@ -34,7 +31,7 @@ namespace MasterCraft.Client
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
-            builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+            builder.Services.AddScoped<AuthenticationStateProvider, AuthState>();
             builder.Services.AddSyncfusionBlazor();
 
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjI2MTIzQDMyMzAyZTMxMmUzMG5zTUswdFpHek5CNzZCZ00xcld5ekNKVUNzVlVNT1R0SVVrbEhhYnpEa0E9");

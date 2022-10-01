@@ -1,0 +1,61 @@
+﻿@inherits LayoutComponentBase
+@layout NavMenuLayout
+
+@using MasterCraft.Client.Common.Services
+@using System.Security.Claims;
+@using MasterCraft.Client.Common.State;
+@using MasterCraft.Client.Common.Api;
+@using MasterCraft.Shared.ViewModels.Aggregates;
+@using MasterCraft.Client.Components
+
+@inject NavigationManager Navigation
+@inject StripeService Stripe
+@inject ApiClient Api
+@inject SubmissionState SubmissionState
+
+<AuthorizeView>
+    <Authorized>
+        @if ((progressTracker?.GetCurrentItem() ?? 0) != 3)
+        {
+            <div id="header">
+                <img class="profile-image" src="@MentorProfile.ProfileImageUrl"/>
+                <div class="mc-title">
+                    <h4>@GetTitleLine()</h4>
+                    <hr />
+                </div>
+            </div>
+        }
+
+        <ProgressTracker @ref="progressTracker" Items="items"/>
+        <div class="entry-form">
+            <CascadingValue Value="this">
+                @Body
+            </CascadingValue>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+<style>
+    .bottom-btn {
+        margin:auto;
+        margin-top: 30px;
+    }
+
+    .entry-form{
+        margin: auto;
+        margin-top: 30px;
+    }
+
+    #header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-image {
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+    }
+</style>
+

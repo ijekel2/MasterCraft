@@ -1,0 +1,15 @@
+﻿@page "/go/{ProfileId}/share"
+@using MasterCraft.Client.Layouts
+@layout SubmitLayout
+@attribute [Authorize]
+
+<AuthorizeView>
+    <SubmissionForm TRequest=FeedbackRequestVm TResponse=EmptyVm Request="@FeedbackRequest" OnValidSubmit="OnSubmitClick" ButtonText="Next">
+        <ChildContent>
+            <div>
+                <SfTextBox Type="InputType.Text" Multiline="true" CssClass="mc-input" Placeholder="Video embed code" @bind-Value="FeedbackRequest.VideoEmbedCode" />
+            </div>
+        </ChildContent>
+    </SubmissionForm>
+</AuthorizeView>
+

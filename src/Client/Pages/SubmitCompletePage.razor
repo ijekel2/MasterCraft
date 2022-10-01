@@ -1,0 +1,75 @@
+﻿@page "/go/{ProfileId}/complete/{FeedbackRequestId}"
+@attribute [Authorize]
+
+@using MasterCraft.Client.Common.Api
+@using MasterCraft.Shared.ViewModels.Aggregates;
+@using MasterCraft.Client.Common.Services;
+@using Blazored.LocalStorage;
+
+<div id="header">
+    <img class="profile-image" src="@Profile.ProfileImageUrl"/>
+    <h3>Your work is submitted!</h3>
+    <h6>@GetConfirmationPhrase()</h6>
+    <hr />
+</div>
+<br/>
+<br />
+<div id="next-steps">
+    <h4>What happens next</h4>
+    <div class="step">
+        <button>1</button>
+        <span>@GetStepOneText()</span>
+    </div>
+    <div class="step">
+        <button>2</button>
+        <span>@GetStepTwoText()</span>
+    </div>
+
+    <div class="step">
+        <button>3</button>
+        <span>@GetStepThreeText()</span>
+    </div>
+    <br />
+    <div class="step">
+        <span><em>@GetRefundText()</em></span>
+    </div>
+
+</div>
+
+<style>
+    .profile-image {
+        height: 100px;
+        aspect-ratio: 1 / 1;
+        margin: 10px;
+    }
+
+    #header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 800px;
+        margin: auto;
+    }
+    
+    #next-steps {
+        width: 900px;
+        margin: auto;
+    }
+
+    button {
+        border-radius: 50%;
+        height: 30px;
+        aspect-ratio: 1 / 1;
+        background-color: @Colors.McGreen;
+        color: white;
+        border: none;
+        pointer-events: none;
+        margin: 5px 10px;
+        font-weight: bold;
+    }
+
+    .step {
+        display: flex;
+        align-items: center;
+    }
+</style>

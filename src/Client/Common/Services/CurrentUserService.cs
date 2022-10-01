@@ -1,23 +1,22 @@
 ﻿using MasterCraft.Client.Common.Api;
 using MasterCraft.Client.Common.State;
 using MasterCraft.Shared.ViewModels;
-using System.Threading.Tasks;
-using MasterCraft.Client.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace MasterCraft.Client.Common.Services
 {
     public class CurrentUserService
     {
-        private readonly UserStateManager _userState;
-        private readonly AuthStateProvider _authProvider;
+        private readonly UserState _userState;
+        private readonly AuthState _authProvider;
         private readonly ApiClient _api;
 
-        public CurrentUserService(UserStateManager userState, AuthenticationStateProvider authProvider, ApiClient api)
+        public CurrentUserService(UserState userState, AuthenticationStateProvider authProvider, ApiClient api)
         {
             _userState = userState;
-            _authProvider = (AuthStateProvider)authProvider;
+            _authProvider = (AuthState)authProvider;
             _api = api;
         }
 
@@ -25,7 +24,7 @@ namespace MasterCraft.Client.Common.Services
         {
             if (_userState.User is null)
             {
-                AuthenticationState authState = await _authProvider.GetAuthenticationStateAsync();
+                Microsoft.AspNetCore.Components.Authorization.AuthenticationState authState = await _authProvider.GetAuthenticationStateAsync();
                 string id = authState.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 ApiResponse<UserVm> apiResponse = await _api.GetAsync<UserVm>($"users/{id}");
 

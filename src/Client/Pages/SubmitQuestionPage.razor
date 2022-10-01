@@ -1,0 +1,16 @@
+﻿@page "/go/{ProfileId}/ask"
+@layout SubmitLayout
+@attribute [Authorize]
+@using MasterCraft.Client.Layouts
+
+<SubmissionForm TRequest=FeedbackRequestVm TResponse=FeedbackRequestCreatedVm Request="@FeedbackRequest" OnValidSubmit="OnSubmitClick" ButtonText="Checkout">
+    <ChildContent>
+        <SfTextBox Type="InputType.Text" Multiline="true" CssClass="mc-input" Placeholder="Ask your question" @bind-Value="FeedbackRequest.Question" />
+    </ChildContent>
+</SubmissionForm>
+
+<style>
+    .mc-input {
+        height: 200px;
+    }
+</style>

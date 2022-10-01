@@ -29,9 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authentication\Components\" />
-    <Folder Include="Learners\Components\" />
-    <Folder Include="Navigation\Pages\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\fonts\" />
     <Folder Include="wwwroot\js\" />
@@ -55,10 +52,4 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	  <Exec Command="npm install" WorkingDirectory="Common\Npm" />
-	  <Exec Command="npm run build" WorkingDirectory="Common\Npm" />
-  </Target>
-	
 </Project>

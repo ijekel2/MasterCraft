@@ -1,0 +1,9 @@
+﻿@using Microsoft.Extensions.Logging
+@inject ILogger<ErrorHandler> Logger
+
+<CascadingValue Value="this">
+    @ChildContent
+    <SfToast @ref="errorToast">
+        <ToastPosition X="Right" Y="Bottom"></ToastPosition>
+    </SfToast>
+</CascadingValue>

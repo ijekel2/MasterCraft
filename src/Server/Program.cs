@@ -23,7 +23,7 @@ namespace MasterCraft.Server
         {
             var host = CreateHostBuilder(args).Build();
             var hostEnv = host.Services.GetService<IHostEnvironment>();
-
+            
             //-- Auto migrate DB on startup
             using (var scope = host.Services.CreateScope())
             {
@@ -47,6 +47,8 @@ namespace MasterCraft.Server
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureLogging(logging =>
+                        logging.AddConsole());
                 });
         }
     }

@@ -1,4 +1,8 @@
-﻿import { isSupported, setup } from "@loomhq/record-sdk";
+﻿//-- If you change this file, you need to run the following commands to recreate the package:
+// <Exec Command="npm install" WorkingDirectory="Common\Npm" />
+// <Exec Command="npm run build" WorkingDirectory="Common\Npm" />
+
+import { isSupported, setup } from "@loomhq/record-sdk";
 import { oembed } from "@loomhq/loom-embed";
 
 window.LoomService = new function () {

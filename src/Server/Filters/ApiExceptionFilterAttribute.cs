@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -10,8 +11,9 @@ namespace MasterCraft.Server.Filters
     public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
         private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
+        private readonly ILogger _logger;
 
-        public ApiExceptionFilterAttribute()
+        public ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> logger)
         {
             // Register known exception types and services.
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
@@ -21,10 +23,14 @@ namespace MasterCraft.Server.Filters
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
             };
+
+            _logger = logger;
         }
 
         public override void OnException(ExceptionContext context)
         {
+            _logger.LogError(context.Exception.ToString());
+
             HandleException(context);
 
             base.OnException(context);

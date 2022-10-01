@@ -9,10 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MasterCraft.Shared.ViewModels;
 
 namespace MasterCraft.Domain.Services.FeedbackRequests
 {
-    public class GetFeedbackRequestService : DomainService<string, FeedbackRequest>
+    public class GetFeedbackRequestService : DomainService<string, FeedbackRequestVm>
     {
         readonly IDbContext _dbContext;
 
@@ -21,9 +22,10 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
             _dbContext = dbContext;
         }
 
-        internal override async Task<FeedbackRequest> Handle(string id, CancellationToken token = default)
+        internal override async Task<FeedbackRequestVm> Handle(string id, CancellationToken token = default)
         {
-            return await _dbContext.FeedbackRequests.FirstOrDefaultAsync(feedbackRequest => feedbackRequest.Id == id, token);
+            FeedbackRequest lRequest = await _dbContext.FeedbackRequests.FirstOrDefaultAsync(feedbackRequest => feedbackRequest.Id == id, token);
+            return Map<FeedbackRequest, FeedbackRequestVm>(lRequest);
         }
 
         internal override async Task Validate(string request, DomainValidator validator, CancellationToken token = default)

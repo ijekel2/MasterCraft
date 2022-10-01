@@ -1,0 +1,9 @@
+﻿@using MasterCraft.Client.Common.Api;
+@using Microsoft.Extensions.Configuration
+
+@implements IDisposable
+
+@inject IJSRuntime JS
+@inject ApiClient ApiClient
+@inject IConfiguration Configuration
+<SfButton id="btn-record" CssClass="e-danger">Record</SfButton>

@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims;
+
+<div class="login-display">
+    <AuthorizeView>
+        <Authorized>
+            <a id="salutation" @onclick="GoToProfile">@string.Format(Properties.Resources.Salutation, @context.User?.FindFirst(ClaimTypes.Name)?.Value!)</a>
+            <SfButton CssClass="mc-btn mc-btn-gray" @onclick="Logout">@Properties.Resources.LogOut</SfButton>
+        </Authorized>
+        <NotAuthorized>
+            <SfButton CssClass="mc-btn mc-btn-gray" OnClick="GoToSignUp">@Properties.Resources.SignUp</SfButton>
+            <SfButton CssClass="mc-btn mc-btn-green" OnClick="GoToLogin">@Properties.Resources.LogIn</SfButton>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+<style>
+    .login-display{
+        padding: 5px;
+    }
+
+    #salutation {
+        margin: 10px;
+        font-family: @Fonts.Headline;
+        font-size: 16px;
+        vertical-align: middle;
+        color: @Colors.McButtonGray;
+        cursor: pointer;
+    }
+
+    #salutation:hover{
+        color: @Colors.McGreen
+    }
+</style>

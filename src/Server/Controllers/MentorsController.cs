@@ -71,12 +71,5 @@ namespace MasterCraft.Server.Controllers
         {
             return await service.HandleRequest(id);
         }
-
-        [HttpPut]
-        [Route("{id}")]
-        public async Task<ActionResult<EmptyVm>> Put(MentorVm request, [FromServices] UpdateMentorService service)
-        {
-            return await service.HandleRequest(request);
-        }
     }
 }
