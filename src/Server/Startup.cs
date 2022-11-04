@@ -51,7 +51,7 @@ namespace MasterCraft.Server
                 app.UseExceptionHandler("/Error");
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
