@@ -27,6 +27,8 @@ namespace MasterCraft.Infrastructure
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var dbPath = Path.Join(path, configuration["DatabaseName"]);
 
+            Directory.CreateDirectory(Path.GetDirectoryName(dbPath));
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite($"DataSource={dbPath}"));
 
