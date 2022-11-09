@@ -30,7 +30,7 @@ namespace MasterCraft.Server
                 try
                 {
                     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                    db.Database.EnsureCreated();
+                    db.Database.Migrate();
                 }
                 catch
                 {
