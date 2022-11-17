@@ -13,8 +13,29 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: DotNetCoreCLI@2
+  displayName: New Manifest for tool
+  inputs:
+    command: custom
+    custom: 'new '
+    arguments: tool-manifest
+
+- task: DotNetCoreCLI@2
+  displayName: Install EF Tool
+  inputs:
+    command: custom
+    custom: 'tool '
+    arguments: install dotnet-ef
+
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: Create SQL Scripts
+  inputs:
+    command: custom
+    custom: 'ef '
+    arguments: migrations script --output $(Build.SourcesDirectory)/Sql/db_update.sql --idempotent  --startup-project "$(Build.SourcesDirectory)/src/Server/MasterCraft.Server.csproj" --project "$(Build.SourcesDirectory)/src/Infrastructure/MasterCraft.Infrastructure.csproj"
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet publish --os linux --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
@@ -27,5 +48,11 @@ steps:
 
 - task: PublishBuildArtifacts@1
   displayName: 'publish artifacts'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: SQLScripts'
+  inputs:
+    PathtoPublish: $(Build.SourcesDirectory)/Sql/db_update.sql
+    ArtifactName: SQLScripts
 
 
