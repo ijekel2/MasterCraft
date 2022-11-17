@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -13,10 +14,10 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -27,24 +28,24 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    FirstName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ProfileImageUrl = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
-                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
-                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    LastName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ProfileImageUrl = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,11 +56,11 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    RoleId = table.Column<string>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleId = table.Column<string>(type: "text", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -76,11 +77,11 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "character varying(64)", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,10 +98,10 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "character varying(64)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,8 +118,8 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    RoleId = table.Column<string>(type: "TEXT", nullable: false)
+                    UserId = table.Column<string>(type: "character varying(64)", nullable: false),
+                    RoleId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,10 +142,10 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<string>(type: "character varying(64)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -161,18 +162,18 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "Mentors",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    ProfileId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    VideoEmbedUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    StripeAccountId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    SampleQuestion1 = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
-                    SampleQuestion2 = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
-                    SampleQuestion3 = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
-                    SampleQuestion4 = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
-                    SampleQuestion5 = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
-                    Active = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    UserId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    ProfileId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    VideoEmbedUrl = table.Column<string>(type: "text", nullable: true),
+                    StripeAccountId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    SampleQuestion1 = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
+                    SampleQuestion2 = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
+                    SampleQuestion3 = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
+                    SampleQuestion4 = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
+                    SampleQuestion5 = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -189,13 +190,13 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "Offerings",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    Price = table.Column<decimal>(type: "TEXT", nullable: false),
-                    MentorId = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    MentorId = table.Column<string>(type: "character varying(64)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -211,18 +212,18 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "FeedbackRequests",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    VideoEmbedUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    Question = table.Column<string>(type: "TEXT", nullable: true),
-                    PaymentIntentId = table.Column<string>(type: "TEXT", nullable: true),
-                    Status = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
-                    SubmissionDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ResponseDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    MentorId = table.Column<string>(type: "TEXT", nullable: true),
-                    LearnerId = table.Column<string>(type: "TEXT", nullable: true),
-                    OfferingId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    VideoEmbedUrl = table.Column<string>(type: "text", nullable: true),
+                    Question = table.Column<string>(type: "text", nullable: true),
+                    PaymentIntentId = table.Column<string>(type: "text", nullable: true),
+                    Status = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    SubmissionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ResponseDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    MentorId = table.Column<string>(type: "character varying(64)", nullable: true),
+                    LearnerId = table.Column<string>(type: "character varying(64)", nullable: true),
+                    OfferingId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -249,15 +250,15 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "Payments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Price = table.Column<decimal>(type: "TEXT", nullable: false),
-                    AuthorizationDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CaptureDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    FeedbackRequestId = table.Column<string>(type: "TEXT", nullable: true),
-                    StripePaymentId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    AuthorizationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CaptureDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    FeedbackRequestId = table.Column<string>(type: "text", nullable: true),
+                    StripePaymentId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -273,15 +274,15 @@ namespace MasterCraft.Infrastructure.Persistence.Migrations
                 name: "Videos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Url = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
-                    VideoType = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
-                    MentorId = table.Column<string>(type: "TEXT", nullable: true),
-                    LearnerId = table.Column<string>(type: "TEXT", nullable: true),
-                    FeedbackRequestId = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Url = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
+                    VideoType = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    MentorId = table.Column<string>(type: "character varying(64)", nullable: true),
+                    LearnerId = table.Column<string>(type: "character varying(64)", nullable: true),
+                    FeedbackRequestId = table.Column<string>(type: "text", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

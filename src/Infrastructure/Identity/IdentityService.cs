@@ -93,6 +93,12 @@ namespace MasterCraft.Infrastructure.Identity
         public async Task<string> GetUserNameAsync(string userId, CancellationToken token = default)
         {
             var user = await _userManager.FindByIdAsync(userId);
+
+            if (user is null)
+            {
+                return string.Empty;
+            }
+
             return await _userManager.GetUserNameAsync(user);
         }
 

@@ -24,13 +24,9 @@ namespace MasterCraft.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             //-- EF Core.
-            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var dbPath = Path.Join(path, configuration["DatabaseName"]);
-
-            Directory.CreateDirectory(Path.GetDirectoryName(dbPath));
-
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite($"DataSource={dbPath}"));
+                options.UseNpgsql(configuration["ConnectionString"]));
+
 
             //-- ASP.NET Core Identity
             services.AddDefaultIdentity<User>(options =>
@@ -43,6 +39,7 @@ namespace MasterCraft.Infrastructure
             })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+            
 
             //-- Jwt Auth
             services.AddAuthentication(options =>
