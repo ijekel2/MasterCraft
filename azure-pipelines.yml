@@ -60,6 +60,7 @@ steps:
   inputs:
     azureSubscription: 'MasterCraft Subscription'
     scriptLocation: inlineScript
+    scriptType: bash
     arguments:
       -SERVERNAME mastercraft.postgres.database.azure.com `
       -DBNAME mastercraft `
