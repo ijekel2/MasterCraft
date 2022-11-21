@@ -55,27 +55,4 @@ steps:
     PathtoPublish: $(Build.SourcesDirectory)/Sql/db_update.sql
     ArtifactName: SqlScripts
 
-- task: AzureCLI@2
-  displayName: 'Azure Postgres DB Update: mastercraft'
-  inputs:
-    azureSubscription: 'MasterCraft Subscription'
-    scriptLocation: inlineScript
-    scriptType: bash
-    arguments:
-      -SERVERNAME mastercraft.postgres.database.azure.com `
-      -DBNAME mastercraft `
-      -DBUSER mastercraftdevops`
-      -DBPASSWORD McDevops22!
-    inlineScript: |
-      az postgres flexible-server execute --name $(SERVERNAME) \
-      --admin-user $(DBUSER) --admin-password '$(DBPASSWORD)' \
-      --database-name $(DBNAME) --file-path $(Build.SourcesDirectory)/Sql/db_update.sql
-
-- task: AzureRmWebAppDeployment@4
-  displayName: 'Azure App Service Deploy: mastercraft'
-  inputs:
-    azureSubscription: 'MasterCraft Subscription'
-    appType: webAppLinux
-    WebAppName: mastercraft
-    RuntimeStack: 'DOTNETCORE|6.0'
 
