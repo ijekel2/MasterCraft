@@ -1,3 +1,5 @@
-dotnet ef migrations add CreateInitialSchema --startup-project "src/Server/MasterCraft.Server.csproj" --project "src/Infrastructure/MasterCraft.Infrastructure.csproj" --output-dir "Persistence/Migrations" -v
+dotnet ef migrations add CreateInitial --startup-project "src/Server/MasterCraft.Server.csproj" --project "src/Infrastructure/MasterCraft.Infrastructure.csproj" --output-dir "Persistence/Migrations" -v
 
 dotnet ef database update --startup-project "src/Server/MasterCraft.Server.csproj" --project "src/Infrastructure/MasterCraft.Infrastructure.csproj" -v
+
+dotnet ef migrations script --output "src/Infrastructure/Persistence/Scripts/db_update" --idempotent --startup-project "src/Server/MasterCraft.Server.csproj" --project "src/Infrastructure/MasterCraft.Infrastructure.csproj"
