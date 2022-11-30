@@ -48,7 +48,10 @@ namespace MasterCraft.Server
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.ConfigureLogging(logging =>
-                        logging.AddConsole());
+                    {
+                        logging.AddAzureWebAppDiagnostics();
+                        logging.AddConsole();
+                    });
                 });
         }
     }

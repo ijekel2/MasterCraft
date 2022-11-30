@@ -39,7 +39,14 @@ namespace MasterCraft.Infrastructure
             })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+
+            ////-- Azure logging
+            //services.Configure<AzureFileLoggerOptions>(options =>
+            //{
+            //    options.FileName = "azure-diagnostics-";
+            //    options.FileSizeLimit = 50 * 1024;
+            //    options.RetainedFileCountLimit = 5;
+            //});
 
             //-- Jwt Auth
             services.AddAuthentication(options =>
