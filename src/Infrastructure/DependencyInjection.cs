@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.AzureAppServices;
 using Microsoft.IdentityModel.Tokens;
 using Stripe;
 using System;
@@ -40,13 +41,13 @@ namespace MasterCraft.Infrastructure
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            ////-- Azure logging
-            //services.Configure<AzureFileLoggerOptions>(options =>
-            //{
-            //    options.FileName = "azure-diagnostics-";
-            //    options.FileSizeLimit = 50 * 1024;
-            //    options.RetainedFileCountLimit = 5;
-            //});
+            //-- Azure logging
+            services.Configure<AzureFileLoggerOptions>(options =>
+            {
+                options.FileName = "azure-diagnostics-";
+                options.FileSizeLimit = 50 * 1024;
+                options.RetainedFileCountLimit = 5;
+            });
 
             //-- Jwt Auth
             services.AddAuthentication(options =>
