@@ -38,7 +38,7 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
             }
 
             request.Status = FeedbackRequestStatus.Declined;
-            request.ResponseDate = DateTime.Now;
+            request.ResponseDate = DateTime.UtcNow;
 
             await _paymentService.CancelPayment(request.PaymentIntentId, request.Mentor.StripeAccountId);
 

@@ -38,7 +38,7 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
             }
 
             request.Status = FeedbackRequestStatus.Fulfilled;
-            request.ResponseDate = DateTime.Now;
+            request.ResponseDate = DateTime.UtcNow;
             request.VideoEmbedUrl = requestVm.VideoUrl;
             request.MentorId = requestVm.MentorId;
 

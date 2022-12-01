@@ -34,7 +34,7 @@ namespace MasterCraft.Domain.Services.FeedbackRequests
             }
 
             request.Status = FeedbackRequestStatus.Submitted;
-            request.SubmissionDate = DateTime.Now;
+            request.SubmissionDate = DateTime.UtcNow;
 
             await _dbContext.SaveChangesAsync();
 

@@ -102,7 +102,7 @@ namespace MasterCraft.Client.Pages
 
         private string GetTimeSinceSubmission(FeedbackRequestQueueItemVm item)
         {
-            TimeSpan diff = DateTime.Now - item.SubmissionDate;
+            TimeSpan diff = DateTime.UtcNow - item.SubmissionDate;
             bool lHours = diff >= new TimeSpan(1, 0, 0);
 
             string lTimePhrase;

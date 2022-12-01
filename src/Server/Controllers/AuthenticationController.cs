@@ -47,7 +47,7 @@ namespace MasterCraft.Server.Controllers
 
             var signingCredentials = new SigningCredentials(rsaSecurityKey, SecurityAlgorithms.RsaSha256); ;
 
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             var nowUnixSeconds = new DateTimeOffset(now).ToUnixTimeSeconds();
             var exp = now.AddMinutes(2);
             var expUnixSeconds = new DateTimeOffset(exp).ToUnixTimeSeconds();
