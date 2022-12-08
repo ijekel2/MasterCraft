@@ -26,7 +26,7 @@ namespace MasterCraft.Infrastructure
         {
             //-- EF Core.
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(configuration["ConnectionString"]));
+                options.UseNpgsql(configuration.GetConnectionString("mastercraft")));
 
 
             //-- ASP.NET Core Identity

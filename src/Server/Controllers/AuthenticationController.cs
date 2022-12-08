@@ -34,7 +34,7 @@ namespace MasterCraft.Server.Controllers
         [Authorize]
         public async Task<ActionResult<AccessTokenVm>> GetLoomToken([FromServices] IConfiguration configuration)
         {
-            string privateKeyPem = System.IO.File.ReadAllText(configuration["LOOM_PRIVATE_KEY_FILE"]);
+            string privateKeyPem = configuration["LOOM_PRIVATE_KEY"];
 
             privateKeyPem = privateKeyPem.Replace("-----BEGIN PRIVATE KEY-----", "");
             privateKeyPem = privateKeyPem.Replace("-----END PRIVATE KEY-----", "");
