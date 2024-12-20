@@ -62,5 +62,5 @@ steps:
 - script: az config set extension.use_dynamic_install=yes_without_prompt --debug
   displayName: 'Azure Config Setup'
 
-- script: az postgres flexible-server execute --name mastercraft --admin-user mastercraftdevops --admin-password McDevops22! --database-name mastercraft --file-path $(Build.SourcesDirectory)/Sql/db_update.sql
+- script: az postgres flexible-server execute --name mastercraft --admin-user $(DbUser) --admin-password $(DbPassword) --database-name mastercraft --file-path $(Build.SourcesDirectory)/Sql/db_update.sql
   displayName: 'Run Update Scripts'
